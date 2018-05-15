@@ -1,0 +1,16 @@
+#选取环境
+spring:
+  profiles:
+    active: dev
+  http:
+      multipart:
+        #设置单个文件的大小,
+        max-file-size: 10Mb
+        #设置单次请求的文件的总大小
+        max-request-size: 100Mb
+
+mybatis:
+# mapper.xml包扫描
+  mapper-locations: classpath:mapper/*.xml
+##  entity包扫描
+#  type-aliases-package: com.cook.web.entity

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cook.dao.UserRecruitApplyMapper" >
+  <resultMap id="BaseResultMap" type="com.cook.entity.UserRecruitApply" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="apply_date" property="applyDate" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="recruit_id" property="recruitId" jdbcType="VARCHAR" />
+    <result column="is_checked" property="isChecked" jdbcType="SMALLINT" />
+    <result column="recruit_type" property="recruitType" jdbcType="SMALLINT" />
+    <result column="publisher_id" property="publisherId" jdbcType="VARCHAR" />
+    <result column="publisher_name" property="publisherName" jdbcType="VARCHAR" />
+    <result column="food_type_name" property="foodTypeName" jdbcType="VARCHAR" />
+    <result column="job_name" property="jobName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, apply_date, user_id, recruit_id, is_checked, recruit_type, publisher_id, publisher_name, 
+    food_type_name, job_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_recruit_apply
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from user_recruit_apply
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cook.entity.UserRecruitApply" >
+    insert into user_recruit_apply (id, apply_date, user_id, 
+      recruit_id, is_checked, recruit_type, 
+      publisher_id, publisher_name, food_type_name, 
+      job_name)
+    values (#{id,jdbcType=VARCHAR}, #{applyDate,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, 
+      #{recruitId,jdbcType=VARCHAR}, #{isChecked,jdbcType=SMALLINT}, #{recruitType,jdbcType=SMALLINT}, 
+      #{publisherId,jdbcType=VARCHAR}, #{publisherName,jdbcType=VARCHAR}, #{foodTypeName,jdbcType=VARCHAR}, 
+      #{jobName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cook.entity.UserRecruitApply" >
+    insert into user_recruit_apply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="applyDate != null" >
+        apply_date,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="recruitId != null" >
+        recruit_id,
+      </if>
+      <if test="isChecked != null" >
+        is_checked,
+      </if>
+      <if test="recruitType != null" >
+        recruit_type,
+      </if>
+      <if test="publisherId != null" >
+        publisher_id,
+      </if>
+      <if test="publisherName != null" >
+        publisher_name,
+      </if>
+      <if test="foodTypeName != null" >
+        food_type_name,
+      </if>
+      <if test="jobName != null" >
+        job_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="applyDate != null" >
+        #{applyDate,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="recruitId != null" >
+        #{recruitId,jdbcType=VARCHAR},
+      </if>
+      <if test="isChecked != null" >
+        #{isChecked,jdbcType=SMALLINT},
+      </if>
+      <if test="recruitType != null" >
+        #{recruitType,jdbcType=SMALLINT},
+      </if>
+      <if test="publisherId != null" >
+        #{publisherId,jdbcType=VARCHAR},
+      </if>
+      <if test="publisherName != null" >
+        #{publisherName,jdbcType=VARCHAR},
+      </if>
+      <if test="foodTypeName != null" >
+        #{foodTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="jobName != null" >
+        #{jobName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cook.entity.UserRecruitApply" >
+    update user_recruit_apply
+    <set >
+      <if test="applyDate != null" >
+        apply_date = #{applyDate,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="recruitId != null" >
+        recruit_id = #{recruitId,jdbcType=VARCHAR},
+      </if>
+      <if test="isChecked != null" >
+        is_checked = #{isChecked,jdbcType=SMALLINT},
+      </if>
+      <if test="recruitType != null" >
+        recruit_type = #{recruitType,jdbcType=SMALLINT},
+      </if>
+      <if test="publisherId != null" >
+        publisher_id = #{publisherId,jdbcType=VARCHAR},
+      </if>
+      <if test="publisherName != null" >
+        publisher_name = #{publisherName,jdbcType=VARCHAR},
+      </if>
+      <if test="foodTypeName != null" >
+        food_type_name = #{foodTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="jobName != null" >
+        job_name = #{jobName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cook.entity.UserRecruitApply" >
+    update user_recruit_apply
+    set apply_date = #{applyDate,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=VARCHAR},
+      recruit_id = #{recruitId,jdbcType=VARCHAR},
+      is_checked = #{isChecked,jdbcType=SMALLINT},
+      recruit_type = #{recruitType,jdbcType=SMALLINT},
+      publisher_id = #{publisherId,jdbcType=VARCHAR},
+      publisher_name = #{publisherName,jdbcType=VARCHAR},
+      food_type_name = #{foodTypeName,jdbcType=VARCHAR},
+      job_name = #{jobName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

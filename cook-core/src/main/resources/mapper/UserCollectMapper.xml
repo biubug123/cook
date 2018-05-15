@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cook.dao.UserCollectMapper" >
+  <resultMap id="BaseResultMap" type="com.cook.entity.UserCollect" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="collect_type" property="collectType" jdbcType="SMALLINT" />
+    <result column="collect_date" property="collectDate" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="content_id" property="contentId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, collect_type, collect_date, user_id, content_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_collect
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from user_collect
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cook.entity.UserCollect" >
+    insert into user_collect (id, collect_type, collect_date, 
+      user_id, content_id)
+    values (#{id,jdbcType=VARCHAR}, #{collectType,jdbcType=SMALLINT}, #{collectDate,jdbcType=BIGINT}, 
+      #{userId,jdbcType=VARCHAR}, #{contentId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cook.entity.UserCollect" >
+    insert into user_collect
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="collectType != null" >
+        collect_type,
+      </if>
+      <if test="collectDate != null" >
+        collect_date,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="contentId != null" >
+        content_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="collectType != null" >
+        #{collectType,jdbcType=SMALLINT},
+      </if>
+      <if test="collectDate != null" >
+        #{collectDate,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="contentId != null" >
+        #{contentId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cook.entity.UserCollect" >
+    update user_collect
+    <set >
+      <if test="collectType != null" >
+        collect_type = #{collectType,jdbcType=SMALLINT},
+      </if>
+      <if test="collectDate != null" >
+        collect_date = #{collectDate,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="contentId != null" >
+        content_id = #{contentId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cook.entity.UserCollect" >
+    update user_collect
+    set collect_type = #{collectType,jdbcType=SMALLINT},
+      collect_date = #{collectDate,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=VARCHAR},
+      content_id = #{contentId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

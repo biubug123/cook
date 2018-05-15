@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cook.dao.ConsultMapper" >
+  <resultMap id="BaseResultMap" type="com.cook.entity.Consult" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="article_type" property="articleType" jdbcType="SMALLINT" />
+    <result column="consult_type" property="consultType" jdbcType="SMALLINT" />
+    <result column="publish_date" property="publishDate" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="article_id" property="articleId" jdbcType="VARCHAR" />
+    <result column="publisher_name" property="publisherName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, article_type, consult_type, publish_date, user_id, article_id, publisher_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from consult
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from consult
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cook.entity.Consult" >
+    insert into consult (id, article_type, consult_type, 
+      publish_date, user_id, article_id, 
+      publisher_name)
+    values (#{id,jdbcType=VARCHAR}, #{articleType,jdbcType=SMALLINT}, #{consultType,jdbcType=SMALLINT}, 
+      #{publishDate,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{articleId,jdbcType=VARCHAR}, 
+      #{publisherName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cook.entity.Consult" >
+    insert into consult
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="articleType != null" >
+        article_type,
+      </if>
+      <if test="consultType != null" >
+        consult_type,
+      </if>
+      <if test="publishDate != null" >
+        publish_date,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="articleId != null" >
+        article_id,
+      </if>
+      <if test="publisherName != null" >
+        publisher_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="articleType != null" >
+        #{articleType,jdbcType=SMALLINT},
+      </if>
+      <if test="consultType != null" >
+        #{consultType,jdbcType=SMALLINT},
+      </if>
+      <if test="publishDate != null" >
+        #{publishDate,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="articleId != null" >
+        #{articleId,jdbcType=VARCHAR},
+      </if>
+      <if test="publisherName != null" >
+        #{publisherName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cook.entity.Consult" >
+    update consult
+    <set >
+      <if test="articleType != null" >
+        article_type = #{articleType,jdbcType=SMALLINT},
+      </if>
+      <if test="consultType != null" >
+        consult_type = #{consultType,jdbcType=SMALLINT},
+      </if>
+      <if test="publishDate != null" >
+        publish_date = #{publishDate,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="articleId != null" >
+        article_id = #{articleId,jdbcType=VARCHAR},
+      </if>
+      <if test="publisherName != null" >
+        publisher_name = #{publisherName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cook.entity.Consult" >
+    update consult
+    set article_type = #{articleType,jdbcType=SMALLINT},
+      consult_type = #{consultType,jdbcType=SMALLINT},
+      publish_date = #{publishDate,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=VARCHAR},
+      article_id = #{articleId,jdbcType=VARCHAR},
+      publisher_name = #{publisherName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

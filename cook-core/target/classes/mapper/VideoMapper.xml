@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cook.dao.VideoMapper" >
+  <resultMap id="BaseResultMap" type="com.cook.entity.Video" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="random_name" property="randomName" jdbcType="VARCHAR" />
+    <result column="play_count" property="playCount" jdbcType="INTEGER" />
+    <result column="admire_count" property="admireCount" jdbcType="INTEGER" />
+    <result column="img_name" property="imgName" jdbcType="VARCHAR" />
+    <result column="video_url" property="videoUrl" jdbcType="VARCHAR" />
+    <result column="video_img_name" property="videoImgName" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, title, random_name, play_count, admire_count, img_name, video_url, video_img_name, 
+    content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from video
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from video
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cook.entity.Video" >
+    insert into video (id, title, random_name, 
+      play_count, admire_count, img_name, 
+      video_url, video_img_name, content
+      )
+    values (#{id,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{randomName,jdbcType=VARCHAR}, 
+      #{playCount,jdbcType=INTEGER}, #{admireCount,jdbcType=INTEGER}, #{imgName,jdbcType=VARCHAR}, 
+      #{videoUrl,jdbcType=VARCHAR}, #{videoImgName,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cook.entity.Video" >
+    insert into video
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="randomName != null" >
+        random_name,
+      </if>
+      <if test="playCount != null" >
+        play_count,
+      </if>
+      <if test="admireCount != null" >
+        admire_count,
+      </if>
+      <if test="imgName != null" >
+        img_name,
+      </if>
+      <if test="videoUrl != null" >
+        video_url,
+      </if>
+      <if test="videoImgName != null" >
+        video_img_name,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="randomName != null" >
+        #{randomName,jdbcType=VARCHAR},
+      </if>
+      <if test="playCount != null" >
+        #{playCount,jdbcType=INTEGER},
+      </if>
+      <if test="admireCount != null" >
+        #{admireCount,jdbcType=INTEGER},
+      </if>
+      <if test="imgName != null" >
+        #{imgName,jdbcType=VARCHAR},
+      </if>
+      <if test="videoUrl != null" >
+        #{videoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="videoImgName != null" >
+        #{videoImgName,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cook.entity.Video" >
+    update video
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="randomName != null" >
+        random_name = #{randomName,jdbcType=VARCHAR},
+      </if>
+      <if test="playCount != null" >
+        play_count = #{playCount,jdbcType=INTEGER},
+      </if>
+      <if test="admireCount != null" >
+        admire_count = #{admireCount,jdbcType=INTEGER},
+      </if>
+      <if test="imgName != null" >
+        img_name = #{imgName,jdbcType=VARCHAR},
+      </if>
+      <if test="videoUrl != null" >
+        video_url = #{videoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="videoImgName != null" >
+        video_img_name = #{videoImgName,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cook.entity.Video" >
+    update video
+    set title = #{title,jdbcType=VARCHAR},
+      random_name = #{randomName,jdbcType=VARCHAR},
+      play_count = #{playCount,jdbcType=INTEGER},
+      admire_count = #{admireCount,jdbcType=INTEGER},
+      img_name = #{imgName,jdbcType=VARCHAR},
+      video_url = #{videoUrl,jdbcType=VARCHAR},
+      video_img_name = #{videoImgName,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

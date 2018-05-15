@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cook.dao.HuntMapper" >
+  <resultMap id="BaseResultMap" type="com.cook.entity.Hunt" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="salary" property="salary" jdbcType="DOUBLE" />
+    <result column="browse_count" property="browseCount" jdbcType="INTEGER" />
+    <result column="resume_id" property="resumeId" jdbcType="VARCHAR" />
+    <result column="job_id" property="jobId" jdbcType="VARCHAR" />
+    <result column="food_type_id" property="foodTypeId" jdbcType="VARCHAR" />
+    <result column="hunt_date" property="huntDate" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, salary, browse_count, resume_id, job_id, food_type_id, hunt_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from hunt
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from hunt
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cook.entity.Hunt" >
+    insert into hunt (id, salary, browse_count, 
+      resume_id, job_id, food_type_id, 
+      hunt_date)
+    values (#{id,jdbcType=VARCHAR}, #{salary,jdbcType=DOUBLE}, #{browseCount,jdbcType=INTEGER}, 
+      #{resumeId,jdbcType=VARCHAR}, #{jobId,jdbcType=VARCHAR}, #{foodTypeId,jdbcType=VARCHAR}, 
+      #{huntDate,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cook.entity.Hunt" >
+    insert into hunt
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="salary != null" >
+        salary,
+      </if>
+      <if test="browseCount != null" >
+        browse_count,
+      </if>
+      <if test="resumeId != null" >
+        resume_id,
+      </if>
+      <if test="jobId != null" >
+        job_id,
+      </if>
+      <if test="foodTypeId != null" >
+        food_type_id,
+      </if>
+      <if test="huntDate != null" >
+        hunt_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="salary != null" >
+        #{salary,jdbcType=DOUBLE},
+      </if>
+      <if test="browseCount != null" >
+        #{browseCount,jdbcType=INTEGER},
+      </if>
+      <if test="resumeId != null" >
+        #{resumeId,jdbcType=VARCHAR},
+      </if>
+      <if test="jobId != null" >
+        #{jobId,jdbcType=VARCHAR},
+      </if>
+      <if test="foodTypeId != null" >
+        #{foodTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="huntDate != null" >
+        #{huntDate,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cook.entity.Hunt" >
+    update hunt
+    <set >
+      <if test="salary != null" >
+        salary = #{salary,jdbcType=DOUBLE},
+      </if>
+      <if test="browseCount != null" >
+        browse_count = #{browseCount,jdbcType=INTEGER},
+      </if>
+      <if test="resumeId != null" >
+        resume_id = #{resumeId,jdbcType=VARCHAR},
+      </if>
+      <if test="jobId != null" >
+        job_id = #{jobId,jdbcType=VARCHAR},
+      </if>
+      <if test="foodTypeId != null" >
+        food_type_id = #{foodTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="huntDate != null" >
+        hunt_date = #{huntDate,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cook.entity.Hunt" >
+    update hunt
+    set salary = #{salary,jdbcType=DOUBLE},
+      browse_count = #{browseCount,jdbcType=INTEGER},
+      resume_id = #{resumeId,jdbcType=VARCHAR},
+      job_id = #{jobId,jdbcType=VARCHAR},
+      food_type_id = #{foodTypeId,jdbcType=VARCHAR},
+      hunt_date = #{huntDate,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
