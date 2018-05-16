@@ -14,7 +14,6 @@
         <module>cook-message-push</module>
         <module>cook-app-api</module>
         <module>cook-system</module>
-        <module>cook-dao</module>
     </modules>
 
     <parent>
@@ -150,7 +149,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.10</version>
         </dependency>
 
         <dependency>
