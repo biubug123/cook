@@ -18,4 +18,14 @@ public class UserBrowse {
     //内容id
     private String contentId;
 
+    public UserBrowse() {
+    }
+
+    public UserBrowse(String id, Short browseType, Long lastBrowseDate, String userId, String contentId) {
+        this.id = id;
+        this.browseType = browseType;
+        this.lastBrowseDate = lastBrowseDate;
+        this.userId = userId;
+        this.contentId = contentId;
+    }
 }

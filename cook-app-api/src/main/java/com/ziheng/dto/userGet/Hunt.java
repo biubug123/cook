@@ -1,8 +1,6 @@
-package com.ziheng.dto.user;
+package com.ziheng.dto.userGet;
 
 import lombok.Data;
-
-import java.math.BigInteger;
 
 /**
  * @description: 用户的求职实体类
@@ -12,16 +10,22 @@ import java.math.BigInteger;
 @Data
 public class Hunt {
 
+    //求职id
     private String huntId;
 
+    //薪资区间
     private String salary;
 
+    //岗位名称
     private String jobName;
 
+    //发布日期
     private Long publishDate;
 
+    //菜系名称
     private String foodTypeName;
 
+    //菜系图片路径
     private String foodTypeIconName;
 
 }

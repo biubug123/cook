@@ -1,5 +1,6 @@
-package com.ziheng.dto.user;
+package com.ziheng.dto.userGet;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 /**
@@ -10,13 +11,21 @@ import lombok.Data;
 @Data
 public class Resume {
 
+    //资讯id
     private String resumeId;
 
+    //标题
     private String title;
 
+    //用户名
     private String userName;
 
+    //性别
     private String sex;
+
+    //生日期限
+    @JsonIgnore
+    private Long birthDate;
 
     private Integer age;
 
