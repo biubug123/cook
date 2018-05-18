@@ -35,7 +35,7 @@ public class insertDataBase {
         String iconName = RandomUtil.getImgName();
         foodType.setId(uuid);
         foodType.setIconName(iconName);
-        foodType.setName("粤菜");
+        foodType.setName("川菜");
         foodTypeMapper.insertSelective(foodType);
 
         //招聘表

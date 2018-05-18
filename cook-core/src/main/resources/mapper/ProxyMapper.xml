@@ -3,35 +3,43 @@
 <mapper namespace="com.cook.dao.ProxyMapper" >
   <resultMap id="BaseResultMap" type="com.cook.entity.Proxy" >
     <id column="id" property="id" jdbcType="VARCHAR" />
+    <id column="user_id" property="userId" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="contact_way" property="contactWay" jdbcType="VARCHAR" />
     <result column="work_area" property="workArea" jdbcType="VARCHAR" />
     <result column="address" property="address" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, contact_way, work_area, address
+    id, user_id, name, contact_way, work_area, address
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.cook.entity.Proxy" >
     select 
     <include refid="Base_Column_List" />
     from proxy
     where id = #{id,jdbcType=VARCHAR}
+      and user_id = #{userId,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="com.cook.entity.Proxy" >
     delete from proxy
     where id = #{id,jdbcType=VARCHAR}
+      and user_id = #{userId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.cook.entity.Proxy" >
-    insert into proxy (id, name, contact_way, 
-      work_area, address)
-    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{contactWay,jdbcType=VARCHAR}, 
-      #{workArea,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR})
+    insert into proxy (id, user_id, name, 
+      contact_way, work_area, address
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{contactWay,jdbcType=VARCHAR}, #{workArea,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.cook.entity.Proxy" >
     insert into proxy
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="userId != null" >
+        user_id,
       </if>
       <if test="name != null" >
         name,
@@ -49,6 +57,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -81,6 +92,7 @@
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
+      and user_id = #{userId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.cook.entity.Proxy" >
     update proxy
@@ -89,5 +101,6 @@
       work_area = #{workArea,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
+      and user_id = #{userId,jdbcType=VARCHAR}
   </update>
 </mapper>

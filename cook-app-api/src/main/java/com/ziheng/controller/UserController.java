@@ -32,11 +32,11 @@ public class UserController {
     }
 
     /*
-          * @Description: 用户的求职列表
-          * @Author: ziHeng
-          * @Date: 2018/5/16 下午3:57
-          * @Param: [userId:用户id]
-          */
+                  * @Description: 用户的求职列表
+                  * @Author: ziHeng
+                  * @Date: 2018/5/16 下午3:57
+                  * @Param: [userId:用户id]
+                  */
     @GetMapping("/getHuntList/{userId}")
     public ApiResponse huntList(@PathVariable("userId") String userId){
 
@@ -166,6 +166,47 @@ public class UserController {
         return ApiResponse.ofSuccess(resumeMapper.deleteByPrimaryKey(resumeId));
 
     }
+
+
+    /**
+      * @Description: 新用户
+      * @Author: ziHeng
+      * @Date: 2018/5/17 下午9:26
+      * @Param: [phone:手机号, password:密码, accountNum:账号，可选]
+      * @return: com.cook.response.ApiResponse
+      */
+    @PostMapping("/insertUser")
+    public ApiResponse insertUser(@RequestParam("phone") String phone,
+                                  @RequestParam("password") String password,
+                                  @RequestParam("sex") String sex,
+                                  @RequestParam(value = "accountNum",required = false) String accountNum){
+
+
+        return ApiResponse.ofSuccess(userPostService.insertUser(phone,password,sex,accountNum));
+
+    }
+
+
+    /**
+      * @Description: 用户修改个人信息
+      * @Author: ziHeng
+      * @Date: 2018/5/18 上午10:56
+      * @Param: [userId, userName, sex, headImgName:上传后返回去的头像名称, signature:个性签名, address:地址, birthDate]
+      * @return: com.cook.response.ApiResponse
+      */
+    @PostMapping("/updateUserInfo")
+    public ApiResponse updateUserInfo(@RequestParam(required = false) String userId,
+                                      @RequestParam(required = false) String userName,
+                                      @RequestParam(required = false) String sex,
+                                      @RequestParam(required = false) String headImgName,
+                                      @RequestParam(required = false) String signature,
+                                      @RequestParam(required = false) String address,
+                                      @RequestParam(required = false) Long birthDate){
+
+        return ApiResponse.ofSuccess(userPostService.updateUserBySelective(userId,userName,sex,headImgName,signature,address,birthDate));
+
+    }
+
 
 
 }

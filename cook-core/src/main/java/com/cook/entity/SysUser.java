@@ -22,4 +22,16 @@ public class SysUser {
     //最后登录日期
     private Long lastLoginDate;
 
+
+    public SysUser() {
+    }
+
+    public SysUser(String id, String accountNum, String password, String phone, Long enrollDate, Long lastLoginDate) {
+        this.id = id;
+        this.accountNum = accountNum;
+        this.password = password;
+        this.phone = phone;
+        this.enrollDate = enrollDate;
+        this.lastLoginDate = lastLoginDate;
+    }
 }

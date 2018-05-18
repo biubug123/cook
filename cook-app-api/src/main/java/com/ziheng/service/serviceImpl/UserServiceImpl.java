@@ -1,11 +1,16 @@
 package com.ziheng.service.serviceImpl;
 
+import com.cook.dao.SysUserInfoMapper;
+import com.cook.dao.SysUserMapper;
 import com.cook.dao.UserBrowseMapper;
 import com.cook.dao.UserCollectMapper;
+import com.cook.entity.SysUser;
+import com.cook.entity.SysUserInfo;
 import com.cook.entity.UserBrowse;
 import com.cook.entity.UserCollect;
 import com.cook.response.ApiResponse;
 import com.ziheng.dao.UserGetDao;
+import com.ziheng.dao.UserPostDao;
 import com.ziheng.dto.userGet.Consult;
 import com.ziheng.dto.userGet.Job;
 import com.ziheng.dto.userGet.Resume;
@@ -13,6 +18,7 @@ import com.ziheng.service.UserGetService;
 import com.ziheng.service.UserPostService;
 import com.ziheng.util.ZiHengUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -30,10 +36,19 @@ public class UserServiceImpl implements UserGetService,UserPostService {
 
     private UserBrowseMapper userBrowseMapper;
 
-    public UserServiceImpl(UserGetDao userGetDao, UserCollectMapper userCollectMapper, UserBrowseMapper userBrowseMapper) {
+    private SysUserMapper sysUserMapper;
+
+    private SysUserInfoMapper sysUserInfoMapper;
+
+    private UserPostDao userPostDao;
+
+    public UserServiceImpl(UserGetDao userGetDao, UserCollectMapper userCollectMapper, UserBrowseMapper userBrowseMapper, SysUserMapper sysUserMapper, SysUserInfoMapper sysUserInfoMapper, UserPostDao userPostDao) {
         this.userGetDao = userGetDao;
         this.userCollectMapper = userCollectMapper;
         this.userBrowseMapper = userBrowseMapper;
+        this.sysUserMapper = sysUserMapper;
+        this.sysUserInfoMapper = sysUserInfoMapper;
+        this.userPostDao = userPostDao;
     }
 
     /**
@@ -162,6 +177,13 @@ public class UserServiceImpl implements UserGetService,UserPostService {
         return ApiResponse.ofError(ApiResponse.Status.INTERNAL_SERVER_ERROR);
     }
 
+    /**
+      * @Description: 根据类型获取浏览列表
+      * @Author: ziHeng
+      * @Date: 2018/5/17 下午8:11
+      * @Param: [userId, browseType]
+      * @return: com.cook.response.ApiResponse
+      */
     @Override
     public ApiResponse browseListByType(String userId, Short browseType) {
         //0:招聘的职位 1:求职的职位 3:资讯的收藏
@@ -192,5 +214,43 @@ public class UserServiceImpl implements UserGetService,UserPostService {
             consult.setImageName(list);
         }
         return consultList;
+    }
+
+    /**
+      * @Description: 新用户
+      * @Author: ziHeng
+      * @Date: 2018/5/17 下午10:00
+      * @Param: [phone, password, sex, accountNum:账号]
+      * @return: java.lang.Integer
+      */
+    @Override
+    @Transactional
+    public Integer insertUser(String phone, String password,String sex, String accountNum) {
+        String userId = UUID.randomUUID().toString();
+        SysUser sysUser = new SysUser(userId,
+                accountNum,
+                password,
+                phone,
+                new Date().getTime()/1000,
+                new Date().getTime()/1000);
+        int userResult = sysUserMapper.insert(sysUser);
+        if(userResult > 0){
+            SysUserInfo sysUserInfo =new SysUserInfo(UUID.randomUUID().toString(),
+                    sex,userId);
+            int result = sysUserInfoMapper.insertSelective(sysUserInfo);
+
+            return result;
+        }
+
+        throw new RuntimeException();
+    }
+
+    @Override
+    public Integer updateUserBySelective(String userId, String userName, String sex, String headImgName, String signature, String address, Long birthDate) {
+
+        SysUserInfo sysUserInfo = new SysUserInfo(userName,sex,headImgName,signature,address,userId,birthDate);
+
+        return userPostDao.updateBySysUserIdSelective(sysUserInfo);
+
     }
 }

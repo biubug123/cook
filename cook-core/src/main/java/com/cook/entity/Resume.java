@@ -22,4 +22,16 @@ public class Resume {
     //简历标题
     private String title;
 
+    public Resume() {
+    }
+
+
+    public Resume(String id, Short workYear, String workExperienceId, String education, String userId, String title) {
+        this.id = id;
+        this.workYear = workYear;
+        this.workExperienceId = workExperienceId;
+        this.education = education;
+        this.userId = userId;
+        this.title = title;
+    }
 }

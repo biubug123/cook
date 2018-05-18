@@ -1,7 +1,9 @@
 package com.cook.dao;
 
 import com.cook.entity.Welfare;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface WelfareMapper {
     int deleteByPrimaryKey(String id);
 
