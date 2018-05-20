@@ -33,19 +33,21 @@
 
     <!--获取用户发布的资讯 图文:0 视频:1-->
     <select id="consultList" resultType="com.ziheng.dto.userGet.Consult">
-        <if test='consultType == 0'>
+        <if test='articleType == 0'>
             SELECT c.id AS consultId,
-            c.consult_type AS consultType
+            c.consult_type AS consultType,
+            c.article_type AS article_type,
             it.title,it.admire_count AS admireCount,
             c.publish_date AS publishDate,
             it.image_name AS imageNames
             FROM consult c
             INNER JOIN image_text it ON c.article_id = it.id
-            WHERE c.user_id = #{userId} AND c.consult_type = #{consultType}
+            WHERE c.user_id = #{userId} AND c.article_type = #{articleType}
         </if>
-        <if test='consultType == 1'>
+        <if test='articleType == 1'>
             SELECT c.id AS consultId,
-            c.consult_type AS consultType
+            c.consult_type AS consultType,
+            c.article_type AS article_type,
             v.title,v.admire_count AS admireCount,
             c.publish_date AS publishDate,
             v.video_img_name AS videoImageName,
@@ -53,7 +55,7 @@
             v.play_count AS playCount
             FROM consult c
             INNER JOIN video v ON c.article_id = v.id
-            WHERE c.user_id = #{userId} AND c.consult_type = #{consultType}
+            WHERE c.user_id = #{userId} AND c.article_type = #{articleType}
         </if>
     </select>
 
@@ -68,50 +70,70 @@
         WHERE ura.user_id = #{userId}
     </select>
 
-    <!--获取咨询收藏-->
-    <select id="consultCollectList" resultType="com.ziheng.dto.userGet.Consult">
+    <!--type:"browse"、"collect"-->
+    <!--获取咨询收藏和浏览 0:图文,1:视频 -->
+    <select id="consultCollectOrBrowseList" resultType="com.ziheng.dto.userGet.Consult">
         <choose>
-            <when test="consultType == 0">
+            <when test="articleType == 0">
                 SELECT c.id AS consultId,
-                c.consult_type AS consultType
+                c.consult_type AS consultType,
+                c.article_type AS article_type,
                 it.title,it.admire_count AS admireCount,
                 c.publish_date AS publishDate,
                 it.image_name AS imageNames
                 FROM consult c
-                INNER JOIN user_collect uc on uc.user_id = c.user_id
-                INNER JOIN image_text it ON uc.content_id = it.id
-                WHERE uc.user_id = #{userId} AND uc.collect_type = 2
+                INNER JOIN image_text it ON c.article_id = it.id
+                <if test='type == "collect"'>
+                    INNER JOIN user_collect uc on uc.content_id = c.article_id
+                    WHERE uc.user_id = #{userId} AND uc.collect_type = 2
+                </if>
+                <if test='type == "browse"'>
+                    INNER JOIN user_browse ub on ub.content_id = c.article_id
+                    WHERE ub.user_id = #{userId} AND ub.browse_type = 2
+                </if>
             </when>
-            <when test="consultType == 1">
+            <when test="articleType == 1">
                 SELECT c.id AS consultId,
-                c.consult_type AS consultType
+                c.consult_type AS consultType,
+                c.article_type AS article_type,
                 v.title,v.admire_count AS admireCount,
                 c.publish_date AS publishDate,
                 v.video_img_name AS videoImageName,
                 v.video_url AS videoUrl,
                 v.play_count AS playCount
                 FROM consult c
-                INNER JOIN user_collect uc on uc.user_id = c.user_id
-                INNER JOIN video v ON uc.content_id = v.id
-                WHERE uc.user_id = #{userId} AND uc.collect_type = 2
+                INNER JOIN video v ON c.article_id = v.id
+                <if test='type == "collect"'>
+                    INNER JOIN user_collect uc on uc.content_id = c.article_id
+                    WHERE uc.user_id = #{userId} AND uc.collect_type = 2
+                </if>
+                <if test='type == "browse"'>
+                    INNER JOIN user_browse ub on ub.content_id = c.article_id
+                    WHERE ub.user_id = #{userId} AND ub.browse_type = 2
+                </if>
             </when>
         </choose>
     </select>
-
-
-    <!--职位收藏-->
-    <select id="jobCollectList" resultType="com.ziheng.dto.userGet.Job">
+    <!--获取职位收藏和浏览 0 - 招聘的职位: 1 - 求职的职位  recruitType: 0 - 代招 1-企业 -->
+    <select id="jobCollectOrBroseList" resultType="com.ziheng.dto.userGet.Job">
         <choose>
             <when test="jobType == 0">
-                SELECT uc.content_id AS id,uc.collect_type AS idType,ft.icon_name AS iconName
-                j.name AS jobName,r.salary,r.publish_date publishDate
+                SELECT uc.content_id AS id,ft.icon_name AS iconName,
+                j.name AS jobName,r.salary,r.publish_date AS publishDate
                 <if test="recruitType == 0">
                    , p.name AS publisherName
                 </if>
                 <if test="recruitType == 1">
                     , e.name AS publisherName
                 </if>
-                From user_collect uc
+                <if test='type == "collect"'>
+                    ,uc.collect_type AS idType
+                    From user_collect uc
+                </if>
+                <if test='type == "browse"'>
+                    ,uc.browse_type AS idType
+                    From user_browse uc
+                </if>
                 INNER JOIN recruit r ON uc.content_id = r.id
                 <if test="recruitType == 0">
                     INNER JOIN proxy p ON p.id = r.publisher_id
@@ -121,82 +143,33 @@
                 </if>
                 INNER JOIN job j ON j.id = r.job_id
                 INNER JOIN food_type ft ON ft.id = r.food_type_id
-                WHERE uc.user_id = #{userId} AND uc.collect_type = 0
+                <if test='type == "collect"'>
+                    WHERE uc.user_id = #{userId} AND uc.collect_type = 0
+                </if>
+                <if test='type == "browse"'>
+                    WHERE uc.user_id = #{userId} AND uc.browse_type = 0
+                </if>
             </when>
             <when test="jobType == 1">
-                SELECT uc.content_id AS id,uc.collect_type AS idType,ft.icon_name AS iconName
-                j.name AS jobName,h.salary,h.hunt_date publishDate
-                From user_collect uc
+                SELECT uc.content_id AS id,ft.icon_name AS iconName,
+                j.name AS jobName,h.salary,h.hunt_date AS publishDate
+                <if test='type == "collect"'>
+                    ,uc.collect_type AS idType
+                    From user_collect uc
+                </if>
+                <if test='type == "browse"'>
+                    ,uc.browse_type AS idType
+                    From user_browse uc
+                </if>
                 INNER JOIN hunt h ON uc.content_id = h.id
-                INNER JOIN job j ON j.id = r.job_id
-                INNER JOIN food_type ft ON ft.id = r.food_type_id
-                WHERE uc.user_id = #{userId} AND uc.collect_type = 0
-            </when>
-        </choose>
-    </select>
-
-    <!--获取咨询浏览-->
-    <select id="consultBrowseList" resultType="com.ziheng.dto.userGet.Consult">
-        <choose>
-            <when test="consultType == 0">
-                SELECT c.id AS consultId,
-                c.consult_type AS consultType
-                it.title,it.admire_count AS admireCount,
-                c.publish_date AS publishDate,
-                it.image_name AS imageNames
-                FROM consult c
-                INNER JOIN user_browse ub on ub.user_id = c.user_id
-                INNER JOIN image_text it ON ub.content_id = it.id
-                WHERE ub.user_id = #{userId} AND ub.browse_type = 2
-            </when>
-            <when test="consultType == 1">
-                SELECT c.id AS consultId,
-                c.consult_type AS consultType
-                v.title,v.admire_count AS admireCount,
-                c.publish_date AS publishDate,
-                v.video_img_name AS videoImageName,
-                v.video_url AS videoUrl,
-                v.play_count AS playCount
-                FROM consult c
-                INNER JOIN user_browse ub on ub.user_id = c.user_id
-                INNER JOIN video v ON ub.content_id = v.id
-                WHERE ub.user_id = #{userId} AND ub.browse_type = 2
-            </when>
-        </choose>
-    </select>
-
-    <!--获取职位浏览-->
-    <select id="jobBrowseList" resultType="com.ziheng.dto.userGet.Job">
-        <choose>
-            <when test="jobType == 0">
-                SELECT ub.content_id AS id,ub.collect_type AS idType,ft.icon_name AS iconName
-                j.name AS jobName,r.salary,r.publish_date publishDate
-                <if test="recruitType == 0">
-                    , p.name AS publisherName
+                INNER JOIN job j ON j.id = h.job_id
+                INNER JOIN food_type ft ON ft.id = h.food_type_id
+                <if test='type == "collect"'>
+                    WHERE uc.user_id = #{userId} AND uc.collect_type = 1
                 </if>
-                <if test="recruitType == 1">
-                    , e.name AS publisherName
+                <if test='type == "browse"'>
+                    WHERE uc.user_id = #{userId} AND uc.browse_type = 1
                 </if>
-                From user_browse ub
-                INNER JOIN recruit r ON ub.content_id = r.id
-                <if test="recruitType == 0">
-                    INNER JOIN proxy p ON p.id = r.publisher_id
-                </if>
-                <if test="recruitType == 1">
-                    INNER JOIN enterprise e ON e.id = r.publisher_id
-                </if>
-                INNER JOIN job j ON j.id = r.job_id
-                INNER JOIN food_type ft ON ft.id = r.food_type_id
-                WHERE ub.user_id = #{userId} AND ub.collect_type = 0
-            </when>
-            <when test="jobType == 1">
-                SELECT ub.content_id AS id,ub.collect_type AS idType,ft.icon_name AS iconName
-                j.name AS jobName,h.salary,h.hunt_date publishDate
-                From user_browse ub
-                INNER JOIN hunt h ON ub.content_id = h.id
-                INNER JOIN job j ON j.id = r.job_id
-                INNER JOIN food_type ft ON ft.id = r.food_type_id
-                WHERE ub.user_id = #{userId} AND ub.collect_type = 0
             </when>
         </choose>
     </select>

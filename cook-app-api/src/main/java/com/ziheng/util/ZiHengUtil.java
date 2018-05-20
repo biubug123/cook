@@ -13,6 +13,9 @@ public class ZiHengUtil {
 
     public static int getAgeByBirth(Long time) {
         int age = 0;
+        if(time == null){
+            return age;
+        }
         String val = String.valueOf(time);
         //十位数转13位数
         if(val.length()<=10){

@@ -26,10 +26,10 @@ public class Consult implements Comparable<Consult>{
     private String videoUrl;
 
     //播放次数
-    private String playCount;
+    private Integer playCount;
 
     //点赞次数
-    private String admireCount;
+    private Integer admireCount;
 
     //发布日期
     private Long publishDate;
@@ -37,15 +37,19 @@ public class Consult implements Comparable<Consult>{
     @JsonIgnore
     private String imageNames;
 
-    //0:图文，1:视频
+    //咨询类型 (0:饮食文化,1:日常记录)
     private Short consultType;
+
+    //文章类型 0:图文 1:视频
+    private Short articleType;
 
     //图片名称集合
     private String[] imageName;
 
 
+
     @Override
     public int compareTo(Consult o) {
-        return (int) (this.publishDate - o.publishDate);
+        return (int) (o.publishDate - this.publishDate);
     }
 }

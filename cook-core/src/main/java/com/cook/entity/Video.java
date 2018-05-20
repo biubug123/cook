@@ -31,4 +31,19 @@ public class Video {
     //视频内容描述
     private String content;
 
+
+    public Video() {
+    }
+
+    public Video(String id, String title, String randomName, Integer playCount, Integer admireCount, String imgName, String videoUrl, String videoImgName, String content) {
+        this.id = id;
+        this.title = title;
+        this.randomName = randomName;
+        this.playCount = playCount;
+        this.admireCount = admireCount;
+        this.imgName = imgName;
+        this.videoUrl = videoUrl;
+        this.videoImgName = videoImgName;
+        this.content = content;
+    }
 }

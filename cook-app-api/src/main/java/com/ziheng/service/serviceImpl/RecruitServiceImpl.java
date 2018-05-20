@@ -65,7 +65,7 @@ public class RecruitServiceImpl implements RecruitPostService{
                     (short)0,description,publishDate,publisherId,foodTypeId,welfareList,jobId,education,experienceRequire,ageRequire);
             return recruitMapper.insertSelective(recruit);
         }
-        throw new RuntimeException();
+        throw new RuntimeException("代理发布招聘失败");
     }
 
     /**

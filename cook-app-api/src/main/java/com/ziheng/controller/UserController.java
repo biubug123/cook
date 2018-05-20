@@ -32,11 +32,11 @@ public class UserController {
     }
 
     /*
-                  * @Description: 用户的求职列表
-                  * @Author: ziHeng
-                  * @Date: 2018/5/16 下午3:57
-                  * @Param: [userId:用户id]
-                  */
+      * @Description: 用户的求职列表
+      * @Author: ziHeng
+      * @Date: 2018/5/16 下午3:57
+      * @Param: [userId:用户id]
+      */
     @GetMapping("/getHuntList/{userId}")
     public ApiResponse huntList(@PathVariable("userId") String userId){
 
@@ -113,7 +113,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/getBrowsetList")
+    @GetMapping("/getBrowseList")
     public ApiResponse getBrowsetList(@RequestParam("userId") String userId,
                                       @RequestParam("collectType") Short collectType){
         return userGetService.browseListByType(userId,collectType);

@@ -24,23 +24,20 @@ public interface UserGetDao {
     User getUser(@Param("userId") String userId);
 
     //获取用户发布的资讯
-    List<Consult> consultList(@Param("userId") String userId,@Param("consultType") Short consultType);
+    List<Consult> consultList(@Param("userId") String userId,@Param("articleType") Short articleType);
 
     //获取用户的投递申请
     UserApply getUserApply(@Param("userId") String userId);
 
 
-    //根据类型获取收藏列表
-    //咨询收藏
-    List<Consult> consultCollectList(@Param("userId") String userId,@Param("consultType") Short consultType);
-    //职位收藏
-    List<Job> jobCollectList(@Param("userId") String userId, @Param("jobType") Short jobType);
+    //type: "collect:收藏,browse:浏览"
+    //咨询收藏和浏览
+    List<Consult> consultCollectOrBrowseList(@Param("userId") String userId,@Param("articleType") Short articleType,@Param("type") String type);
 
-    //根据类型获取浏览历史列表
-    //资讯浏览
-    List<Consult> consultBrowseList(@Param("userId") String userId,@Param("consultType") Short consultType);
-    //职位浏览
-    List<Job> jobBrowseList(@Param("userId") String userId, @Param("jobType") Short jobType);
+    //职位收藏和浏览 jobType: 0 - 招聘的职位: 1 - 求职的职位  recruitType: 0 - 代招 1-企业
+    List<Job> jobCollectOrBroseList(@Param("userId") String userId, @Param("jobType") Short jobType,@Param("recruitType") Short recruitType,@Param("type") String type);
+
+
 
 
 }

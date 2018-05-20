@@ -13,6 +13,7 @@ public class Job implements Comparable<Job>{
     //招聘表id 或 求职表id
     private String id;
 
+    //id类型 0:招聘表 1:求职表
     private Short idType;
 
     private String iconName;
@@ -28,6 +29,6 @@ public class Job implements Comparable<Job>{
 
     @Override
     public int compareTo(Job o) {
-        return (int) (this.publishDate - o.publishDate);
+        return (int) (o.publishDate - this.publishDate);
     }
 }

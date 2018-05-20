@@ -1,15 +1,14 @@
 package ziheng;
 
 import com.cook.CookApplication;
-import com.cook.dao.EnterpriseMapper;
-import com.cook.dao.JobMapper;
-import com.cook.dao.SysUserMapper;
-import com.cook.dao.WelfareMapper;
+import com.cook.dao.*;
 import com.cook.entity.Enterprise;
 import com.cook.entity.Job;
 import com.cook.entity.SysUser;
 import com.cook.entity.Welfare;
 import com.sun.tools.javac.comp.Enter;
+import com.ziheng.service.ConsultPostService;
+import com.ziheng.service.HuntPostService;
 import com.ziheng.service.RecruitPostService;
 import com.ziheng.service.UserPostService;
 import org.apache.commons.lang.RandomStringUtils;
@@ -50,6 +49,12 @@ public class FirstTest {
 
     @Autowired
     private RecruitPostService recruitPostService;
+
+    @Autowired
+    private HuntPostService huntPostService;
+
+    @Autowired
+    private ConsultPostService consultPostService;
 
     //新用户
     @Test
@@ -136,10 +141,39 @@ public class FirstTest {
     //用户收藏
     @Test
     public void userCollect(){
-        userPostService.insertUserCollect("5c76cdb0-9422-4537-ac83-0ba709425bab",(short)0,"5a048509-06a8-4a34-b52a-756af661362c");
+        userPostService.insertUserCollect("5c76cdb0-9422-4537-ac83-0ba709425bab",(short)1,"5c31abc2-9948-4056-b5eb-b71093c07148");
     }
 
     //新增简历
+    @Test
+    public void insertResume(){
+        for (int i = 0; i < 3; i++) {
+            huntPostService.insertResume((short)3,"5年","高中","1d7a14f2-1aa9-4581-8b85-194036b77f3e","我的简历"+i);
+        }
+    }
+
+    //用户发布求职
+    @Test
+    public void insertHunt(){
+        huntPostService.insertHunt("3000-4000","4dd86556-5e79-47dc-8c63-b7c8766775d0","6fd5c34e-127f-4f15-b5bf-4bea7c14602a","32fc3520-511f-4246-bb09-6772e47b9d31","广东省广州市白云区");
+    }
+
+
+
+    //用户发表图文资讯
+    @Test
+    public void releaseImageTextConsult(){
+        consultPostService.releaseImageTextConsult((short)0,"1d7a14f2-1aa9-4581-8b85-194036b77f3e","陈大师","大师教程(4)","讲述了如何成为大(4)","http://????.com,http://?????.com");
+
+    }
+
+    //用户发表图文资讯
+    @Test
+    public void releaseVideoConsult(){
+        consultPostService.releaseVideoConsult((short)0,"1d7a14f2-1aa9-4581-8b85-194036b77f3e","陈大师","陈视频教程(2)","http://???.com","http://???.com","这是视频教程");
+
+    }
+
 
 
 

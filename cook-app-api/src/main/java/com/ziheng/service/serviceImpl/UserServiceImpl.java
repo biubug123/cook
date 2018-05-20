@@ -82,17 +82,15 @@ public class UserServiceImpl implements UserGetService,UserPostService {
     @Override
     public TreeSet<Consult> consultList(String userId) {
 
-        short consultType;
         //返回的list结果 (按照发布日期排序)
         TreeSet<Consult> result = new TreeSet<Consult>();
 
         //获取图文类型图文
-        consultType=0;
-        List<Consult> imageList = userGetDao.consultList(userId,consultType);
+        List<Consult> imageList = userGetDao.consultList(userId,(short)0);
         //图片字符串转为数组
         imageList = toImageList(imageList);
         //获取视频类型图文
-        List<Consult> videoList = userGetDao.consultList(userId,consultType);
+        List<Consult> videoList = userGetDao.consultList(userId,(short)1);
 
         result.addAll(imageList);
         result.addAll(videoList);
@@ -159,18 +157,18 @@ public class UserServiceImpl implements UserGetService,UserPostService {
         //0:招聘的职位 1:求职的职位 3:资讯的收藏
         if(collectType == 0 || collectType == 1){
             TreeSet<Job> jobTreeSet = new TreeSet<Job>();
-            jobTreeSet.addAll(userGetDao.jobCollectList(userId, (short) 0));
-            jobTreeSet.addAll(userGetDao.jobCollectList(userId, (short) 1));
+            //招聘的职位
+            jobTreeSet.addAll(userGetDao.jobCollectOrBroseList(userId, (short) 0,(short) 0,"collect"));
+            jobTreeSet.addAll(userGetDao.jobCollectOrBroseList(userId, (short) 0,(short) 1,"collect"));
+            //求职的职位
+            jobTreeSet.addAll(userGetDao.jobCollectOrBroseList(userId, (short) 1,null,"collect"));
             return ApiResponse.ofSuccess(jobTreeSet);
         }else if (collectType == 2){
             TreeSet<Consult> consultTreeSet = new TreeSet<Consult>();
-            short consultType;
             //图文
-            consultType = 0;
-            consultTreeSet.addAll(toImageList(userGetDao.consultCollectList(userId,consultType)));
+            consultTreeSet.addAll(toImageList(userGetDao.consultCollectOrBrowseList(userId,(short)0,"collect")));
             //视频
-            consultType = 1;
-            consultTreeSet.addAll(userGetDao.consultCollectList(userId,consultType));
+            consultTreeSet.addAll(userGetDao.consultCollectOrBrowseList(userId,(short)1,"collect"));
             return ApiResponse.ofSuccess(consultTreeSet);
         }
 
@@ -189,15 +187,18 @@ public class UserServiceImpl implements UserGetService,UserPostService {
         //0:招聘的职位 1:求职的职位 3:资讯的收藏
         if(browseType == 0 || browseType == 1){
             TreeSet<Job> jobTreeSet = new TreeSet<Job>();
-            jobTreeSet.addAll(userGetDao.jobBrowseList(userId, (short) 0));
-            jobTreeSet.addAll(userGetDao.jobBrowseList(userId, (short) 1));
+            //招聘的职位
+            jobTreeSet.addAll(userGetDao.jobCollectOrBroseList(userId, (short) 0,(short) 0,"browse"));
+            jobTreeSet.addAll(userGetDao.jobCollectOrBroseList(userId, (short) 0,(short) 1,"browse"));
+            //求职的职位
+            jobTreeSet.addAll(userGetDao.jobCollectOrBroseList(userId, (short) 1,null,"browse"));
             return ApiResponse.ofSuccess(jobTreeSet);
         }else if (browseType == 2){
             TreeSet<Consult> consultTreeSet = new TreeSet<Consult>();
             //图文
-            consultTreeSet.addAll(toImageList(userGetDao.consultBrowseList(userId, (short) 0)));
+            consultTreeSet.addAll(toImageList(userGetDao.consultCollectOrBrowseList(userId,(short)0,"browse")));
             //视频
-            consultTreeSet.addAll(userGetDao.consultBrowseList(userId, (short) 1));
+            consultTreeSet.addAll(userGetDao.consultCollectOrBrowseList(userId,(short)1,"browse"));
             return ApiResponse.ofSuccess(consultTreeSet);
         }
 
@@ -237,12 +238,10 @@ public class UserServiceImpl implements UserGetService,UserPostService {
         if(userResult > 0){
             SysUserInfo sysUserInfo =new SysUserInfo(UUID.randomUUID().toString(),
                     sex,userId);
-            int result = sysUserInfoMapper.insertSelective(sysUserInfo);
-
-            return result;
+            return sysUserInfoMapper.insertSelective(sysUserInfo);
         }
 
-        throw new RuntimeException();
+        throw new RuntimeException("新用户注册失败");
     }
 
     @Override

@@ -19,4 +19,14 @@ public class ImageText {
     //点赞数量
     private Integer admireCount;
 
+    public ImageText() {
+    }
+
+    public ImageText(String id, String title, String imageName, String content, Integer admireCount) {
+        this.id = id;
+        this.title = title;
+        this.imageName = imageName;
+        this.content = content;
+        this.admireCount = admireCount;
+    }
 }
