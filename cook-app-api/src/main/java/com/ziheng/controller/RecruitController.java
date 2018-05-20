@@ -4,6 +4,8 @@ import com.cook.dao.EnterpriseMapper;
 import com.cook.entity.Enterprise;
 import com.cook.response.ApiResponse;
 import com.ziheng.service.RecruitPostService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +20,7 @@ import java.util.UUID;
  **/
 @RestController
 @RequestMapping("/recruitApi")
+@Api(value = "/recruitApi",description = "招聘发布Api")
 public class RecruitController {
 
     private EnterpriseMapper enterpriseMapper;
@@ -37,6 +40,7 @@ public class RecruitController {
       * @return: com.cook.response.ApiResponse
       */ 
     @PostMapping("/insertEnterprise")
+    @ApiOperation(value = "新的企业用户")
     public ApiResponse insertEnterprise(@RequestParam("name") String name,
                                         @RequestParam("contactWay") String contactWay,
                                         @RequestParam("workArea") String workArea,
@@ -57,6 +61,7 @@ public class RecruitController {
       * @return: com.cook.response.ApiResponse
       */
     @PostMapping("/recruitByProxy")
+    @ApiOperation(value = "代理发起招聘")
     public ApiResponse proxyByRecruit(@RequestParam String name,
                                     @RequestParam String contactWay,
                                     @RequestParam String workArea,
@@ -83,6 +88,7 @@ public class RecruitController {
       * @return: com.cook.response.ApiResponse
       */
     @PostMapping("/recruitByEnterprise")
+    @ApiOperation(value = "企业发起招聘")
     public ApiResponse enterpriseRecruit(@RequestParam String enterpriseId,
                                          @RequestParam String salary,
                                          @RequestParam Integer recruitPeopleNum,

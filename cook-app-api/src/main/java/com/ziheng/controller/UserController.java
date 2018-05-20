@@ -5,6 +5,8 @@ import com.cook.response.ApiResponse;
 import com.ziheng.dao.UserGetDao;
 import com.ziheng.service.UserGetService;
 import com.ziheng.service.UserPostService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
  **/
 @RestController
 @RequestMapping("/user")
+@Api(value = "/user",description = "用户相关api")
 public class UserController {
 
     private UserGetDao userGetDao;
@@ -38,6 +41,7 @@ public class UserController {
       * @Param: [userId:用户id]
       */
     @GetMapping("/getHuntList/{userId}")
+    @ApiOperation(value = "用户的求职列表")
     public ApiResponse huntList(@PathVariable("userId") String userId){
 
         return ApiResponse.ofSuccess(userGetDao.huntList(userId));
@@ -51,6 +55,7 @@ public class UserController {
       * @Param: [userId:用户id]
       */
     @GetMapping("/getResumeList/{userId}")
+    @ApiOperation(value = "用户的简历列表")
     public ApiResponse resultList(@PathVariable("userId") String userId){
 
         return ApiResponse.ofSuccess(userGetService.resumeList(userId));
@@ -65,6 +70,7 @@ public class UserController {
       * @Param: [userId:用户id]
       */
     @GetMapping("/getUser/{userId}")
+    @ApiOperation(value = "获取用户个人信息")
     public ApiResponse getUser(@PathVariable("userId") String userId){
 
         return ApiResponse.ofSuccess(userGetDao.getUser(userId));
@@ -79,6 +85,7 @@ public class UserController {
       * @return: com.cook.response.ApiResponse
       */
     @GetMapping("/getMyConsult/{userId}")
+    @ApiOperation(value = "获取用户发布的资讯-按照发布日期排序")
     public ApiResponse getMyConsult(@PathVariable("userId") String userId){
 
         return ApiResponse.ofSuccess(userGetService.consultList(userId));
@@ -93,6 +100,7 @@ public class UserController {
       * @return: com.cook.response.ApiResponse
       */ 
     @GetMapping("/getRecruitApply/{userId}")
+    @ApiOperation(value = "获取用户的投递申请")
     public ApiResponse getRecruitApply(@PathVariable("userId") String userId){
 
         return ApiResponse.ofSuccess(userGetDao.getUserApply(userId));
@@ -107,18 +115,34 @@ public class UserController {
       * @return: com.cook.response.ApiResponse
       */ 
     @GetMapping("/getCollectList")
+    @ApiOperation(value = "根据类型获取收藏列表 0/1:招聘的职位和求职的职位 2:咨询的收藏")
     public ApiResponse getCollectList(@RequestParam("userId") String userId,
                                       @RequestParam("collectType") Short collectType){
         return userGetService.collectListByType(userId,collectType);
 
     }
 
+    /**
+      * @Description: 根据类型获取浏览列表 0/1:招聘的职位和求职的职位 2:咨询的收藏
+      * @Author: ziHeng
+      * @Date: 2018/5/17 下午4:42
+      * @Param: [userId, collectType]
+      * @return: com.cook.response.ApiResponse
+      */
     @GetMapping("/getBrowseList")
+    @ApiOperation(value = "根据类型获取浏览列表 0/1:招聘的职位和求职的职位 2:咨询的收藏")
     public ApiResponse getBrowsetList(@RequestParam("userId") String userId,
                                       @RequestParam("collectType") Short collectType){
         return userGetService.browseListByType(userId,collectType);
 
     }
+
+
+    @GetMapping("/getProxyList")
+    @ApiOperation(value = "用户的代招管理页面")
+    public ApiResponse getProxyList(@RequestParam("userId") String userId){
+        return ApiResponse.ofSuccess(userGetDao.listProxy(userId));
+    };
 
     /** 
       * @Description: 根据收藏类型收藏
@@ -129,6 +153,7 @@ public class UserController {
       * @return: com.cook.response.ApiResponse
       */ 
     @PostMapping("/insertCollect")
+    @ApiOperation(value = "根据类型获取浏览列表 0/1:招聘的职位和求职的职位 2:咨询的收藏")
     public ApiResponse insertCollect(@RequestParam("userId") String userId,
                                      @RequestParam("collectType") Short collectType,
                                      @RequestParam("contentId") String contentId){
@@ -146,6 +171,7 @@ public class UserController {
      * @return: com.cook.response.ApiResponse
      */
     @PostMapping("/insertBrowse")
+    @ApiOperation(value = "根据类型新增浏览记录 类型(招聘:0,求职:1,资讯:2)")
     public ApiResponse insertBrowse(@RequestParam("userId") String userId,
                                      @RequestParam("browseType") Short browseType,
                                      @RequestParam("contentId") String contentId){
@@ -161,6 +187,7 @@ public class UserController {
      * @Param: [userId:用户id]
      */
     @PostMapping("/deleteResume")
+    @ApiOperation(value = "用户删除简历")
     public ApiResponse deleteResume(@RequestParam("resumeId") String resumeId){
 
         return ApiResponse.ofSuccess(resumeMapper.deleteByPrimaryKey(resumeId));
@@ -169,13 +196,14 @@ public class UserController {
 
 
     /**
-      * @Description: 新用户
+      * @Description: 注册新用户
       * @Author: ziHeng
       * @Date: 2018/5/17 下午9:26
       * @Param: [phone:手机号, password:密码, accountNum:账号，可选]
       * @return: com.cook.response.ApiResponse
       */
     @PostMapping("/insertUser")
+    @ApiOperation(value = "注册新用户")
     public ApiResponse insertUser(@RequestParam("phone") String phone,
                                   @RequestParam("password") String password,
                                   @RequestParam("sex") String sex,
@@ -195,6 +223,7 @@ public class UserController {
       * @return: com.cook.response.ApiResponse
       */
     @PostMapping("/updateUserInfo")
+    @ApiOperation(value = "用户修改个人信息")
     public ApiResponse updateUserInfo(@RequestParam(required = false) String userId,
                                       @RequestParam(required = false) String userName,
                                       @RequestParam(required = false) String sex,
@@ -206,6 +235,7 @@ public class UserController {
         return ApiResponse.ofSuccess(userPostService.updateUserBySelective(userId,userName,sex,headImgName,signature,address,birthDate));
 
     }
+
 
 
 

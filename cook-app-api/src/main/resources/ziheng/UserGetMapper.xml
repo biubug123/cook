@@ -70,6 +70,16 @@
         WHERE ura.user_id = #{userId}
     </select>
 
+    <select id="listProxy" resultType="com.ziheng.dto.userGet.Job">
+        SELECT p.id,r.recruit_type AS idType,ft.icon_name AS iconName,
+        j.name AS jobName,r.salary,p.name AS publisherName,r.publish_date AS publishDate
+        FROM proxy p
+        INNER JOIN recruit r ON r.publisher_id = p.id
+        INNER JOIN job j  on r.job_id = j.id
+        INNER JOIN food_type ft on ft.id = r.food_type_id
+        WHERE p.user_id = #{userId}
+    </select>
+
     <!--type:"browse"、"collect"-->
     <!--获取咨询收藏和浏览 0:图文,1:视频 -->
     <select id="consultCollectOrBrowseList" resultType="com.ziheng.dto.userGet.Consult">
@@ -114,7 +124,7 @@
             </when>
         </choose>
     </select>
-    <!--获取职位收藏和浏览 0 - 招聘的职位: 1 - 求职的职位  recruitType: 0 - 代招 1-企业 -->
+    <!--获取职位收藏和浏览 jobType: 0 - 招聘的职位: 1 - 求职的职位  recruitType: 0 - 代招 1-企业 -->
     <select id="jobCollectOrBroseList" resultType="com.ziheng.dto.userGet.Job">
         <choose>
             <when test="jobType == 0">

@@ -16,8 +16,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  * @author: ziHeng
  * @create: 2018-05-09 10:57
  **/
-@ControllerAdvice
-@EnableWebMvc
+//@ControllerAdvice
 public class ControllerException {
 
     private static Logger logger= LoggerFactory.getLogger(ControllerException.class);
@@ -31,13 +30,15 @@ public class ControllerException {
       */ 
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public ApiResponse handleException(Exception e){
+    public ApiResponse handleException(Exception e) throws Exception {
 
         System.out.println("捕捉到异常");
 
         logger.error(e.getMessage(),e);
 
-        return ApiResponse.ofError(ApiResponse.Status.INTERNAL_SERVER_ERROR);
+        throw e;
+
+        //return ApiResponse.ofError(ApiResponse.Status.INTERNAL_SERVER_ERROR);
     }
 
     /** 

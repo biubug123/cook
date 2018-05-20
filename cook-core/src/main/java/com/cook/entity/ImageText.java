@@ -1,5 +1,6 @@
 package com.cook.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
@@ -11,6 +12,7 @@ public class ImageText {
     private String title;
 
     //图片名称
+    @ApiModelProperty(value = "图片名称 用逗号(,)号连接")
     private String imageName;
 
     //内容

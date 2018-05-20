@@ -1,5 +1,6 @@
 package com.cook.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
@@ -11,6 +12,7 @@ public class Video {
     private String title;
 
     //视频随机名 用于删除
+    @ApiModelProperty(value = "视频随机名 用于上传第三方后删除")
     private String randomName;
 
     //播放次数

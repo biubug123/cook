@@ -29,6 +29,8 @@ public interface UserGetDao {
     //获取用户的投递申请
     UserApply getUserApply(@Param("userId") String userId);
 
+    //获取用户的代招管理列表
+    List<Job> listProxy(@Param("userId") String userId);
 
     //type: "collect:收藏,browse:浏览"
     //咨询收藏和浏览
