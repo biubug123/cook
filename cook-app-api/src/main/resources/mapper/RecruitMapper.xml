@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cai.dao.RecruitDao">
+    <select id="listRecruit" resultType="com.cai.dto.Recruit">
+        SELECT j."name" AS jobName, f."name" AS foodTypeName, r."salary", r."recruit_people_num", r."age_require", r."experience_require"
+        FROM recruit r
+        INNER JOIN job j ON r."job_id" = j."id"
+        INNER JOIN food_type f ON r."food_type_id" = f."name"
+        <if test="publishId != null">
+            WHERE publisher_id = #{publisherId}
+        </if>
+    </select>
+
+    <select id="listJobRecommend" resultType="com.cai.dto.JobRecommend">
+        SELECT r.id AS recruitId, j.name AS jobName, salary, publish_date, recruit_type, publisher_id
+        FROM recruit r
+        INNER JOIN job j ON r.job_id = j.id
+        WHERE j.name like %#{jobName}%
+    </select>
+    
+    <select id="getPublisherName" resultType="com.cai.dto.Publisher">
+        <if test="type != null and type == 0">
+            SELECT name, work_area, address, contact_way
+            FROM proxy
+            WHERE id = #{id}
+        </if>
+        <if test="type != null and type == 1">
+            SELECT name, work_area, address, contact_way
+            FROM enterprise
+            WHERE id = #{id}
+        </if>
+    </select>
+
+    <select id="listWelfare" resultType="String">
+        SELECT name
+        FROM welfare
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insertUserApply" parameterType="com.cai.dto.UserApply">
+        INSERT INTO user_recruit_apply
+        (id, apply_date, user_id, recruit_id, recruit_type, publisher_id, publisher_name, food_type_name, job_name)
+        VALUES
+        (#{id}, #{applyDate}, #{userId}, #{recruitId}, ${recruitType}, #{publisherId}, #{publisherName}, #{foodTypeName}, #{jobName})
+    </insert>
+
+    <!--publisherName workArea  isMoreJob service待处理,name job通过rid处理，area通过wfid处理-->
+    <select id="listRecruit2" resultType="com.cai.dto.Recruit2">
+        SELECT r.id AS recruitId, r.recruit_type, r.publisher_id, j.name AS jobName, r.salary, f.name AS foodTypeName, r.publish_date, welfare_id_list
+        FROM recruit r
+        INNER JOIN job j ON r."job_id" = j."id"
+        INNER JOIN food_type f ON r."food_type_id" = f."name"
+        <if test="conditionType != null and conditionType.toString() == 0">
+            WHERE h."work_area" = #{conditionDetail}
+        </if>
+        <if test="conditionType != null and conditionType.toString() == 1">
+            WHERE j."name" = #{conditionDetail}
+        </if>
+        <if test="conditionType != null and conditionType.toString() == 2">
+            WHERE r."salary" = #{conditionDetail}
+        </if>
+        <if test="conditionType != null and conditionType.toString() == 3">
+            WHERE r."recruit_type" = #{conditionDetail}
+        </if>
+        <if test="conditionType != null and conditionType.toString() == 4">
+            WHERE r."publish_date" = #{conditionDetail}
+        </if>
+        <if test="conditionType != null and conditionType.toString() == 5">
+            WHERE r."work_year" = #{conditionDetail}
+        </if>
+    </select>
+
+    <select id="getRecruitDetail" resultType="com.cai.dto.RecruitDetail">
+        SELECT r.id, publisher_id, salary
+        , recruit_type, description, publish_date
+        , apply_people_num, browse_count, recruit_people_num
+        , food_type_id, job_id, job_id
+        , education, experience_require, age_require
+        , welfare_id_list
+        FROM recruit r
+        INNER JOIN job j ON r."job_id" = j."id"
+        INNER JOIN food_type f ON r."food_type_id" = f."name"
+        WHERE r.id = #{id}
+    </select>
+</mapper>

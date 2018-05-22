@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cai.dao.HuntDao">
+    <select id="listHunt" resultType="com.cai.dto.Hunt">
+        SELECT h."id", h."resume_id", j."name", f."name", h."salary", h."work_area", h."hunt_date", si."username"
+        FROM hunt h
+        INNER JOIN job j ON h."job_id" = j."id"
+        INNER JOIN food_type f ON h."food_type_id" = f."id"
+        INNER JOIN resume r ON h."resume_id" = r."id"
+        INNER JOIN sys_user s ON r."user_id" = s."id"
+        INNER JOIN sys_user_info si ON s."id" = si."sys_user_id"
+        <if test="conditionType != null and conditionType.toString() == 0">
+            WHERE h."work_area" = '${conditionDetail}'
+        </if>
+        <if test="conditionType != null and conditionType.toString() == 1">
+            WHERE j."name" = '${conditionDetail}'
+        </if>
+        <if test="conditionType != null and conditionType.toString() == 2">
+            WHERE h."salary" = '${conditionDetail}'
+        </if>
+        <if test="conditionType != null and conditionType.toString() == 4">
+            WHERE h."hunt_date" = '${conditionDetail}'
+        </if>
+        <if test="conditionType != null and conditionType.toString() == 5">
+            WHERE r."work_year" = '${conditionDetail}'
+        </if>
+
+    </select>
+
+    <select id="getHuntDetailByResumeId" resultType="com.cai.dto.HuntDetail">
+        SELECT r."id", h."resume_id", si."username", si."signature", si."head_img_name", f."name" AS foodTypeName, r."education"
+        , r."work_year", si."address", j."name" AS jobName, h.salary, h."browse_count", h."hunt_date"
+        FROM resume r
+        INNER JOIN sys_user s ON r."user_id" = s."id"
+        INNER JOIN sys_user_info si ON s."id" = si."sys_user_id"
+        INNER JOIN hunt h ON r."id" = h."resume_id"
+        INNER JOIN food_type f ON h."food_type_id" = f."id"
+        INNER JOIN job j ON h."job_id" = j."id"
+        <if test="resumeId != null">
+            WHERE r."id" = '${resumeId}'
+        </if>
+    </select>
+
+    <select id="listHuntDetailByKeyword" resultType="com.cai.dto.HuntDetail">
+         SELECT r."id", si."username", j."name" AS jobName, h."hunt_date",h.salary
+        FROM resume r
+        INNER JOIN sys_user s ON r."user_id" = s."id"
+        INNER JOIN sys_user_info si ON s."id" = si."sys_user_id"
+        INNER JOIN hunt h ON r."id" = h."resume_id"
+        INNER JOIN job j ON h."job_id" = j."id"
+        <if test="jobRecommend != null">
+            WHERE j."name" like '%${jobRecommend}%'
+        </if>
+    </select>
+</mapper>
