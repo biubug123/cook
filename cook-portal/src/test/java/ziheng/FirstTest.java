@@ -174,6 +174,14 @@ public class FirstTest {
 
     }
 
+    @Test
+    public void insertAdmin(){
+
+        SysUser sysUser = new SysUser(UUID.randomUUID().toString(),"admin","admin",null,new Date().getTime()/1000,new Date().getTime()/1000);
+        sysUserMapper.insertSelective(sysUser);
+
+    }
+
 
 
 
