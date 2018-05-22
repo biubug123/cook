@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 
 @RestController
-@RequestMapping("/consultApi")
-@Api(value = "/consultApi",description = "资讯发布Api")
-public class ConsultController {
+@RequestMapping("/userConsult")
+@Api(value = "/userConsult",description = "资讯发布Api")
+public class UserConsultController {
 
     private ConsultPostService consultPostService;
 
-    public ConsultController(ConsultPostService consultPostService) {
+    public UserConsultController(ConsultPostService consultPostService) {
         this.consultPostService = consultPostService;
     }
 

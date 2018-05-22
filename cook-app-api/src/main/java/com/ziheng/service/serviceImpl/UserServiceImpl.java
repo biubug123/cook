@@ -1,9 +1,6 @@
 package com.ziheng.service.serviceImpl;
 
-import com.cook.dao.SysUserInfoMapper;
-import com.cook.dao.SysUserMapper;
-import com.cook.dao.UserBrowseMapper;
-import com.cook.dao.UserCollectMapper;
+import com.cook.dao.*;
 import com.cook.entity.SysUser;
 import com.cook.entity.SysUserInfo;
 import com.cook.entity.UserBrowse;
@@ -42,13 +39,19 @@ public class UserServiceImpl implements UserGetService,UserPostService {
 
     private UserPostDao userPostDao;
 
-    public UserServiceImpl(UserGetDao userGetDao, UserCollectMapper userCollectMapper, UserBrowseMapper userBrowseMapper, SysUserMapper sysUserMapper, SysUserInfoMapper sysUserInfoMapper, UserPostDao userPostDao) {
+    private ResumeMapper resumeMapper;
+
+    private HuntMapper huntMapper;
+
+    public UserServiceImpl(UserGetDao userGetDao, UserCollectMapper userCollectMapper, UserBrowseMapper userBrowseMapper, SysUserMapper sysUserMapper, SysUserInfoMapper sysUserInfoMapper, UserPostDao userPostDao, ResumeMapper resumeMapper, HuntMapper huntMapper) {
         this.userGetDao = userGetDao;
         this.userCollectMapper = userCollectMapper;
         this.userBrowseMapper = userBrowseMapper;
         this.sysUserMapper = sysUserMapper;
         this.sysUserInfoMapper = sysUserInfoMapper;
         this.userPostDao = userPostDao;
+        this.resumeMapper = resumeMapper;
+        this.huntMapper = huntMapper;
     }
 
     /**
@@ -251,5 +254,43 @@ public class UserServiceImpl implements UserGetService,UserPostService {
 
         return userPostDao.updateBySysUserIdSelective(sysUserInfo);
 
+    }
+
+    /**
+     * @Description: 用户新简历
+     * @Author: ziHeng
+     * @Date: 2018/5/18 下午9:36
+     * @Param: [workYear, workExperienceId, education, userId, title]
+     * @return: java.lang.Integer
+     */
+    @Override
+    public Integer insertResume(Short workYear,
+                                String workExperienceId,
+                                String education,
+                                String userId,
+                                String title) {
+
+        String id = UUID.randomUUID().toString();
+        com.cook.entity.Resume resume = new com.cook.entity.Resume(id,workYear,workExperienceId,education,userId,title);
+        return resumeMapper.insert(resume);
+    }
+
+    /**
+     * @Description: 用户发起求职
+     * @Author: ziHeng
+     * @Date: 2018/5/18 下午9:37
+     * @Param: [salary, resumeId, jobId, foodTypeId, workArea]
+     * @return: java.lang.Integer
+     */
+    @Override
+    public Integer insertHunt(String salary,
+                              String resumeId,
+                              String jobId,
+                              String foodTypeId,
+                              String workArea) {
+        String id = UUID.randomUUID().toString();
+        Long huntDate = new Date().getTime()/1000;
+        com.cook.entity.Hunt hunt = new com.cook.entity.Hunt(id,salary,0,resumeId,jobId,foodTypeId,huntDate,workArea);
+        return huntMapper.insert(hunt);
     }
 }

@@ -1,11 +1,20 @@
-package com.ziheng.service;
+package com.cai.service;
 
-/**
- * @description: 招聘Post
- * @author: ziHeng
- * @create: 2018-05-18 11:05
- **/
-public interface RecruitPostService {
+import com.cai.dto.*;
+
+import java.util.List;
+
+public interface RecruitService {
+
+    List<Recruit> listRecruit(String publisherId);
+
+    List<JobRecommend> listJobRecommend(String jobName);
+
+    int insertUserApply(UserApply userApply);
+
+    List<Recruit2> listRecruit2(String conditionType, String conditionDetail);
+
+    RecruitDetail getRecruitDetail(String id);
 
     //代理发起招聘
     Integer insertRecruitByProxy(String name,

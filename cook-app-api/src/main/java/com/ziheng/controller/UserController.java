@@ -1,6 +1,8 @@
 package com.ziheng.controller;
 
+import com.cook.dao.EnterpriseMapper;
 import com.cook.dao.ResumeMapper;
+import com.cook.entity.Enterprise;
 import com.cook.response.ApiResponse;
 import com.ziheng.dao.UserGetDao;
 import com.ziheng.service.UserGetService;
@@ -8,6 +10,8 @@ import com.ziheng.service.UserPostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 /**
  * @description: 用户getApi
@@ -27,19 +31,22 @@ public class UserController {
 
     private ResumeMapper resumeMapper;
 
-    public UserController(UserGetDao userGetDao, UserGetService userGetService, UserPostService userPostService, ResumeMapper resumeMapper) {
+    private EnterpriseMapper enterpriseMapper;
+
+    public UserController(UserGetDao userGetDao, UserGetService userGetService, UserPostService userPostService, ResumeMapper resumeMapper, EnterpriseMapper enterpriseMapper) {
         this.userGetDao = userGetDao;
         this.userGetService = userGetService;
         this.userPostService = userPostService;
         this.resumeMapper = resumeMapper;
+        this.enterpriseMapper = enterpriseMapper;
     }
 
     /*
-      * @Description: 用户的求职列表
-      * @Author: ziHeng
-      * @Date: 2018/5/16 下午3:57
-      * @Param: [userId:用户id]
-      */
+          * @Description: 用户的求职列表
+          * @Author: ziHeng
+          * @Date: 2018/5/16 下午3:57
+          * @Param: [userId:用户id]
+          */
     @GetMapping("/getHuntList/{userId}")
     @ApiOperation(value = "用户的求职列表")
     public ApiResponse huntList(@PathVariable("userId") String userId){
@@ -237,6 +244,52 @@ public class UserController {
     }
 
 
+    /**
+     * @Description: 新的企业用户
+     * @Author: ziHeng
+     * @Date: 2018/5/19 下午2:41
+     * @Param: [name, contactWay, workArea, address]
+     * @return: com.cook.response.ApiResponse
+     */
+    @PostMapping("/insertEnterprise")
+    @ApiOperation(value = "新的企业用户")
+    public ApiResponse insertEnterprise(@RequestParam("name") String name,
+                                        @RequestParam("contactWay") String contactWay,
+                                        @RequestParam("workArea") String workArea,
+                                        @RequestParam("address") String address){
+        Enterprise enterprise = new Enterprise(
+                UUID.randomUUID().toString(),
+                name,contactWay,
+                workArea,address);
+
+        return ApiResponse.ofSuccess(enterpriseMapper.insert(enterprise));
+    }
+
+    @PostMapping("/insertResume")
+    @ApiOperation(value = "用户新建简历")
+    public ApiResponse insertResume(@RequestParam Short workYear,
+                                    @RequestParam String workExperienceId,
+                                    @RequestParam String education,
+                                    @RequestParam String userId,
+                                    @RequestParam String title){
+
+
+
+        return ApiResponse.ofSuccess(userPostService.insertResume(workYear,workExperienceId,education,userId,title));
+    }
+
+    @PostMapping("/insertHunt")
+    @ApiOperation(value = "用户发布求职")
+    public ApiResponse insertHunt(String salary,
+                                  String resumeId,
+                                  String jobId,
+                                  String foodTypeId,
+                                  String workArea){
+
+
+
+        return ApiResponse.ofSuccess(userPostService.insertHunt(salary,resumeId,jobId,foodTypeId,workArea));
+    }
 
 
 }

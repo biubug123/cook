@@ -16,7 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @create: 2018-05-03 15:18
  **/
 @SpringBootApplication(scanBasePackages = "com")
-@MapperScan({"com.cook.dao","com.ziheng.dao"}) //dao层扫描
+@MapperScan({"com.cook.dao","com.ziheng.dao","com.cai.dao"}) //dao层扫描
 @EnableSwagger2
 public class CookApplication extends SpringBootServletInitializer {
 

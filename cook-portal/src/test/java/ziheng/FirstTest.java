@@ -1,18 +1,16 @@
 package ziheng;
 
+import com.cai.service.HuntService;
+import com.cai.service.RecruitService;
 import com.cook.CookApplication;
 import com.cook.dao.*;
 import com.cook.entity.Enterprise;
 import com.cook.entity.Job;
 import com.cook.entity.SysUser;
 import com.cook.entity.Welfare;
-import com.sun.tools.javac.comp.Enter;
 import com.ziheng.service.ConsultPostService;
-import com.ziheng.service.HuntPostService;
-import com.ziheng.service.RecruitPostService;
 import com.ziheng.service.UserPostService;
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.math.RandomUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,10 +46,10 @@ public class FirstTest {
     private EnterpriseMapper enterpriseMapper;
 
     @Autowired
-    private RecruitPostService recruitPostService;
+    private RecruitService recruitPostService;
 
     @Autowired
-    private HuntPostService huntPostService;
+    private HuntService huntPostService;
 
     @Autowired
     private ConsultPostService consultPostService;
@@ -148,14 +146,14 @@ public class FirstTest {
     @Test
     public void insertResume(){
         for (int i = 0; i < 3; i++) {
-            huntPostService.insertResume((short)3,"5年","高中","1d7a14f2-1aa9-4581-8b85-194036b77f3e","我的简历"+i);
+            userPostService.insertResume((short)3,"5年","高中","1d7a14f2-1aa9-4581-8b85-194036b77f3e","我的简历"+i);
         }
     }
 
     //用户发布求职
     @Test
     public void insertHunt(){
-        huntPostService.insertHunt("3000-4000","4dd86556-5e79-47dc-8c63-b7c8766775d0","6fd5c34e-127f-4f15-b5bf-4bea7c14602a","32fc3520-511f-4246-bb09-6772e47b9d31","广东省广州市白云区");
+        userPostService.insertHunt("3000-4000","4dd86556-5e79-47dc-8c63-b7c8766775d0","6fd5c34e-127f-4f15-b5bf-4bea7c14602a","32fc3520-511f-4246-bb09-6772e47b9d31","广东省广州市白云区");
     }
 
 
