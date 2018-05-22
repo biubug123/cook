@@ -52,6 +52,22 @@ public class Recruit {
     public Recruit() {
     }
 
+    public Recruit(String id, String salary, Integer recruitPeopleNum, Short recruitType, String description, Long publishDate, String publisherId, String foodTypeId, String welfareIdList, String jobId, String education, String experienceRequire, String ageRequire) {
+        this.id = id;
+        this.salary = salary;
+        this.recruitPeopleNum = recruitPeopleNum;
+        this.recruitType = recruitType;
+        this.description = description;
+        this.publishDate = publishDate;
+        this.publisherId = publisherId;
+        this.foodTypeId = foodTypeId;
+        this.welfareIdList = welfareIdList;
+        this.jobId = jobId;
+        this.education = education;
+        this.experienceRequire = experienceRequire;
+        this.ageRequire = ageRequire;
+    }
+
     public Recruit(String id, String salary, Integer recruitPeopleNum, Short recruitType, String description, Long publishDate, Integer applyPeopleNum, Integer browseCount, String publisherId, String foodTypeId, String welfareIdList, String jobId, String education, String experienceRequire, String ageRequire) {
         this.id = id;
         this.salary = salary;

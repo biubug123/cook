@@ -7,6 +7,9 @@ public class Proxy {
 
     private String id;
 
+    //用户id
+    private String userId;
+
     private String name;
 
     //联系方式
@@ -19,4 +22,15 @@ public class Proxy {
     private String address;
 
 
+    public Proxy() {
+    }
+
+    public Proxy(String id, String userId, String name, String contactWay, String workArea, String address) {
+        this.id = id;
+        this.userId = userId;
+        this.name = name;
+        this.contactWay = contactWay;
+        this.workArea = workArea;
+        this.address = address;
+    }
 }

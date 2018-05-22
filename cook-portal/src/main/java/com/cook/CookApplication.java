@@ -5,6 +5,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * @program: cook-root
@@ -12,8 +15,9 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
  * @author: ziHeng
  * @create: 2018-05-03 15:18
  **/
-@SpringBootApplication
-@MapperScan("com.cook.dao") //dao层扫描
+@SpringBootApplication(scanBasePackages = "com")
+@MapperScan({"com.cook.dao","com.ziheng.dao"}) //dao层扫描
+@EnableSwagger2
 public class CookApplication extends SpringBootServletInitializer {
 
     @Override

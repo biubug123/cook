@@ -36,4 +36,23 @@ public class SysUserInfo {
     //出生时间
     private Long birthDate;
 
+
+    public SysUserInfo() {
+    }
+
+    public SysUserInfo(String id, String sex, String sysUserId) {
+        this.id = id;
+        this.sex = sex;
+        this.sysUserId = sysUserId;
+    }
+
+    public SysUserInfo(String username, String sex, String headImgName, String signature, String address, String sysUserId, Long birthDate) {
+        this.username = username;
+        this.sex = sex;
+        this.headImgName = headImgName;
+        this.signature = signature;
+        this.address = address;
+        this.sysUserId = sysUserId;
+        this.birthDate = birthDate;
+    }
 }

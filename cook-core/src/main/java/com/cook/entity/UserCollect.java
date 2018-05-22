@@ -18,4 +18,14 @@ public class UserCollect {
     //内容id
     private String contentId;
 
+    public UserCollect() {
+    }
+
+    public UserCollect(String id, Short collectType, Long collectDate, String userId, String contentId) {
+        this.id = id;
+        this.collectType = collectType;
+        this.collectDate = collectDate;
+        this.userId = userId;
+        this.contentId = contentId;
+    }
 }

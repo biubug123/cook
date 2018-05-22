@@ -19,5 +19,14 @@ public class Enterprise {
     //地址
     private String address;
 
+    public Enterprise() {
+    }
 
+    public Enterprise(String id, String name, String contactWay, String workArea, String address) {
+        this.id = id;
+        this.name = name;
+        this.contactWay = contactWay;
+        this.workArea = workArea;
+        this.address = address;
+    }
 }

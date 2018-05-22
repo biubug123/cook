@@ -11,6 +11,8 @@ spring:
 
 mybatis:
 # mapper.xml包扫描
-  mapper-locations: classpath:mapper/*.xml
+  mapper-locations:
+    - mapper/*.xml
+    - ziheng/*.xml
 ##  entity包扫描
 #  type-aliases-package: com.cook.web.entity

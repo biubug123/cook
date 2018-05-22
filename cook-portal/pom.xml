@@ -26,9 +26,14 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
+
     </dependencies>
 
 
+    <!--打包忽略测试-->
+    <properties>
+        <skipTests>true</skipTests>
+    </properties>
 
 
 </project>
