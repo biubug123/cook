@@ -14,7 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @create: 2018-05-03 15:18
  **/
 @SpringBootApplication(scanBasePackages = "com")
-@MapperScan({"com.cook.dao","com.ziheng.dao"}) //dao层扫描
+@MapperScan({"com.cook.dao","com.cai.dao"}) //dao层扫描
 public class CookApplication extends SpringBootServletInitializer {
 
     @Override
