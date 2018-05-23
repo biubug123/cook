@@ -2,7 +2,7 @@ package com.lin.controller;
 
 import com.cook.response.ApiResponse;
 import com.github.pagehelper.PageInfo;
-import com.lin.service.impl.ConsultServiceImpl;
+import com.lin.service.impl.ConsultServiceImpl1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class ConsultController {
 	
 	@Autowired
-	private ConsultServiceImpl consultService;
+	private ConsultServiceImpl1 consultService;
 	
 	//	评论列表（分页）
 //	 新增：  添加一个是否已经对该评论进行了点赞的提示
