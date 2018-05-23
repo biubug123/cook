@@ -4,7 +4,7 @@
 
     <update id="updateBySysUserIdSelective" parameterType="com.cook.entity.SysUserInfo" >
         update sys_user_info
-        <set >
+        <set>
             <if test="username != null" >
                 username = #{username,jdbcType=VARCHAR},
             </if>

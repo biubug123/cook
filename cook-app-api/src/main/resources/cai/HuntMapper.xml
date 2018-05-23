@@ -3,34 +3,36 @@
 
 <mapper namespace="com.cai.dao.HuntDao">
     <select id="listHunt" resultType="com.cai.dto.Hunt">
-        SELECT h."id", h."resume_id", j."name", f."name", h."salary", h."work_area", h."hunt_date", si."username"
+        SELECT h."id" AS huntId, h."resume_id" AS resumeId, j."name" AS jobName, f."name" AS foodTypeName, h."salary",
+        h."work_area" AS workArea, h."hunt_date" AS publishDate, si."username" AS publisherName
         FROM hunt h
         INNER JOIN job j ON h."job_id" = j."id"
         INNER JOIN food_type f ON h."food_type_id" = f."id"
         INNER JOIN resume r ON h."resume_id" = r."id"
         INNER JOIN sys_user s ON r."user_id" = s."id"
         INNER JOIN sys_user_info si ON s."id" = si."sys_user_id"
-        <if test="conditionType != null and conditionType.toString() == 0">
+        <if test="conditionType != null and conditionType == 0">
             WHERE h."work_area" = '${conditionDetail}'
         </if>
-        <if test="conditionType != null and conditionType.toString() == 1">
+        <if test="conditionType != null and conditionType == 1">
             WHERE j."name" = '${conditionDetail}'
         </if>
-        <if test="conditionType != null and conditionType.toString() == 2">
+        <if test="conditionType != null and conditionType == 2">
             WHERE h."salary" = '${conditionDetail}'
         </if>
-        <if test="conditionType != null and conditionType.toString() == 4">
+        <if test="conditionType != null and conditionType == 4">
             WHERE h."hunt_date" = '${conditionDetail}'
         </if>
-        <if test="conditionType != null and conditionType.toString() == 5">
+        <if test="conditionType != null and conditionType == 5">
             WHERE r."work_year" = '${conditionDetail}'
         </if>
 
     </select>
 
     <select id="getHuntDetailByResumeId" resultType="com.cai.dto.HuntDetail">
-        SELECT r."id", h."resume_id", si."username", si."signature", si."head_img_name", f."name" AS foodTypeName, r."education"
-        , r."work_year", si."address", j."name" AS jobName, h.salary, h."browse_count", h."hunt_date"
+        SELECT h."id" AS huntId, h."resume_id" AS resumeId,
+        si."username", si."signature", si."head_img_name" AS headImgName, f."name" AS foodTypeName, r."education"
+        , r."work_year" AS workYear, si."address", j."name" AS jobName, h.salary, h."browse_count", h."hunt_date" AS
         FROM resume r
         INNER JOIN sys_user s ON r."user_id" = s."id"
         INNER JOIN sys_user_info si ON s."id" = si."sys_user_id"
@@ -43,7 +45,7 @@
     </select>
 
     <select id="listHuntDetailByKeyword" resultType="com.cai.dto.HuntDetail">
-         SELECT r."id", si."username", j."name" AS jobName, h."hunt_date",h.salary
+         SELECT r."id" AS resumeId, si."username", j."name" AS jobName, h."hunt_date" AS publishDate,h.salary
         FROM resume r
         INNER JOIN sys_user s ON r."user_id" = s."id"
         INNER JOIN sys_user_info si ON s."id" = si."sys_user_id"

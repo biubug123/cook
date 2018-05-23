@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cai.dao.RecruitDao">
+    <select id="listRecruit" resultType="com.cai.dto.Recruit">
+        SELECT j."name" AS jobName, f."name" AS foodTypeName, r."salary", r."recruit_people_num", r."age_require", r."experience_require"
+        FROM recruit r
+        INNER JOIN job j ON r."job_id" = j."id"
+        INNER JOIN food_type f ON r."food_type_id" = f."name"
+        <if test="publishId != null">
+            WHERE publisher_id = #{publisherId}
+        </if>
+    </select>
+
+    <select id="listJobRecommend" resultType="com.cai.dto.JobRecommend">
+        SELECT r.id AS recruitId, j.name AS jobName, r.salary, r.publish_date AS publishDate, r.recruit_type AS recruitType,
+        r.publisher_id AS publisherId,pub.name AS publisherName
+        FROM recruit r
+        INNER JOIN job j ON r.job_id = j.id
+        <choose>
+            <when test="recruitType == 0">
+                INNER JOIN proxy pub ON pub.user_id = r.publisher_id
+            </when>
+            <when test="recruitType == 1">
+                INNER JOIN enterprise pub ON pub.id = r.publisher_id
+            </when>
+        </choose>
+        WHERE j.name like %#{jobName}%
+    </select>
+    
+    <select id="getPublisherName" resultType="com.cai.dto.Publisher">
+        <if test="type != null and type == 0">
+            SELECT name, work_area, address, contact_way
+            FROM proxy
+            WHERE id = #{id}
+        </if>
+        <if test="type != null and type == 1">
+            SELECT name, work_area, address, contact_way
+            FROM enterprise
+            WHERE id = #{id}
+        </if>
+    </select>
+
+    <select id="listWelfare" resultType="String">
+        SELECT name
+        FROM welfare
+        WHERE id = #{id}
+    </select>
+
+
+    <select id="listRecruitDtoByType" resultType="com.cai.dto.RecruitDto">
+        SELECT r.id AS recruitId, r.recruit_type AS recruitType, r.publisher_id AS publisherId,
+        j.name AS jobName, r.salary, f.name AS foodTypeName, r.publish_date AS publishDate,r.welfare_id_list AS welfare,
+        pub.name AS publisherName,pub.work_area AS publisherWorkArea
+        FROM recruit r
+        INNER JOIN job j ON r.job_id = j.id
+        INNER JOIN food_type f ON r.food_type_id = f.id
+        <choose>
+            <when test="recruitType == 0">
+                INNER JOIN proxy pub ON pub.user_id = r.publisher_id
+            </when>
+            <when test="recruitType == 1">
+                INNER JOIN enterprise pub ON pub.id = r.publisher_id
+            </when>
+        </choose>
+            <if test="conditionType != null and conditionType == 0">
+                WHERE pub.work_area = #{conditionDetail}
+            </if>
+            <if test="conditionType != null and conditionType == 1">
+                WHERE j.name = #{conditionDetail}
+            </if>
+            <if test="conditionType != null and conditionType == 2">
+                WHERE r.salary = #{conditionDetail}
+            </if>
+            <if test="conditionType != null and conditionType == 3">
+                WHERE r.recruit_type = #{conditionDetail}
+            </if>
+            <if test="conditionType != null and conditionType == 4">
+                WHERE r.publish_date = #{conditionDetail}
+            </if>
+            <if test="conditionType != null and conditionType == 5">
+                WHERE r.work_year = #{conditionDetail}
+            </if>
+    </select>
+
+
+    <select id="getRecruitDetail" resultType="com.cai.dto.RecruitDetail">
+        SELECT r.id AS recruitId, publisher_id AS publisherId, salary
+        , recruit_type AS recruitType, description, publish_date AS publishDate
+        , apply_people_num AS applyPeopleNum, browse_count AS browseCount, recruit_people_num AS recruitPeopleNum
+        , food_type_id AS foodTypeId, job_id AS jobId
+        , education, experience_require AS experienceRequire,age_require AS ageRequire
+        , welfare_id_list AS welfareIdList,pub.name AS publisherName,pub.work_area AS workArea,pub.address
+        FROM recruit r
+        INNER JOIN job j ON r."job_id" = j."id"
+        INNER JOIN food_type f ON r."food_type_id" = f."name"
+        <choose>
+            <when test="recruitType == 0">
+                INNER JOIN proxy pub ON pub.user_id = r.publisher_id
+            </when>
+            <when test="recruitType == 1">
+                INNER JOIN enterprise pub ON pub.id = r.publisher_id
+            </when>
+        </choose>
+        WHERE r.id = #{recruitId}
+    </select>
+</mapper>

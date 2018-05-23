@@ -11,7 +11,7 @@ import springfox.documentation.service.ApiInfo;
  * @author: ziHeng
  * @create: 2018-05-20 19:38
  **/
-@Configuration
+//@Configuration
 public class SwaggerConfig  extends WebMvcConfigurerAdapter{
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

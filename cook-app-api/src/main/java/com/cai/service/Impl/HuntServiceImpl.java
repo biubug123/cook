@@ -28,7 +28,7 @@ public class HuntServiceImpl implements HuntService {
      * @return
      */
     @Override
-    public List<Hunt> listHunt(String conditionType, String conditionDetail) {
+    public List<Hunt> listHunt(Short conditionType, String conditionDetail) {
         return huntDao.listHunt(conditionType, conditionDetail);
     }
 

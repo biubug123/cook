@@ -1,24 +1,25 @@
 package com.cai.controller;
 
-import com.cai.dto.Recruit2;
-import com.cai.dto.UserApply;
+import com.cai.dto.*;
 import com.cai.service.RecruitService;
 import com.cook.dao.EnterpriseMapper;
 import com.cook.entity.Enterprise;
 import com.cook.response.ApiResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.ziheng.dto.userGet.Resume;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/recruit")
-@Api(value = "/recruit",description = "招聘发布Api")
+@Api(value = "/recruit",description = "招聘Api")
 public class RecruitController {
 
     private RecruitService recruitService;
@@ -28,40 +29,48 @@ public class RecruitController {
         this.recruitService = recruitService;
     }
 
-    @GetMapping("/recruit")
+    @GetMapping("/recruit/{publisherId}")
     @ResponseBody
-    public ApiResponse listRecruit(@RequestParam("publisherId")String publisherId) {
+    @ApiOperation(value = "招聘详情(多个职位)",response = Recruit.class,responseContainer = "List")
+    public ApiResponse listRecruit(@PathVariable("publisherId")String publisherId) {
         return ApiResponse.ofSuccess(recruitService.listRecruit(publisherId));
     }
 
     @GetMapping("/recruit/jobRecommend")
     @ResponseBody
+    @ApiOperation(value = "职位推荐",response = JobRecommend.class,responseContainer = "List")
     public ApiResponse listJobRecommend(@RequestParam("jobName")String jobName) {
         return ApiResponse.ofSuccess(recruitService.listJobRecommend(jobName));
     }
 
     @PostMapping("/userApplyRecruit")
     @ResponseBody
-    public ApiResponse insertUserApply(UserApply userApply) {
+    @ApiOperation(value = "用户申请招聘")
+    public ApiResponse insertUserApply(@RequestBody UserApply userApply) {
         return ApiResponse.ofSuccess(recruitService.insertUserApply(userApply));
     }
 
     @GetMapping("/recruit/listByType")
     @ResponseBody
-    public ApiResponse listRecruit2(@RequestParam(value = "pageNum", defaultValue = "0") Integer pageNum, @RequestParam("conditionType") String type, @RequestParam("conditionDetail") String conditionDetail) {
+    @ApiOperation(value = "招聘列表(分页)",response = RecruitDto.class,responseContainer = "List")
+    public ApiResponse listRecruit2(@RequestParam(value = "pageNum", defaultValue = "0") Integer pageNum,
+                                    @ApiParam(value = "区域-0  职位-1 薪资-2 招聘方-3 发布时间-4 工作经验-5") @RequestParam("conditionType") Short type,
+                                    @ApiParam(value = "条件内容") @RequestParam("conditionDetail") String conditionDetail) {
         // 分页查询单页面内容大小
         int pageSize = 10;
         PageHelper.startPage(pageNum, pageSize);
-        List<Recruit2> recruit2List = recruitService.listRecruit2(type, conditionDetail);
-        PageInfo<Recruit2> pageInfo = new PageInfo<Recruit2>(recruit2List);
-
+        List<RecruitDto> result = new ArrayList<RecruitDto>();
+        result.addAll(recruitService.recruitList(type, conditionDetail));
+        PageInfo<RecruitDto> pageInfo = new PageInfo<RecruitDto>(result);
         return ApiResponse.ofSuccess(pageInfo);
     }
 
-    @GetMapping("/recruit/getDetail/{recruitId}")
+    @GetMapping("/recruit/getDetail")
     @ResponseBody
-    public ApiResponse listRecruitDetail(@PathVariable("recruitId")String recruitId) {
-        return  ApiResponse.ofSuccess(recruitService.getRecruitDetail(recruitId));
+    @ApiOperation(value = "招聘详情",response = RecruitDetail.class)
+    public ApiResponse listRecruitDetail(@RequestParam("recruitId")String recruitId,
+                                         @RequestParam("recruitType")Short recruitType) {
+        return  ApiResponse.ofSuccess(recruitService.getRecruitDetail(recruitId,recruitType));
     }
 
 

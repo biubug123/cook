@@ -153,7 +153,7 @@ public class FirstTest {
     //用户发布求职
     @Test
     public void insertHunt(){
-        userPostService.insertHunt("3000-4000","4dd86556-5e79-47dc-8c63-b7c8766775d0","6fd5c34e-127f-4f15-b5bf-4bea7c14602a","32fc3520-511f-4246-bb09-6772e47b9d31","广东省广州市白云区");
+        userPostService.insertHunt("2000-8000","4dd86556-5e79-47dc-8c63-b7c8766775d0","6fd5c34e-127f-4f15-b5bf-4bea7c14602a","32fc3520-511f-4246-bb09-6772e47b9d31","广东省广州市天河区");
     }
 
 

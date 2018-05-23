@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface HuntService {
-    List<Hunt> listHunt(String conditionType, String conditionDetail);
+    List<Hunt> listHunt(Short conditionType, String conditionDetail);
 
     HuntDetail getHuntDetailByResumeId(String resumeId);
 

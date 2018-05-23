@@ -1,8 +1,11 @@
 package com.ziheng.util;
 
+import javax.xml.bind.ValidationException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @description: 工具类
@@ -39,6 +42,17 @@ public class ZiHengUtil {
         } catch (Exception e) {//兼容性更强,异常后返回数据
             return 0;
         }
+    }
+
+    //验证是否为十位数
+    public static Boolean isDecadeNum(Long num) throws Exception {
+        String regex = "^\\d{10}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(String.valueOf(num));
+        if(matcher.matches()){
+            return true;
+        }
+        throw new ValidationException("日期不是十位数");
     }
 
     public static void main(String[] args) {

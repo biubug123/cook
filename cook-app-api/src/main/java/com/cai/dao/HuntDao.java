@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface HuntDao {
-    List<Hunt> listHunt(@Param("conditionType")String conditionType, @Param("conditionDetail")String conditionDetail);
+    List<Hunt> listHunt(@Param("conditionType")Short conditionType, @Param("conditionDetail")String conditionDetail);
 
     HuntDetail getHuntDetailByResumeId(@Param("resumeId")String resumeId);
 

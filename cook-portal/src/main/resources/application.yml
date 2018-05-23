@@ -10,9 +10,9 @@ spring:
         max-request-size: 100Mb
 
 mybatis:
-# mapper.xml包扫描
   mapper-locations:
     - mapper/*.xml
+    - cai/*.xml
     - ziheng/*.xml
 ##  entity包扫描
 #  type-aliases-package: com.cook.web.entity
