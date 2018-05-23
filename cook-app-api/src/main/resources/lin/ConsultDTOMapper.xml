@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lin.dao.ConsultDTOMapper">
+
+
+    <select id="listConsultComment" resultType="com.lin.dto.ConsultCommentDTO">
+        select "comment".id as "commentId" ,"user".username, "user".head_img_name as "headImgName",
+        "comment".comment_date as "commentDate" ,"comment"."content"
+        from (consult_comment as "comment"
+        LEFT JOIN "sys_user_info" as "user"
+        ON "comment"."comment_user_id" = "user"."id")
+        where "comment"."consult_id" = #{consultId}
+
+    </select>
+
+    <select id="consultList" resultType="com.cook.entity.Consult">
+        SELECT id , article_type as articleType , consult_type as consultType , publish_date as publishDate,
+                user_id as userId , article_id as articleId , publisher_name as publisherName
+        FROM consult
+        WHERE consult_type = #{consultType}
+    </select>
+
+    <select id="selectConsultAdmire" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM consult_user_admire
+        WHERE
+        consult_id = #{consultId}
+        AND
+        user_id = #{userId}
+    </select>
+
+    <!-- listOfImageText
+        select c."id",c.article_id as "articleId",c.article_type as "articleType",it.title,
+        c.publisher_name as "publisherName",it."content",it.image_name as "imageName",
+        c.publish_date as "publishDate"
+        from consult as c
+        LEFT JOIN image_text as it
+        on c.article_id = it."id"
+        WHERE c.article_type = 0
+
+        listOfVideo
+        select c."id",c.article_id as "articleId",c.article_type as "articleType",v.title,
+        c.publisher_name as "publisherName",v.img_name as "imageName",v.video_img_name as "videoImgName",
+        v.video_url as "videoUrl",v.play_count as "playCount",c.publish_date as "publishDate"
+        from consult as c
+        LEFT JOIN video as v
+        on c.article_id = v."id"
+        WHERE c.article_type = 1
+    -->
+
+    <select id="delectConsultAdmire" parameterType="java.lang.String">
+        DELETE
+        FROM consult_user_admire
+        WHERE
+        consult_id = #{consultId}
+        AND
+        user_id = #{userId}
+    </select>
+
+    <select id="countConsultAdmire" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM consult_user_admire
+    </select>
+
+    <select id="selectCommentAdmire" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM comment_user_admire
+        WHERE
+        comment_id = #{commentId}
+        AND
+        user_id = #{userId}
+    </select>
+
+    <select id="delectCommentAdmire" parameterType="java.lang.String">
+        DELETE
+        FROM comment_user_admire
+        WHERE
+        comment_id = #{commentId}
+        AND
+        user_id = #{userId}
+    </select>
+
+    <select id="countCommentAdmire" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM comment_user_admire
+    </select>
+
+    <select id="existContextOfComment" resultType="java.lang.Integer">
+        select count(*)
+        from consult_comment
+        where
+        consult_id = #{consultId}
+        AND
+        comment_user_id = #{commentUserId}
+        AND
+        content = #{content}
+    </select>
+
+</mapper>
