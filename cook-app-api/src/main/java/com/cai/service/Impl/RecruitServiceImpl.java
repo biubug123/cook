@@ -5,30 +5,38 @@ import com.cai.dto.*;
 import com.cai.service.RecruitService;
 import com.cook.dao.ProxyMapper;
 import com.cook.dao.RecruitMapper;
+import com.cook.dao.UserRecruitApplyMapper;
 import com.cook.entity.Proxy;
+import com.cook.entity.UserRecruitApply;
+import com.ziheng.dto.userGet.Consult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.UUID;
 
 @Service
 public class RecruitServiceImpl implements RecruitService {
 
-    @Autowired
     private RecruitDao recruitDao;
+
+    private UserRecruitApplyMapper userRecruitApplyMapper;
 
     private ProxyMapper proxyMapper;
 
     private RecruitMapper recruitMapper;
 
-    public RecruitServiceImpl(ProxyMapper proxyMapper, RecruitMapper recruitMapper) {
+    public RecruitServiceImpl(RecruitDao recruitDao, UserRecruitApplyMapper userRecruitApplyMapper, ProxyMapper proxyMapper, RecruitMapper recruitMapper) {
+        this.recruitDao = recruitDao;
+        this.userRecruitApplyMapper = userRecruitApplyMapper;
         this.proxyMapper = proxyMapper;
         this.recruitMapper = recruitMapper;
     }
 
+    //招聘详情列表(多个职位)
     @Override
     public List<Recruit> listRecruit(String publisherId) {
         return recruitDao.listRecruit(publisherId);
@@ -36,26 +44,28 @@ public class RecruitServiceImpl implements RecruitService {
 
 
     /**
-     * 模糊查询职位
-     * @param jobName
-     * @return
-     */
+      * @Description: 模糊查询职位
+      * @Author: ziHeng
+      * @Date: 2018/5/23 下午1:29
+      * @Param: [jobName]
+      * @return: java.util.List<com.cai.dto.JobRecommend>
+      */
     @Override
-    public List<JobRecommend> listJobRecommend(String jobName) {
-        List<JobRecommend> recommendList = recruitDao.listJobRecommend(jobName);
-        for(JobRecommend jobRecommend : recommendList) {
-            // 根据同个id出现次数判断是否为多个岗位招聘。
-            if(recruitDao.listRecruit(jobRecommend.getRecruitId()).size() > 1) {
-                jobRecommend.setIsMoreJob(1);
-            } else {
-                jobRecommend.setIsMoreJob(0);
-            }
-            // 招聘类型分为企业和代招，据此到不同表查询名字。
-            Publisher publisher = recruitDao.getPublisher(jobRecommend.getPublisherId(), jobRecommend.getRecruitType());
-            jobRecommend.setPublisherName(publisher.getName());
-        }
-        return  recommendList;
+    public TreeSet<JobRecommend> listJobRecommend(String jobName) {
+        TreeSet<JobRecommend> jobRecommends = new TreeSet<JobRecommend>();
+        //代招
+        List<JobRecommend> proxyList = recruitDao.listJobRecommend(jobName,(short)0);
+
+        //企业
+        List<JobRecommend> enterpriseList = recruitDao.listJobRecommend(jobName,(short)1);
+        jobRecommends.addAll(proxyList);
+        jobRecommends.addAll(enterpriseList);
+        return jobRecommends;
     }
+
+
+
+
 
     /**
      * 插入用户求职申请
@@ -64,71 +74,36 @@ public class RecruitServiceImpl implements RecruitService {
      */
     @Override
     public int insertUserApply(UserApply userApply) {
+
         String id = UUID.randomUUID().toString();
 
-        long applyDate = new Date().getTime() * 1000;
+        long applyDate = new Date().getTime() / 1000;
 
-        userApply.setId(id);
+        UserRecruitApply userRecruitApply = new UserRecruitApply(id,
+                applyDate,userApply.getUserId(),
+                userApply.getRecruitId(),
+                (short)0,userApply.getRecruitType(),userApply.getPublisherId(),
+                userApply.getPublisherName(),userApply.getFoodTypeName(),
+                userApply.getJobName());
 
-        userApply.setApplyDate(applyDate);
 
-        return recruitDao.insertUserApply(userApply);
+        return userRecruitApplyMapper.insert(userRecruitApply);
     }
 
-    /**
-     * 招聘列表分页
-     * @param conditionType 查询条件
-     * @param conditionDetail 条件的具体内容
-     * @return
-     */
-    @Override
-    public List<Recruit2> listRecruit2(String conditionType, String conditionDetail) {
-        List<Recruit2> list = recruitDao.listRecruit2(conditionType, conditionDetail);
-
-        // 根据同id获取招聘数量是否大于1决定是否为多岗位
-        for(Recruit2 recruit2 : list) {
-            if(recruitDao.listRecruit(recruit2.getRecruitId()).size() > 1) {
-                recruit2.setIsMoreJob(1);
-            } else {
-                recruit2.setIsMoreJob(0);
-            }
-            // 根据招聘类型获取相对应发布者名称和工作区域
-            Publisher publisher = recruitDao.getPublisher(recruit2.getPublisherId(),recruit2.getRecruitType());
-            recruit2.setPublisherName(publisher.getName());
-            recruit2.setPublisherWorkArea(publisher.getWorkArea());
-            // 默认为List<String>的数据, 获取福利名称
-            for(String id : recruit2.getWelfareList()) {
-                List<String> nameList = recruitDao.listWelfare(id);
-                recruit2.setWelfareList(nameList);
-            }
-        }
-        return list;
-    }
 
     /**
      *  通过id查询招聘详情
-     * @param id
+     * @param
      * @return
      */
     @Override
-    public RecruitDetail getRecruitDetail(String id) {
-        RecruitDetail recruitDetail = recruitDao.getRecruitDetail(id);
-        if(recruitDetail != null) {
-            // 通过招聘详情中的id和type查询出发布人信息
-            Publisher publisher = recruitDao.getPublisher(recruitDetail.getPublisherId(), recruitDetail.getRecruitType());
+    public RecruitDetail getRecruitDetail(String recruitId,Short recruitType) {
+        RecruitDetail recruitDetail = recruitDao.getRecruitDetail(recruitId,recruitType);
 
-            // 将发布人信息绑定到详情中
-            recruitDetail.setPublisherName(publisher.getName());
-            recruitDetail.setAddress(publisher.getAddress());
-            recruitDetail.setContactWay(publisher.getContactWay());
-            recruitDetail.setWorkArea(publisher.getWorkArea());
+        String welfare = recruitDetail.getWelfareIdList();
+        String[] list = welfare.split(",");
+        recruitDetail.setWelfareList(list);
 
-            // 通过详情中的福利id查询出福利的名称信息存入详情中
-            for(String welfareId: recruitDetail.getWelfareIdList()) {
-                List<String> nameList = recruitDao.listWelfare(welfareId);
-                recruitDetail.setWelfareIdList(nameList);
-            }
-        }
         return recruitDetail;
     }
 
@@ -197,4 +172,39 @@ public class RecruitServiceImpl implements RecruitService {
 
         return recruitMapper.insertSelective(recruit);
     }
+
+    /**
+      * @Description: 获取招聘列表
+      * @Author: ziHeng
+      * @Date: 2018/5/22 下午9:42
+      * @Param: [conditionType, conditionDetail]
+      * @return: java.util.List<com.cai.dto.RecruitDto>
+      */
+    @Override
+    public TreeSet<RecruitDto> recruitList(Short conditionType, String conditionDetail) {
+
+        TreeSet<RecruitDto> result = new TreeSet<RecruitDto>();
+        //代招
+        List<RecruitDto> proxyList = toWelfareList(recruitDao.listRecruitDtoByType(conditionType,conditionDetail,(short)0));
+
+        //企业
+        List<RecruitDto> enterpriseList = toWelfareList(recruitDao.listRecruitDtoByType(conditionType,conditionDetail,(short)1));
+
+        result.addAll(proxyList);
+        result.addAll(enterpriseList);
+
+        return result;
+    }
+
+    //福利字符串转字符串数组
+    private List<RecruitDto> toWelfareList(List<RecruitDto> recruitDtoList){
+        for (RecruitDto recruitDto:recruitDtoList){
+            String welfare = recruitDto.getWelfare();
+            String[] list = welfare.split(",");
+            recruitDto.setWelfareList(list);
+        }
+        return recruitDtoList;
+    }
+
+
 }

@@ -3,18 +3,21 @@ package com.cai.service;
 import com.cai.dto.*;
 
 import java.util.List;
+import java.util.TreeSet;
 
 public interface RecruitService {
 
+    //招聘列表
+    TreeSet<RecruitDto> recruitList(Short conditionType, String conditionDetail);
+
     List<Recruit> listRecruit(String publisherId);
 
-    List<JobRecommend> listJobRecommend(String jobName);
+    //职位推荐
+    TreeSet<JobRecommend> listJobRecommend(String jobName);
 
     int insertUserApply(UserApply userApply);
 
-    List<Recruit2> listRecruit2(String conditionType, String conditionDetail);
-
-    RecruitDetail getRecruitDetail(String id);
+    RecruitDetail getRecruitDetail(String recruitId,Short recruitType);
 
     //代理发起招聘
     Integer insertRecruitByProxy(String name,
