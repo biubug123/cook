@@ -103,4 +103,9 @@
       last_login_date = #{lastLoginDate,jdbcType=BIGINT}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+    <select id="userByPhone" resultMap="BaseResultMap">
+        SELECT id, account_num, password, phone, enroll_date, last_login_date FROM sys_user
+        WHERE phone = #{phone}
+    </select>
 </mapper>

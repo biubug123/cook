@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Controller
+@RestController
 @Api(value = "/recruit",description = "招聘Api")
 public class RecruitController {
 
@@ -30,28 +30,24 @@ public class RecruitController {
     }
 
     @GetMapping("/recruit/{publisherId}")
-    @ResponseBody
     @ApiOperation(value = "招聘详情(多个职位)",response = Recruit.class,responseContainer = "List")
     public ApiResponse listRecruit(@PathVariable("publisherId")String publisherId) {
         return ApiResponse.ofSuccess(recruitService.listRecruit(publisherId));
     }
 
     @GetMapping("/recruit/jobRecommend")
-    @ResponseBody
     @ApiOperation(value = "职位推荐",response = JobRecommend.class,responseContainer = "List")
     public ApiResponse listJobRecommend(@RequestParam("jobName")String jobName) {
         return ApiResponse.ofSuccess(recruitService.listJobRecommend(jobName));
     }
 
     @PostMapping("/userApplyRecruit")
-    @ResponseBody
     @ApiOperation(value = "用户申请招聘")
     public ApiResponse insertUserApply(@RequestBody UserApply userApply) {
         return ApiResponse.ofSuccess(recruitService.insertUserApply(userApply));
     }
 
     @GetMapping("/recruit/listByType")
-    @ResponseBody
     @ApiOperation(value = "招聘列表(分页)",response = RecruitDto.class,responseContainer = "List")
     public ApiResponse listRecruit2(@RequestParam(value = "pageNum", defaultValue = "0") Integer pageNum,
                                     @ApiParam(value = "区域-0  职位-1 薪资-2 招聘方-3 发布时间-4 工作经验-5") @RequestParam("conditionType") Short type,
@@ -66,7 +62,6 @@ public class RecruitController {
     }
 
     @GetMapping("/recruit/getDetail")
-    @ResponseBody
     @ApiOperation(value = "招聘详情",response = RecruitDetail.class)
     public ApiResponse listRecruitDetail(@RequestParam("recruitId")String recruitId,
                                          @RequestParam("recruitType")Short recruitType) {

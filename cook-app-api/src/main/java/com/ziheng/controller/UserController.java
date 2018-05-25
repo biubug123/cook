@@ -5,17 +5,28 @@ import com.cook.dao.ResumeMapper;
 import com.cook.entity.Enterprise;
 import com.cook.entity.Proxy;
 import com.cook.response.ApiResponse;
+import com.cook.security.jwt.JwtDto;
+import com.cook.util.JwtDecode;
+import com.cook.util.PhoneAndEmailUtil;
 import com.ziheng.dao.UserGetDao;
 import com.ziheng.dto.userGet.*;
 import com.ziheng.service.UserGetService;
 import com.ziheng.service.UserPostService;
 import com.ziheng.util.ZiHengUtil;
+import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponses;
+import org.hibernate.validator.valuehandling.UnwrapValidatedValue;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.ValidationException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -55,10 +66,11 @@ public class UserController {
       * @Date: 2018/5/16 下午3:57
       * @Param: [userId:用户id]
       */
-    @GetMapping("/getHuntList/{userId}")
+    @GetMapping("/getHuntList")
     @ApiOperation(value = "用户的求职列表",response = Hunt.class,responseContainer = "List")
-    public ApiResponse huntList(@ApiParam(value = "用户id")@PathVariable("userId") String userId){
+    public ApiResponse huntList(){
 
+        String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";
         return ApiResponse.ofSuccess(userGetDao.huntList(userId));
 
     }
@@ -71,7 +83,9 @@ public class UserController {
       */
     @GetMapping("/getResumeList/{userId}")
     @ApiOperation(value = "用户的简历列表",response = Resume.class,responseContainer = "List")
-    public ApiResponse resultList(@ApiParam(value = "用户id")@PathVariable("userId") String userId){
+    public ApiResponse resultList(){
+
+        String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";
 
         return ApiResponse.ofSuccess(userGetService.resumeList(userId));
 
@@ -84,10 +98,10 @@ public class UserController {
       * @Date: 2018/5/16 下午3:59
       * @Param: [userId:用户id]
       */
-    @GetMapping("/getUser/{userId}")
+    @GetMapping("/getUser")
     @ApiOperation(value = "获取用户个人信息",response = User.class)
-    public ApiResponse getUser(@ApiParam(value = "用户id")@PathVariable("userId") String userId){
-
+    public ApiResponse getUser(){
+        String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";
         return ApiResponse.ofSuccess(userGetDao.getUser(userId));
 
     }
@@ -99,10 +113,11 @@ public class UserController {
       * @Param: [userId]
       * @return: com.cook.response.ApiResponse
       */
-    @GetMapping("/getMyConsult/{userId}")
+    @GetMapping("/getMyConsult")
     @ApiOperation(value = "获取用户发布的资讯-按照发布日期排序",response = Consult.class,responseContainer = "List")
-    public ApiResponse getMyConsult(@ApiParam(value = "用户id")@PathVariable("userId") String userId){
+    public ApiResponse getMyConsult(){
 
+        String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";
         return ApiResponse.ofSuccess(userGetService.consultList(userId));
 
     }
@@ -114,10 +129,11 @@ public class UserController {
       * @Param: [userId]
       * @return: com.cook.response.ApiResponse
       */ 
-    @GetMapping("/getRecruitApply/{userId}")
+    @GetMapping("/getRecruitApply")
     @ApiOperation(value = "获取用户的投递申请",response = UserApply.class,responseContainer = "List")
-    public ApiResponse getRecruitApply(@ApiParam(value = "用户id")@PathVariable("userId") String userId){
+    public ApiResponse getRecruitApply(){
 
+        String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";
         return ApiResponse.ofSuccess(userGetDao.getUserApply(userId));
 
     }
@@ -131,8 +147,8 @@ public class UserController {
       */ 
     @GetMapping("/getCollectList")
     @ApiOperation(value = "根据类型获取收藏列表 0/1:招聘的职位和求职的职位 2:咨询的收藏",response = Job.class,responseContainer = "List")
-    public ApiResponse getCollectList(@ApiParam(value = "用户id")@RequestParam("userId") String userId,
-                                      @ApiParam(value = "收藏类型 0/1:招聘的职位和求职的职位 2:咨询的收藏")@RequestParam("collectType") Short collectType){
+    public ApiResponse getCollectList(@ApiParam(value = "收藏类型 0/1:招聘的职位和求职的职位 2:咨询的收藏")@RequestParam("collectType") Short collectType){
+        String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";
         return userGetService.collectListByType(userId,collectType);
 
     }
@@ -146,8 +162,8 @@ public class UserController {
       */
     @GetMapping("/getBrowseList")
     @ApiOperation(value = "根据类型获取浏览列表 0/1:招聘的职位和求职的职位 2:咨询的收藏",response = Job.class,responseContainer = "List")
-    public ApiResponse getBrowsetList(@ApiParam(value = "用户id")@RequestParam("userId") String userId,
-                                      @ApiParam(value = "收藏类型 0/1:招聘的职位和求职的职位 2:咨询的收藏")@RequestParam("collectType") Short collectType){
+    public ApiResponse getBrowsetList(@ApiParam(value = "收藏类型 0/1:招聘的职位和求职的职位 2:咨询的收藏")@RequestParam("collectType") Short collectType){
+        String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";
         return userGetService.browseListByType(userId,collectType);
 
     }
@@ -162,7 +178,8 @@ public class UserController {
       */    
     @GetMapping("/getProxyList")
     @ApiOperation(value = "用户的代招管理页面",response = Proxy.class,responseContainer = "List")
-    public ApiResponse getProxyList(@ApiParam(value = "用户id")@RequestParam("userId") String userId){
+    public ApiResponse getProxyList(){
+        String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";
         return ApiResponse.ofSuccess(userGetDao.listProxy(userId));
     };
 
@@ -176,10 +193,10 @@ public class UserController {
       */ 
     @PostMapping("/insertCollect")
     @ApiOperation(value = "根据类型获取浏览列表 0/1:招聘的职位和求职的职位 2:咨询的收藏")
-    public ApiResponse insertCollect(@ApiParam(value = "用户id")@RequestParam("userId") String userId,
-                                     @ApiParam(value = "收藏类型")@RequestParam("collectType") Short collectType,
+    public ApiResponse insertCollect(@ApiParam(value = "收藏类型")@RequestParam("collectType") Short collectType,
                                      @ApiParam(value = "内容id")@RequestParam("contentId") String contentId){
 
+        String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";
         return ApiResponse.ofSuccess(userPostService.insertUserCollect(userId,collectType,contentId));
 
     }
@@ -194,9 +211,9 @@ public class UserController {
      */
     @PostMapping("/insertBrowse")
     @ApiOperation(value = "根据类型新增浏览记录 类型(招聘:0,求职:1,资讯:2)")
-    public ApiResponse insertBrowse(@ApiParam(value = "用户id")@RequestParam("userId") String userId,
-                                    @ApiParam(value = "浏览类型")@RequestParam("browseType") Short browseType,
+    public ApiResponse insertBrowse(@ApiParam(value = "浏览类型")@RequestParam("browseType") Short browseType,
                                     @ApiParam(value = "内容id")@RequestParam("contentId") String contentId){
+        String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";
 
         return ApiResponse.ofSuccess(userPostService.insertUserBrowse(userId,browseType,contentId));
 
@@ -229,10 +246,13 @@ public class UserController {
     public ApiResponse insertUser(@ApiParam(value = "手机号")@RequestParam("phone") String phone,
                                   @ApiParam(value = "密码")@RequestParam("password") String password,
                                   @ApiParam(value = "性别")@RequestParam("sex") String sex,
-                                  @ApiParam(value = "账号")@RequestParam(value = "accountNum",required = false) String accountNum){
+                                  @ApiParam(value = "账号")@RequestParam(value = "accountNum",required = false) String accountNum) throws ValidationException {
 
-
-        return ApiResponse.ofSuccess(userPostService.insertUser(phone,password,sex,accountNum));
+        if(phone!=null&&PhoneAndEmailUtil.checkTelephone(phone)){
+            return ApiResponse.ofSuccess(userPostService.insertUser(phone,password,sex,accountNum));
+        }else {
+            throw new ValidationException("不合法的手机号");
+        }
 
     }
 
@@ -246,8 +266,7 @@ public class UserController {
       */
     @PostMapping("/updateUserInfo")
     @ApiOperation(value = "用户修改个人信息")
-    public ApiResponse updateUserInfo(@ApiParam(value = "用户id")@RequestParam String userId,
-                                      @ApiParam(value = "用户名")@RequestParam(required = false) String userName,
+    public ApiResponse updateUserInfo(@ApiParam(value = "用户名")@RequestParam(required = false) String userName,
                                       @ApiParam(value = "性别")@RequestParam(required = false) String sex,
                                       @ApiParam(value = "头像图片的名称")@RequestParam(required = false) String headImgName,
                                       @ApiParam(value = "签名")@RequestParam(required = false) String signature,
@@ -256,7 +275,7 @@ public class UserController {
         if(birthDate!=null){
             ZiHengUtil.isDecadeNum(birthDate);
         }
-
+        String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";
         return ApiResponse.ofSuccess(userPostService.updateUserBySelective(userId,userName,sex,headImgName,signature,address,birthDate));
 
     }
@@ -294,10 +313,9 @@ public class UserController {
     public ApiResponse insertResume(@ApiParam(value = "工作多少年")@RequestParam Short workYear,
                                     @ApiParam(value = "工作经验id")@RequestParam String workExperienceId,
                                     @ApiParam(value = "教育程度")@RequestParam String education,
-                                    @ApiParam(value = "用户id")@RequestParam String userId,
                                     @ApiParam(value = "标题")@RequestParam String title){
 
-
+        String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";
 
         return ApiResponse.ofSuccess(userPostService.insertResume(workYear,workExperienceId,education,userId,title));
     }
@@ -321,6 +339,32 @@ public class UserController {
 
         String salary = minSalary+"-"+maxSalary;
         return ApiResponse.ofSuccess(userPostService.insertHunt(salary,resumeId,jobId,foodTypeId,workArea));
+    }
+
+    //测试
+    @ApiOperation(value = "用户登录",httpMethod = "POST",response = JwtDto.class)
+    //@PostMapping("/login")
+    public void login(@RequestParam("phone") String phone,
+                      @RequestParam("password") String password) {
+
+
+    }
+
+    //测试
+    @GetMapping("/me")
+    @ApiOperation(value = "测试")
+    public Object getCurrentUser(Authentication user, HttpServletRequest request) {
+
+        try {
+            Claims claims = JwtDecode.getClaims(request);
+            String userId = (String) claims.get("userId");
+            System.out.println(userId);
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return user;
     }
 
 

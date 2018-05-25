@@ -10,9 +10,11 @@ spring:
     # 使用druid数据源
 #    type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: org.postgresql.Driver
-
-
-#security安全
 security:
+  oauth2:
+    client:
+      client-id: cook
+      client-secret: cookSecret
   basic:
+  #关闭security
     enabled: false

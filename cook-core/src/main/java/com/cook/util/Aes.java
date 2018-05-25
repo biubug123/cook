@@ -15,7 +15,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 
-public class Ase {
+public class Aes {
 
     //    *
 //            * 加密
@@ -127,13 +127,13 @@ public class Ase {
 
     }
     public static void main(String[] args) {
-        Ase se=new Ase();
+        Aes se=new Aes();
 
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("password","密码");
         jsonObject.put("username","用户名");
 
-        Ase.AseEncode(jsonObject.toJSONString(), Security.CODE);
+        Aes.AseEncode(jsonObject.toJSONString(), Security.CODE);
         /*
          * 加密
          */

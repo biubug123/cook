@@ -57,13 +57,10 @@ public class FirstTest {
     //新用户
     @Test
     public void userTest(){
-        for (int i = 0; i < 1000; i++) {
-            String phone = RandomStringUtils.randomNumeric(11);
-            String password =  RandomStringUtils.randomAlphanumeric(11);
-            String accountNum = i%2 ==0? RandomStringUtils.randomNumeric(11):null;
-            String sex = i%2 ==0 ?"男":"女";
-            userPostService.insertUser(phone,password,sex,accountNum);
-        }
+            String phone = "18926269831";
+            String password =  "admin123";
+            String accountNum = "admin123";
+            userPostService.insertUser(phone,password,"女",accountNum);
         System.out.println("执行");
     }
 

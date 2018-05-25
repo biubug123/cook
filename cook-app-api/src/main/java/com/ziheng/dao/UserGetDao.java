@@ -40,6 +40,4 @@ public interface UserGetDao {
     List<Job> jobCollectOrBroseList(@Param("userId") String userId, @Param("jobType") Short jobType,@Param("recruitType") Short recruitType,@Param("type") String type);
 
 
-
-
 }
