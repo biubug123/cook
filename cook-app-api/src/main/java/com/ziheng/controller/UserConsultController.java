@@ -36,12 +36,11 @@ public class UserConsultController {
     @PostMapping("/releaseImageTextConsult")
     @ApiOperation(value = "用户发布图文资讯")
     public ApiResponse releaseImageTextConsult(@RequestParam Short consultType,
-                                               @RequestParam String userId,
                                                @RequestParam String publisherName,
                                                @RequestParam String title,
                                                @RequestParam String content,
                                                @RequestParam String imageName){
-
+        String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";
         return ApiResponse.ofSuccess(consultPostService.releaseImageTextConsult(consultType,userId,publisherName,title,content,imageName));
     }
 
@@ -55,13 +54,13 @@ public class UserConsultController {
     @PostMapping("releaseVideoConsult")
     @ApiOperation(value = "用户发布视频资讯")
     public ApiResponse releaseVideoConsult(@RequestParam Short consultType,
-                                           @RequestParam String userId,
                                            @RequestParam String publisherName,
                                            @RequestParam String title,
                                            @RequestParam String imageName,
                                            @RequestParam String videoImgName,
                                            @RequestParam String content){
 
+        String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";
         return ApiResponse.ofSuccess(consultPostService.releaseVideoConsult(consultType,userId,publisherName,title,imageName,videoImgName,content));
 
     }
