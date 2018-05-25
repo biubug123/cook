@@ -7,6 +7,9 @@ package com.cook.constant;
  **/
 public class Security {
 
-    public static final String CODE ="";
+    public static final String CODE = "cookCode";
+
+    //jwt签字
+    public static final String JWTSIGNKEY = "cookRecruit";
 
 }

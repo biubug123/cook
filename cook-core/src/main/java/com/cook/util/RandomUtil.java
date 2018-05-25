@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.UUID;
 
 /**
- * @description: UUID和随机名
+ * @description: 随机名
  * @author: ziHeng
  * @create: 2018-05-14 11:25
  **/

@@ -2,11 +2,13 @@ package com.lin.dto;
 
 import com.cook.entity.Consult;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Created by Administrator on 2018/5/19.
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class ConsultImageTextDetailDTO extends Consult {
 	
 	//标题

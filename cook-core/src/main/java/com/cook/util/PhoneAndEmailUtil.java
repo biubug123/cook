@@ -4,7 +4,7 @@ package com.cook.util;
 import java.util.regex.Pattern;
 
 
-public class phoneAndEmailUtil {
+public class PhoneAndEmailUtil {
 
     private static final String PHONE_REGEX = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$";
     private static final Pattern PHONE_PATTERN = Pattern.compile(PHONE_REGEX);

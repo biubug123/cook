@@ -14,6 +14,8 @@ import com.ziheng.dto.userGet.Resume;
 import com.ziheng.service.UserGetService;
 import com.ziheng.service.UserPostService;
 import com.ziheng.util.ZiHengUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +44,10 @@ public class UserServiceImpl implements UserGetService,UserPostService {
     private ResumeMapper resumeMapper;
 
     private HuntMapper huntMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     public UserServiceImpl(UserGetDao userGetDao, UserCollectMapper userCollectMapper, UserBrowseMapper userBrowseMapper, SysUserMapper sysUserMapper, SysUserInfoMapper sysUserInfoMapper, UserPostDao userPostDao, ResumeMapper resumeMapper, HuntMapper huntMapper) {
         this.userGetDao = userGetDao;
@@ -233,11 +239,14 @@ public class UserServiceImpl implements UserGetService,UserPostService {
         String userId = UUID.randomUUID().toString();
         SysUser sysUser = new SysUser(userId,
                 accountNum,
-                password,
+                //加密
+                passwordEncoder.encode(password),
                 phone,
                 new Date().getTime()/1000,
                 new Date().getTime()/1000);
+        //用户表插入
         int userResult = sysUserMapper.insert(sysUser);
+        //信息表插入
         if(userResult > 0){
             SysUserInfo sysUserInfo =new SysUserInfo(UUID.randomUUID().toString(),
                     sex,userId);

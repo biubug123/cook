@@ -83,7 +83,8 @@ public class ApiResponse {
         INTERNAL_SERVER_ERROR(500, "未知的异常"),
         NOT_LOGIN(40001, "用户未登录"),
         NOT_SUPPORTED_OPERATION(40002, "违法的操作"),
-        NOT_VALID_PARAM(40003, "不合法的参数");
+        NOT_VALID_PARAM(40003, "不合法的参数"),
+        FAILURE_LOGIN(40004, "失败的登录");
 
 
         private int code;
