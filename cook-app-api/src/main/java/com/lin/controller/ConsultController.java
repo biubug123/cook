@@ -44,8 +44,9 @@ public class ConsultController {
 	// 	返回：是否已经点赞   点赞总数
 	@ApiOperation(value = "给某资讯点赞", notes = "返回值：0：取消点赞，1：添加点赞")
 	@PostMapping(value = "consultAdmire")
-	public ApiResponse consultAdmire( @ApiParam(name = "consultId", value = "资讯id", required = true) @RequestParam(value = "consultId") String consultId,
-									  @ApiParam(name = "userId", value = "点赞用户id", required = true) @RequestParam("userId") String userId ) {
+	public ApiResponse consultAdmire( @ApiParam(name = "consultId", value = "资讯id", required = true) @RequestParam(value = "consultId") String consultId
+									   ) {
+        String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";
 		return ApiResponse.ofSuccess( consultService.consultAdmire( consultId, userId ) );
 	}
 	
@@ -53,8 +54,9 @@ public class ConsultController {
 	// 	返回：是否已经点赞   点赞总数
 	@ApiOperation(value = "给某评论点赞", notes = "返回值：0：取消点赞，1：添加点赞")
 	@PostMapping(value = "commentAdmire")
-	public ApiResponse commentAdmire( @ApiParam(name = "commentId", value = "评论id", required = true) @RequestParam(value = "commentId") String commentId,
-									  @ApiParam(name = "userId", value = "点赞用户id", required = true) @RequestParam("userId") String userId ) {
+	public ApiResponse commentAdmire( @ApiParam(name = "commentId", value = "评论id", required = true) @RequestParam(value = "commentId") String commentId) {
+
+	    String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";
 		return ApiResponse.ofSuccess( consultService.commentAdmire( commentId, userId ) );
 	}
 	

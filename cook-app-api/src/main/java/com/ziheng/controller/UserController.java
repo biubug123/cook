@@ -64,7 +64,6 @@ public class UserController {
       * @Description: 用户的求职列表
       * @Author: ziHeng
       * @Date: 2018/5/16 下午3:57
-      * @Param: [userId:用户id]
       */
     @GetMapping("/getHuntList")
     @ApiOperation(value = "用户的求职列表",response = Hunt.class,responseContainer = "List")
@@ -79,9 +78,8 @@ public class UserController {
       * @Description: 用户的简历列表
       * @Author: ziHeng
       * @Date: 2018/5/16 下午3:58
-      * @Param: [userId:用户id]
       */
-    @GetMapping("/getResumeList/{userId}")
+    @GetMapping("/getResumeList")
     @ApiOperation(value = "用户的简历列表",response = Resume.class,responseContainer = "List")
     public ApiResponse resultList(){
 
