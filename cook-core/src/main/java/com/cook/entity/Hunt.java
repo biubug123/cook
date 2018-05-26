@@ -31,6 +31,8 @@ public class Hunt {
     public Hunt() {
     }
 
+
+
     public Hunt(String id, String salary, Integer browseCount, String resumeId, String jobId, String foodTypeId, Long huntDate, String workArea) {
         this.id = id;
         this.salary = salary;

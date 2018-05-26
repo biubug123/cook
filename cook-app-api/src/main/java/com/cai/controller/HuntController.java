@@ -18,7 +18,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/hunt")
-@Api(value = "/hunt",description = "求职Api")
+@Api(value = "/hunt",description = "已测",tags = "求职Api")
 public class HuntController {
 
     @Autowired
@@ -26,9 +26,9 @@ public class HuntController {
 
     @GetMapping(value =  "/listByType")
     @ResponseBody
-    @ApiOperation(value = "求职列表(分页)",response = Hunt.class,responseContainer = "List")
-    public ApiResponse listHunt(@RequestParam(value = "pageNum", defaultValue = "0") Integer pageNum,
-                                @ApiParam(value = "区域-0  职位-1 薪资-2 招聘方-3 发布时间-4 工作经验-5")@RequestParam("conditionType") Short type,
+    @ApiOperation(value = "求职列表(分页)",response = Hunt.class,responseContainer = "List",notes = "测试参数(顺序): 1-1-收银员，1-0-广东省天河区")
+    public ApiResponse listHunt(@RequestParam(value = "pageNum",required = false,defaultValue = "1") Integer pageNum,
+                                @ApiParam(value = "0-区域  1-职位 2-薪资 3-招聘方 4-发布时间 5-工作经验")@RequestParam("conditionType") Short type,
                                 @ApiParam(value = "区域id里的内容")@RequestParam("conditionDetail") String conditionDetail) {
         // 分页查询单页面内容大小
         int pageSize = 10;
@@ -40,7 +40,7 @@ public class HuntController {
 
     @GetMapping(value = "/getUser/{resumeId}")
     @ResponseBody
-    @ApiOperation(value = "求职详情",response = HuntDetail.class)
+    @ApiOperation(value = "求职详情",response = HuntDetail.class,notes = "测试参数: aa230318-096d-4a63-a94e-0a7e630da4de")
     public ApiResponse getHuntDetailByResumeId(@ApiParam(value = "简历id")@PathVariable("resumeId")String resumeId) {
         HuntDetail huntDetail = huntService.getHuntDetailByResumeId(resumeId);
 
@@ -49,7 +49,7 @@ public class HuntController {
 
     @GetMapping(value = "/jobRecommend")
     @ResponseBody
-    @ApiOperation(value = "求职详情里的职位推荐",response = HuntDetail.class,responseContainer = "List")
+    @ApiOperation(value = "求职详情里的职位推荐",response = HuntDetail.class,responseContainer = "List",notes = "测试参数:收银")
     public ApiResponse listHuntByKeyword(@ApiParam(value = "职位名称")@RequestParam("jobName")String jobName) {
         return ApiResponse.ofSuccess(huntService.listHuntDetailByKeyword(jobName));
     }

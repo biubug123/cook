@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@Api(value = "/recruit",description = "招聘Api")
+@Api(value = "/recruit",description = "已测",tags = "招聘Api")
 public class RecruitController {
 
     private RecruitService recruitService;
@@ -30,27 +30,35 @@ public class RecruitController {
     }
 
     @GetMapping("/recruit/{publisherId}")
-    @ApiOperation(value = "招聘详情(多个职位)",response = Recruit.class,responseContainer = "List")
+    @ApiOperation(value = "招聘详情(详情多个职位)",response = Recruit.class,responseContainer = "List",notes = "测试参数:53b3bbba-b9e2-41d3-b2ee-0b29ce764b18")
     public ApiResponse listRecruit(@PathVariable("publisherId")String publisherId) {
         return ApiResponse.ofSuccess(recruitService.listRecruit(publisherId));
     }
 
     @GetMapping("/recruit/jobRecommend")
-    @ApiOperation(value = "职位推荐",response = JobRecommend.class,responseContainer = "List")
+    @ApiOperation(value = "职位推荐",response = JobRecommend.class,responseContainer = "List",notes = "测试参数:店长")
     public ApiResponse listJobRecommend(@RequestParam("jobName")String jobName) {
         return ApiResponse.ofSuccess(recruitService.listJobRecommend(jobName));
     }
 
     @PostMapping("/userApplyRecruit")
     @ApiOperation(value = "用户申请招聘")
-    public ApiResponse insertUserApply(@RequestBody UserApply userApply) {
-        return ApiResponse.ofSuccess(recruitService.insertUserApply(userApply));
+    public ApiResponse insertUserApply(@ApiParam(value = "招聘id") @RequestParam("recruitId") String recruitId,
+                                       @ApiParam(value = "招聘形式 0-代招,1:企业") @RequestParam("recruitId") Short recruitType,
+                                       @ApiParam(value = "发布者id") @RequestParam("publisherId") String publisherId,
+                                       @ApiParam(value = "发布者名称") @RequestParam("publisherName") String publisherName,
+                                       @ApiParam(value = "菜系名称") @RequestParam("foodTypeName") String foodTypeName,
+                                       @ApiParam(value = "职位名称") @RequestParam("jobName") String jobName) {
+
+        String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";
+
+        return ApiResponse.ofSuccess(recruitService.insertUserApply(userId,recruitId,recruitType,publisherId,publisherName,foodTypeName,jobName));
     }
 
     @GetMapping("/recruit/listByType")
-    @ApiOperation(value = "招聘列表(分页)",response = RecruitDto.class,responseContainer = "List")
+    @ApiOperation(value = "招聘列表(分页)",response = RecruitDto.class,responseContainer = "List",notes = "测试参数:1-0-广东省广州市天河区")
     public ApiResponse listRecruit2(@RequestParam(value = "pageNum", defaultValue = "0") Integer pageNum,
-                                    @ApiParam(value = "区域-0  职位-1 薪资-2 招聘方-3 发布时间-4 工作经验-5") @RequestParam("conditionType") Short type,
+                                    @ApiParam(value = "0-区域  1-职位 2-薪资 3-招聘方 4-发布时间  5-工作经验") @RequestParam("conditionType") Short type,
                                     @ApiParam(value = "条件内容") @RequestParam("conditionDetail") String conditionDetail) {
         // 分页查询单页面内容大小
         int pageSize = 10;
@@ -62,7 +70,7 @@ public class RecruitController {
     }
 
     @GetMapping("/recruit/getDetail")
-    @ApiOperation(value = "招聘详情",response = RecruitDetail.class)
+    @ApiOperation(value = "招聘详情",response = RecruitDetail.class,notes = "测试参数:'89fa2aaf-7975-4747-9d79-2baab931d609',1")
     public ApiResponse listRecruitDetail(@RequestParam("recruitId")String recruitId,
                                          @RequestParam("recruitType")Short recruitType) {
         return  ApiResponse.ofSuccess(recruitService.getRecruitDetail(recruitId,recruitType));

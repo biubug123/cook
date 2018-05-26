@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("consult")
-@Api(value = "consult", description = "资讯评论相关")
+@Api(value = "consult", description = "已测",tags = "资讯评论相关")
 public class ConsultController {
 	
 	@Autowired
@@ -23,7 +23,7 @@ public class ConsultController {
 	//	评论列表（分页）
 //	 新增：  添加一个是否已经对该评论进行了点赞的提示
 //	 待解决：从seesion中获取用户信息，列表中要判断用户是否已经点赞过
-	@ApiOperation(value = "获取某一资讯内的全部评论", notes = "待处理：点赞问题")
+	@ApiOperation(value = "获取某一资讯内的全部评论", notes = "待处理：点赞问题; --测试参数:d8adbf7f-bcb0-4d15-b7a7-a16a65e05617")
 	@GetMapping(value = "commentList/{consultId}/{pageNum}")
 	public ApiResponse commentList( @ApiParam(name = "consultId", value = "资讯id", required = true) @PathVariable String consultId,
 									@ApiParam(name = "pageNum", value = "页码", required = true) @PathVariable int pageNum ) {
@@ -32,8 +32,8 @@ public class ConsultController {
 	}
 	
 	//	资讯列表按类型划分（分页）
-	@ApiOperation(value = "获取资讯全部列表", notes = "0：饮食相关，1：日常生活")
-	@PostMapping(value = "consultList")
+	@ApiOperation(value = "获取资讯全部列表", notes = "0：饮食相关，1：日常生活;--测试参数 0-1")
+	@GetMapping(value = "consultList")
 	public ApiResponse consultList( @ApiParam(name = "consultType", value = "所属类型", required = true) @RequestParam(value = "consultType", defaultValue = "0") int consultType,
 									@ApiParam(name = "pageNum", value = "页码", required = true) @RequestParam("pageNum") int pageNum ) {
 		PageInfo pageInfo = consultService.consultList( consultType, pageNum );
@@ -61,7 +61,7 @@ public class ConsultController {
 	}
 	
 	// 资讯详情
-	@ApiOperation(value = "通过资讯id获取资讯详情")
+	@ApiOperation(value = "通过资讯id获取资讯详情",notes = "测试参数:d8adbf7f-bcb0-4d15-b7a7-a16a65e05617")
 	@GetMapping(value = "getArticle/{consultId}")
 	public ApiResponse getArticle( @ApiParam(name = "consultId", value = "资讯id", required = true) @PathVariable String consultId ) {
 		return ApiResponse.ofSuccess( consultService.getArticle( consultId ) );

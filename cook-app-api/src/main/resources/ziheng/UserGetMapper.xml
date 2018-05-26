@@ -71,7 +71,7 @@
     </select>
 
     <select id="listProxy" resultType="com.ziheng.dto.userGet.Job">
-        SELECT p.id,r.recruit_type AS idType,ft.icon_name AS iconName,
+        SELECT r.id,r.recruit_type AS recruitType,ft.icon_name AS iconName,
         j.name AS jobName,r.salary,p.name AS publisherName,r.publish_date AS publishDate
         FROM proxy p
         INNER JOIN recruit r ON r.publisher_id = p.id
@@ -87,8 +87,9 @@
             <when test="articleType == 0">
                 SELECT c.id AS consultId,
                 c.consult_type AS consultType,
-                c.article_type AS article_type,
+                c.article_type AS articleTtype,
                 it.title,it.admire_count AS admireCount,
+                c.publisher_name AS publisherName,
                 c.publish_date AS publishDate,
                 it.image_name AS imageNames
                 FROM consult c
@@ -105,11 +106,13 @@
             <when test="articleType == 1">
                 SELECT c.id AS consultId,
                 c.consult_type AS consultType,
-                c.article_type AS article_type,
+                c.article_type AS articleType,
+                c.publisher_name AS publisherName,
                 v.title,v.admire_count AS admireCount,
                 c.publish_date AS publishDate,
                 v.video_img_name AS videoImageName,
                 v.video_url AS videoUrl,
+                v.img_name AS imageNames,
                 v.play_count AS playCount
                 FROM consult c
                 INNER JOIN video v ON c.article_id = v.id
@@ -124,18 +127,14 @@
             </when>
         </choose>
     </select>
+
     <!--获取职位收藏和浏览 jobType: 0 - 招聘的职位: 1 - 求职的职位  recruitType: 0 - 代招 1-企业 -->
     <select id="jobCollectOrBroseList" resultType="com.ziheng.dto.userGet.Job">
         <choose>
             <when test="jobType == 0">
-                SELECT uc.content_id AS id,ft.icon_name AS iconName,
+                SELECT uc.content_id AS id,ft.icon_name AS iconName,r.recruit_type AS recruitType,
                 j.name AS jobName,r.salary,r.publish_date AS publishDate
-                <if test="recruitType == 0">
-                   , p.name AS publisherName
-                </if>
-                <if test="recruitType == 1">
-                    , e.name AS publisherName
-                </if>
+                ,pub.name AS publisherName
                 <if test='type == "collect"'>
                     ,uc.collect_type AS idType
                     From user_collect uc
@@ -146,10 +145,10 @@
                 </if>
                 INNER JOIN recruit r ON uc.content_id = r.id
                 <if test="recruitType == 0">
-                    INNER JOIN proxy p ON p.id = r.publisher_id
+                    INNER JOIN proxy pub ON pub.id = r.publisher_id
                 </if>
                 <if test="recruitType == 1">
-                    INNER JOIN enterprise e ON e.id = r.publisher_id
+                    INNER JOIN enterprise pub ON pub.id = r.publisher_id
                 </if>
                 INNER JOIN job j ON j.id = r.job_id
                 INNER JOIN food_type ft ON ft.id = r.food_type_id
@@ -162,7 +161,8 @@
             </when>
             <when test="jobType == 1">
                 SELECT uc.content_id AS id,ft.icon_name AS iconName,
-                j.name AS jobName,h.salary,h.hunt_date AS publishDate
+                j.name AS jobName,h.salary,h.hunt_date AS publishDate,
+                syi.username AS publisherName
                 <if test='type == "collect"'>
                     ,uc.collect_type AS idType
                     From user_collect uc
@@ -174,6 +174,9 @@
                 INNER JOIN hunt h ON uc.content_id = h.id
                 INNER JOIN job j ON j.id = h.job_id
                 INNER JOIN food_type ft ON ft.id = h.food_type_id
+                INNER JOIN resume re ON re.id = h.resume_id
+                INNER JOIN sys_user su ON su.id = re.user_id
+                INNER JOIN sys_user_info syi ON syi.sys_user_id = su.id
                 <if test='type == "collect"'>
                     WHERE uc.user_id = #{userId} AND uc.collect_type = 1
                 </if>

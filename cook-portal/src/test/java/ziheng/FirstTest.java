@@ -109,18 +109,13 @@ public class FirstTest {
     @Test
     public void proxyRecruit(){
 
-        String phone = RandomStringUtils.randomNumeric(11);
-        recruitPostService.insertRecruitByProxy("芳先生",
+        String phone = "18028660208";
+        recruitPostService.insertRecruitByProxy("张先生",
                 phone,
-                "广东省广州市天河区", "广东省广州市天河区公元前3号街","1d7a14f2-1aa9-4581-8b85-194036b77f3e", "3000-4000",2,"发呆","aaab39c1-3540-4009-933e-6f4592597c02",
+                "广东省广州市天河区", "广东省广州市天河区公元前3号街","1d7a14f2-1aa9-4581-8b85-194036b77f3e", "3000-4000",2,"牛","aaab39c1-3540-4009-933e-6f4592597c02",
                 "a7ef2c02-c2ed-4d92-9a5c-b14703fa617d","14cd79d8-2148-49f1-b176-1ebc398c815d",
         "本科","一年工作经验","20岁以上");
 
-        recruitPostService.insertRecruitByProxy("芳先生",
-                phone,
-                "广东省广州市天河区", "广东省广州市天河区3号街","1d7a14f2-1aa9-4581-8b85-194036b77f3e", "3000-4000",2,"发呆","45abe7e2-2851-4bdd-9792-d1ac1a9f9434",
-                "a7ef2c02-c2ed-4d92-9a5c-b14703fa617d,78bfca72-0ccc-4ecb-a79f-34ddfffee7b3","14cd79d8-2148-49f1-b176-1ebc398c815d",
-                "本科","一年工作经验","20岁以上");
 
 
     }
@@ -132,11 +127,16 @@ public class FirstTest {
                         "b535dc64-c353-4f93-88e0-530077f8b713,a7ef2c02-c2ed-4d92-9a5c-b14703fa617d","14cd79d8-2148-49f1-b176-1ebc398c815d","大学","10年","10岁以上");
 
     }
+    //新增用户浏览
+    @Test
+    public void userBrowse(){
+        userPostService.insertUserBrowse("1d7a14f2-1aa9-4581-8b85-194036b77f3e",(short)1,"2a7e6d0b-ccf9-4d49-9345-a939bbc58f0c");
+    }
 
-    //用户收藏
+    //新增用户收藏
     @Test
     public void userCollect(){
-        userPostService.insertUserCollect("5c76cdb0-9422-4537-ac83-0ba709425bab",(short)1,"5c31abc2-9948-4056-b5eb-b71093c07148");
+        userPostService.insertUserCollect("5c76cdb0-9422-4537-ac83-0ba709425bab",(short)1,"2a7e6d0b-ccf9-4d49-9345-a939bbc58f0c");
     }
 
     //新增简历
@@ -165,7 +165,7 @@ public class FirstTest {
     //用户发表图文资讯
     @Test
     public void releaseVideoConsult(){
-        consultPostService.releaseVideoConsult((short)0,"1d7a14f2-1aa9-4581-8b85-194036b77f3e","陈大师","陈视频教程(2)","http://???.com","http://???.com","这是视频教程");
+        consultPostService.releaseVideoConsult((short)0,"1d7a14f2-1aa9-4581-8b85-194036b77f3e","陈大师","陈视频教程(2)","http://???.com","http://???.com","http://????","这是视频教程");
 
     }
 

@@ -87,16 +87,16 @@ public class ConsultServiceImpl implements ConsultPostService{
                                        String title,
                                        String imageName,
                                        String videoImgName,
+                                       String videoUrl,
                                        String content) {
 
         String articleId = UUID.randomUUID().toString();
         //上传视频到第三方
         String randomName = RandomStringUtils.randomAlphabetic(6);
         //上传后的视频地址
-        String videoUrl = "";
 
         Video video = new Video(articleId,title,randomName,0,0,imageName,videoUrl,videoImgName,content);
-        //新增视频
+        //新增视频地址
         int videoResult = videoMapper.insert(video);
         if(videoResult > 0){
             Consult consult = new Consult(UUID.randomUUID().toString(),(short)1,consultType,

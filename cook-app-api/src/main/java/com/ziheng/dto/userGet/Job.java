@@ -1,5 +1,6 @@
 package com.ziheng.dto.userGet;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 
 /**
@@ -10,11 +11,16 @@ import lombok.Data;
 @Data
 public class Job implements Comparable<Job>{
 
+
+
     //招聘表id 或 求职表id
     private String id;
 
     //id类型 0:招聘表 1:求职表
     private Short idType;
+
+    //招聘类型 0:代招 1:求职
+    private Short recruitType;
 
     private String iconName;
 

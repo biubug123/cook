@@ -1,6 +1,8 @@
 package com.cai.service;
 
 import com.cai.dto.*;
+import io.swagger.annotations.ApiParam;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.TreeSet;
@@ -15,7 +17,13 @@ public interface RecruitService {
     //职位推荐
     TreeSet<JobRecommend> listJobRecommend(String jobName);
 
-    int insertUserApply(UserApply userApply);
+    int insertUserApply(String userId,
+                        String recruitId,
+                        Short recruitType,
+                        String publisherId,
+                        String publisherName,
+                        String foodTypeName,
+                        String jobName);
 
     RecruitDetail getRecruitDetail(String recruitId,Short recruitType);
 

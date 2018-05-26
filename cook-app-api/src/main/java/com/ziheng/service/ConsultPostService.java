@@ -18,7 +18,9 @@ public interface ConsultPostService {
                                 String title,
                                 String imageName,
                                 String videoImgName,
-                                String content);
+                                String videoUrl,
+                                String content
+                                );
 
 
 }

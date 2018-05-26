@@ -8,6 +8,7 @@ import com.cook.response.ApiResponse;
 import com.cook.security.jwt.JwtDto;
 import com.cook.util.JwtDecode;
 import com.cook.util.PhoneAndEmailUtil;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.ziheng.dao.UserGetDao;
 import com.ziheng.dto.userGet.*;
 import com.ziheng.service.UserGetService;
@@ -39,7 +40,7 @@ import java.util.regex.Pattern;
  **/
 @RestController
 @RequestMapping("/user")
-@Api(value = "/user",description = "用户相关api")
+@Api(value = "/user",tags = "用户相关api",description = "已测")
 public class UserController {
 
     private UserGetDao userGetDao;
@@ -159,10 +160,10 @@ public class UserController {
       * @return: com.cook.response.ApiResponse
       */
     @GetMapping("/getBrowseList")
-    @ApiOperation(value = "根据类型获取浏览列表 0/1:招聘的职位和求职的职位 2:咨询的收藏",response = Job.class,responseContainer = "List")
-    public ApiResponse getBrowsetList(@ApiParam(value = "收藏类型 0/1:招聘的职位和求职的职位 2:咨询的收藏")@RequestParam("collectType") Short collectType){
+    @ApiOperation(value = "根据类型获取浏览列表 0/1:招聘的职位和求职的职位 2:咨询的浏览",response = Job.class,responseContainer = "List")
+    public ApiResponse getBrowseList(@ApiParam(value = "收藏类型 0/1:招聘的职位和求职的职位 2:咨询的浏览")@RequestParam("browseType") Short browseType){
         String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";
-        return userGetService.browseListByType(userId,collectType);
+        return userGetService.browseListByType(userId,browseType);
 
     }
 
@@ -175,6 +176,7 @@ public class UserController {
       * @return: com.cook.response.ApiResponse
       */    
     @GetMapping("/getProxyList")
+    //@JsonView(Job.proxyList.class)
     @ApiOperation(value = "用户的代招管理页面",response = Proxy.class,responseContainer = "List")
     public ApiResponse getProxyList(){
         String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";

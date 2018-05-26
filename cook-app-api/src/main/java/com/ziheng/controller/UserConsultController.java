@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/userConsult")
-@Api(value = "/userConsult",description = "资讯发布Api")
+@Api(value = "/userConsult",description = "已测",tags = "资讯发布Api")
 public class UserConsultController {
 
     private ConsultPostService consultPostService;
@@ -58,10 +58,11 @@ public class UserConsultController {
                                            @RequestParam String title,
                                            @RequestParam String imageName,
                                            @RequestParam String videoImgName,
+                                           @RequestParam String videoUrl,
                                            @RequestParam String content){
 
         String userId = "1d7a14f2-1aa9-4581-8b85-194036b77f3e";
-        return ApiResponse.ofSuccess(consultPostService.releaseVideoConsult(consultType,userId,publisherName,title,imageName,videoImgName,content));
+        return ApiResponse.ofSuccess(consultPostService.releaseVideoConsult(consultType,userId,publisherName,title,imageName,videoImgName,videoUrl,content));
 
     }
 }
