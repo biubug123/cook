@@ -1,15 +1,14 @@
 package ziheng;
 
+import com.alibaba.fastjson.JSONArray;
 import com.cai.service.HuntService;
 import com.cai.service.RecruitService;
 import com.cook.CookApplication;
 import com.cook.dao.*;
-import com.cook.entity.Enterprise;
-import com.cook.entity.Job;
-import com.cook.entity.SysUser;
-import com.cook.entity.Welfare;
+import com.cook.entity.*;
 import com.ziheng.service.ConsultPostService;
 import com.ziheng.service.UserPostService;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -54,6 +56,11 @@ public class FirstTest {
     @Autowired
     private ConsultPostService consultPostService;
 
+    @Autowired
+    private StreetMapper streetMapper;
+
+    @Autowired
+    private RegionMapper regionMapper;
     //新用户
     @Test
     public void userTest(){
@@ -177,7 +184,23 @@ public class FirstTest {
 
     }
 
+    @Test
+    public void insertRegion() throws IOException {
+        File file = new File("/Users/zhangziheng/Desktop/street.json");
+        String content= FileUtils.readFileToString(file,"UTF-8");
+        List<Street> streetList = JSONArray.parseArray(content,Street.class);
+        System.out.println(streetList.size());
 
+        for (int i = 0; i < streetList.size(); i++) {
+            Street street = streetList.get(i);
+            streetMapper.insert(street);
+        }
+
+        System.out.println("完成");
+
+
+
+    }
 
 
 }
