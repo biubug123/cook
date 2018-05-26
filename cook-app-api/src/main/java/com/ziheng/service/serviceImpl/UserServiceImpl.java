@@ -72,10 +72,12 @@ public class UserServiceImpl implements UserGetService,UserPostService {
 
         List<Resume> resumeList = userGetDao.resumeList(userId);
 
-        //出生日期转换为用户年龄
-        for(Resume resume:resumeList){
-            Long birthDate = resume.getBirthDate();
-            resume.setAge(ZiHengUtil.getAgeByBirth(birthDate));
+        if(resumeList!=null && resumeList.size()>0){
+            //出生日期转换为用户年龄
+            for(Resume resume:resumeList){
+                Long birthDate = resume.getBirthDate();
+                resume.setAge(ZiHengUtil.getAgeByBirth(birthDate));
+            }
         }
 
         return resumeList;
@@ -177,11 +179,11 @@ public class UserServiceImpl implements UserGetService,UserPostService {
             //图文
             consultTreeSet.addAll(toImageList(userGetDao.consultCollectOrBrowseList(userId,(short)0,"collect")));
             //视频
-            consultTreeSet.addAll(userGetDao.consultCollectOrBrowseList(userId,(short)1,"collect"));
+            consultTreeSet.addAll(toImageList(userGetDao.consultCollectOrBrowseList(userId,(short)1,"collect")));
             return ApiResponse.ofSuccess(consultTreeSet);
         }
 
-        return ApiResponse.ofError(ApiResponse.Status.INTERNAL_SERVER_ERROR);
+        return ApiResponse.ofError(ApiResponse.Status.NOT_VALID_PARAM);
     }
 
     /**
@@ -207,22 +209,25 @@ public class UserServiceImpl implements UserGetService,UserPostService {
             //图文
             consultTreeSet.addAll(toImageList(userGetDao.consultCollectOrBrowseList(userId,(short)0,"browse")));
             //视频
-            consultTreeSet.addAll(userGetDao.consultCollectOrBrowseList(userId,(short)1,"browse"));
+            consultTreeSet.addAll(toImageList(userGetDao.consultCollectOrBrowseList(userId,(short)1,"browse")));
             return ApiResponse.ofSuccess(consultTreeSet);
         }
 
-        return ApiResponse.ofError(ApiResponse.Status.INTERNAL_SERVER_ERROR);
+        return ApiResponse.ofError(ApiResponse.Status.NOT_VALID_PARAM);
     }
 
 
 
     //图片字符串转字符串数组
     private List<Consult> toImageList(List<Consult> consultList){
-        for (Consult consult:consultList){
-            String imageName = consult.getImageNames();
-            String[] list = imageName.split(",");
-            consult.setImageName(list);
+        if(consultList != null && consultList.size()>0){
+            for (Consult consult:consultList){
+                String imageName = consult.getImageNames();
+                String[] list = imageName.split(",");
+                consult.setImageName(list);
+            }
         }
+
         return consultList;
     }
 

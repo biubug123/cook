@@ -19,6 +19,9 @@ public class Consult implements Comparable<Consult>{
     //标题
     private String title;
 
+    //发布者名称
+    private String publisherName;
+
     //视频图片名
     private String videoImageName;
 

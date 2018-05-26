@@ -69,22 +69,27 @@ public class RecruitServiceImpl implements RecruitService {
 
     /**
      * 插入用户求职申请
-     * @param userApply
      * @return
      */
     @Override
-    public int insertUserApply(UserApply userApply) {
+    public int insertUserApply(String userId,
+                               String recruitId,
+                               Short recruitType,
+                               String publisherId,
+                               String publisherName,
+                               String foodTypeName,
+                               String jobName) {
 
         String id = UUID.randomUUID().toString();
 
         long applyDate = new Date().getTime() / 1000;
 
         UserRecruitApply userRecruitApply = new UserRecruitApply(id,
-                applyDate,userApply.getUserId(),
-                userApply.getRecruitId(),
-                (short)0,userApply.getRecruitType(),userApply.getPublisherId(),
-                userApply.getPublisherName(),userApply.getFoodTypeName(),
-                userApply.getJobName());
+                applyDate,userId,
+                recruitId,
+                (short)0,recruitType,publisherId,
+                publisherName,foodTypeName,
+                jobName);
 
 
         return userRecruitApplyMapper.insert(userRecruitApply);
@@ -99,11 +104,14 @@ public class RecruitServiceImpl implements RecruitService {
     @Override
     public RecruitDetail getRecruitDetail(String recruitId,Short recruitType) {
         RecruitDetail recruitDetail = recruitDao.getRecruitDetail(recruitId,recruitType);
-
+        if (recruitDetail == null){
+            return null;
+        }
         String welfare = recruitDetail.getWelfareIdList();
-        String[] list = welfare.split(",");
-        recruitDetail.setWelfareList(list);
-
+        if(welfare != null){
+            String[] list = welfare.split(",");
+            recruitDetail.setWelfareList(list);
+        }
         return recruitDetail;
     }
 
@@ -140,8 +148,8 @@ public class RecruitServiceImpl implements RecruitService {
         if(proxyResult>0){
             com.cook.entity.Recruit recruit = new com.cook.entity.Recruit(UUID.randomUUID().toString(),
                     salary,recruitPeopleNum,
-                    (short)0,description,publishDate,publisherId,foodTypeId,welfareList,jobId,education,experienceRequire,ageRequire);
-            return recruitMapper.insertSelective(recruit);
+                    (short)0,description,publishDate,0,0,publisherId,foodTypeId,welfareList,jobId,education,experienceRequire,ageRequire);
+            return recruitMapper.insert(recruit);
         }
         throw new RuntimeException("代理发布招聘失败");
     }
@@ -168,9 +176,9 @@ public class RecruitServiceImpl implements RecruitService {
         //发布招聘
         com.cook.entity.Recruit recruit = new com.cook.entity.Recruit(UUID.randomUUID().toString(),
                 salary,recruitPeopleNum,
-                (short)1,description,publishDate,enterpriseId,foodTypeId,welfareList,jobId,education,experienceRequire,ageRequire);
+                (short)1,description,publishDate,0,0,enterpriseId,foodTypeId,welfareList,jobId,education,experienceRequire,ageRequire);
 
-        return recruitMapper.insertSelective(recruit);
+        return recruitMapper.insert(recruit);
     }
 
     /**
@@ -198,11 +206,15 @@ public class RecruitServiceImpl implements RecruitService {
 
     //福利字符串转字符串数组
     private List<RecruitDto> toWelfareList(List<RecruitDto> recruitDtoList){
-        for (RecruitDto recruitDto:recruitDtoList){
-            String welfare = recruitDto.getWelfare();
-            String[] list = welfare.split(",");
-            recruitDto.setWelfareList(list);
+
+        if (recruitDtoList != null && recruitDtoList.size()>0){
+            for (RecruitDto recruitDto:recruitDtoList){
+                String welfare = recruitDto.getWelfare();
+                String[] list = welfare.split(",");
+                recruitDto.setWelfareList(list);
+            }
         }
+
         return recruitDtoList;
     }
 

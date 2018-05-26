@@ -32,7 +32,7 @@
     <select id="getHuntDetailByResumeId" resultType="com.cai.dto.HuntDetail">
         SELECT h."id" AS huntId, h."resume_id" AS resumeId,
         si."username", si."signature", si."head_img_name" AS headImgName, f."name" AS foodTypeName, r."education"
-        , r."work_year" AS workYear, si."address", j."name" AS jobName, h.salary, h."browse_count", h."hunt_date" AS
+        , r."work_year" AS workYear, si."address", j."name" AS jobName, h.salary, h."browse_count", h."hunt_date" AS publishDate
         FROM resume r
         INNER JOIN sys_user s ON r."user_id" = s."id"
         INNER JOIN sys_user_info si ON s."id" = si."sys_user_id"
@@ -40,12 +40,12 @@
         INNER JOIN food_type f ON h."food_type_id" = f."id"
         INNER JOIN job j ON h."job_id" = j."id"
         <if test="resumeId != null">
-            WHERE r."id" = '${resumeId}'
+            WHERE r."id" = #{resumeId}
         </if>
     </select>
 
     <select id="listHuntDetailByKeyword" resultType="com.cai.dto.HuntDetail">
-         SELECT r."id" AS resumeId, si."username", j."name" AS jobName, h."hunt_date" AS publishDate,h.salary
+         SELECT r."id" AS resumeId,h.id AS huntId,si."username", j."name" AS jobName, h."hunt_date" AS publishDate,h.salary
         FROM resume r
         INNER JOIN sys_user s ON r."user_id" = s."id"
         INNER JOIN sys_user_info si ON s."id" = si."sys_user_id"

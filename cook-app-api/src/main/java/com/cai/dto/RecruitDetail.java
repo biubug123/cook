@@ -1,6 +1,7 @@
 package com.cai.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.models.auth.In;
 import lombok.Data;
 
 import java.util.List;
@@ -11,17 +12,17 @@ public class RecruitDetail {
 
     private String salary;
 
-    private int recruitPeopleNum;
+    private Integer recruitPeopleNum;
 
-    private int recruitType;
+    private Integer recruitType;
 
     private String description;
 
-    private long publishDate;
+    private Long publishDate;
 
-    private int applyPeopleNum;
+    private Integer applyPeopleNum;
 
-    private int browseCount;
+    private Integer browseCount;
 
     private String publisherId;
 
