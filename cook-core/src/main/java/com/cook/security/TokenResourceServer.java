@@ -1,7 +1,7 @@
 package com.cook.security;
 
-import com.cook.security.thirdPartyLogin.SocialSecurityConfig;
-import com.cook.security.thirdPartyLogin.socialJwt.OpenIdAuthenticationSecurityConfig;
+import com.cook.security.social.SocialSecurityConfig;
+import com.cook.security.social.socialJwt.OpenIdAuthenticationSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;

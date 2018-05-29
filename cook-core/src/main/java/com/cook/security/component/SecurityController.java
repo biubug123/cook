@@ -2,8 +2,8 @@ package com.cook.security.component;
 
 import com.cook.dao.SysUserMapper;
 import com.cook.response.ApiResponse;
-import com.cook.security.thirdPartyLogin.common.SignUpUtils;
-import com.cook.security.thirdPartyLogin.common.SocialUserInfo;
+import com.cook.security.social.common.SignUpUtils;
+import com.cook.security.social.common.SocialUserInfo;
 import com.cook.service.SecurityService;
 import com.cook.util.PhoneAndEmailUtil;
 import io.swagger.annotations.ApiOperation;
