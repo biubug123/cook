@@ -67,7 +67,7 @@ public class FirstTest {
             String phone = "18926269831";
             String password =  "admin123";
             String accountNum = "admin123";
-            userPostService.insertUser(phone,password,"女",accountNum);
+            //userPostService.insertUser(phone,password,"女",accountNum);
         System.out.println("执行");
     }
 

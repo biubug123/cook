@@ -234,27 +234,7 @@ public class UserController {
     }
 
 
-    /**
-      * @Description: 注册新用户
-      * @Author: ziHeng
-      * @Date: 2018/5/17 下午9:26
-      * @Param: [phone:手机号, password:密码, accountNum:账号，可选]
-      * @return: com.cook.response.ApiResponse
-      */
-    @PostMapping("/insertUser")
-    @ApiOperation(value = "注册新用户")
-    public ApiResponse insertUser(@ApiParam(value = "手机号")@RequestParam("phone") String phone,
-                                  @ApiParam(value = "密码")@RequestParam("password") String password,
-                                  @ApiParam(value = "性别")@RequestParam("sex") String sex,
-                                  @ApiParam(value = "账号")@RequestParam(value = "accountNum",required = false) String accountNum) throws ValidationException {
 
-        if(phone!=null&&PhoneAndEmailUtil.checkTelephone(phone)){
-            return ApiResponse.ofSuccess(userPostService.insertUser(phone,password,sex,accountNum));
-        }else {
-            throw new ValidationException("不合法的手机号");
-        }
-
-    }
 
 
     /**

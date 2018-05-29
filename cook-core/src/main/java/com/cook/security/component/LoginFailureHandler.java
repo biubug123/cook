@@ -1,9 +1,10 @@
-package com.cook.security;
+package com.cook.security.component;
 
 import com.alibaba.fastjson.JSON;
 import com.cook.response.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ import java.io.IOException;
  * @create: 2018-05-24 09:54
  **/
 @Component
+@ConditionalOnProperty(prefix = "cook.security",name = "token",havingValue = "true")
 public class LoginFailureHandler implements AuthenticationFailureHandler {
 
     private static Logger logger= LoggerFactory.getLogger(LoginFailureHandler.class);

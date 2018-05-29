@@ -1,11 +1,13 @@
-package com.cook.security;
+package com.cook.security.component;
 
 import com.alibaba.fastjson.JSON;
+import com.cook.response.ApiResponse;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.codec.Base64;
@@ -27,7 +29,8 @@ import java.io.IOException;
  * @author: ziHeng
  * @create: 2018-05-24 09:54
  **/
-//@Component
+@Component
+@ConditionalOnProperty(prefix = "cook.security",name = "token",havingValue = "true")
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private static Logger logger= LoggerFactory.getLogger(LoginSuccessHandler.class);
@@ -76,6 +79,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(JSON.toJSONString(token));
         }
+        //返回界面token信息
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(JSON.toJSONString(ApiResponse.ofError(ApiResponse.Status.NOT_VALID_HEADER)));
      }
 
     //Basic64解码工具
