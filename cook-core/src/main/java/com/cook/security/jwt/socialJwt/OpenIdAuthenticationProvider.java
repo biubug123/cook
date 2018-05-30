@@ -1,4 +1,4 @@
-package com.cook.security.social.socialJwt;
+package com.cook.security.jwt.socialJwt;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -34,18 +34,18 @@ public class OpenIdAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
         OpenIdAuthenticationToken authenticationToken = (OpenIdAuthenticationToken) authentication;
-
+        //空的openId集合
         Set<String> providerUserIds = new HashSet<String>();
+        //获取openId
         providerUserIds.add((String) authenticationToken.getPrincipal());
-        //去数据库查找
+        //sys_userConnection表查找
         Set<String> userIds = usersConnectionRepository.findUserIdsConnectedTo(authenticationToken.getProviderId(), providerUserIds);
-
         if(CollectionUtils.isEmpty(userIds) || userIds.size() != 1) {
             throw new InternalAuthenticationServiceException("无第三方登录信息");
         }
-
+        //取集合第一个userid
         String userId = userIds.iterator().next();
-
+        //传给userDetailService
         UserDetails user = userDetailsService.loadUserByUserId(userId);
 
         if (user == null) {

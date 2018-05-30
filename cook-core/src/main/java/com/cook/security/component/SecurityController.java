@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.ProviderSignInUtils;
@@ -29,6 +30,7 @@ import java.util.UUID;
  **/
 @RestController
 @RequestMapping("/security")
+@ConditionalOnProperty(prefix = "cook.security",name = "token",havingValue = "true")
 public class SecurityController {
 
     private SecurityService securityService;

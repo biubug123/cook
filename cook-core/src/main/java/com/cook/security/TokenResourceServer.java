@@ -1,7 +1,7 @@
 package com.cook.security;
 
 import com.cook.security.social.SocialSecurityConfig;
-import com.cook.security.social.socialJwt.OpenIdAuthenticationSecurityConfig;
+import com.cook.security.jwt.socialJwt.OpenIdAuthenticationSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
@@ -44,6 +44,7 @@ public class TokenResourceServer extends ResourceServerConfigurerAdapter{
         if(socialSecurityConfig !=null){
             http.apply(socialSecurityConfig);
         }
+
         http.apply(openIdAuthenticationSecurityConfig);
         http.authorizeRequests()
                 .antMatchers("/security/*").permitAll()

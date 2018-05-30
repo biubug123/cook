@@ -1,4 +1,4 @@
-package com.cook.security.social.socialJwt;
+package com.cook.security.jwt.socialJwt;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,10 +15,9 @@ public class OpenIdAuthenticationToken extends AbstractAuthenticationToken {
 
     private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
-    // ~ Instance fields
-    // ================================================================================================
-
+    //openId(providerUserId)
     private final Object principal;
+
     private String providerId;
 
     // ~ Constructors

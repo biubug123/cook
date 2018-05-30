@@ -10,7 +10,7 @@ import org.springframework.social.connect.support.OAuth2ConnectionFactory;
 
 
 /** 
-  * @Description:
+  * @Description: QQ连接数据库工厂
   * @Author: ziHeng
   * @Date: 2018/5/27 下午9:26
   */

@@ -62,6 +62,7 @@ public class WeiXinOAuth2Template extends OAuth2Template {
 
 
 	//refreshToken续命
+    @Override
 	public AccessGrant refreshAccess(String refreshToken, MultiValueMap<String, String> additionalParameters) {
 		
 		StringBuilder refreshTokenUrl = new StringBuilder(REFRESH_TOKEN_URL);
@@ -110,6 +111,7 @@ public class WeiXinOAuth2Template extends OAuth2Template {
 	/**
 	 * 构建获取授权码的请求。也就是引导用户跳转到微信的地址。
 	 */
+	@Override
 	public String buildAuthenticateUrl(OAuth2Parameters parameters) {
 		String url = super.buildAuthenticateUrl(parameters);
 		url = url + "&appid="+clientId+"&scope=snsapi_login";

@@ -1,4 +1,4 @@
-package com.cook.security.social.socialJwt;
+package com.cook.security.jwt.socialJwt;
 
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;

@@ -4,6 +4,7 @@ import com.cook.exception.AppSecretException;
 import com.cook.response.ApiResponse;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionData;
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit;
  * @create: 2018-05-29 21:34
  **/
 @Component
+@ConditionalOnProperty(prefix = "cook.security",name = "token",havingValue = "true")
 public class SignUpUtils {
 
     @Autowired
