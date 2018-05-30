@@ -14,11 +14,12 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 /**
- * @description: jwt-令牌存储配置
+ * @description: socialJwt-令牌存储配置
  * @author: ziHeng
  * @create: 2018-05-24 23:20
  **/
-//@Configuration
+@Configuration
+@ConditionalOnProperty(prefix = "cook.security",name = "token",havingValue = "true")
 public class JwtTokenStoreConfig {
 
 

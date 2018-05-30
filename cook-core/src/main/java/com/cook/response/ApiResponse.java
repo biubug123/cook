@@ -74,6 +74,17 @@ public class ApiResponse {
         return new ApiResponse(status.getCode(), status.getStandardMessage(),null);
     }
 
+    /**
+     * @Description: 错误后返回的api类型
+     * @Author: ziHeng
+     * @Date: 2018/5/9 上午11:31
+     * @Param: [status:传入枚举]
+     * @return: com.cook.response.ApiResponse
+     */
+    public static ApiResponse ofData(Object data,Status status) {
+        return new ApiResponse(status.getCode(), status.getStandardMessage(),data);
+    }
+
 
 
     public enum Status {
@@ -82,10 +93,12 @@ public class ApiResponse {
         NOT_FOUND(404, "Not Found"),
         INTERNAL_SERVER_ERROR(500, "未知的异常"),
         NOT_LOGIN(40001, "用户未登录"),
-        NOT_SUPPORTED_OPERATION(40002, "违法的操作"),
+        NOT_SIGNUP(40002, "用户未注册"),
+        NOT_SUPPORTED_OPERATION(40003, "违法的操作"),
         NOT_VALID_PARAM(40003, "不合法的参数"),
-        FAILURE_LOGIN(40004, "失败的登录");
-
+        FAILURE_LOGIN(40004, "失败的登录"),
+        FAILURE_UESRINFO(40005, "获取用户信息失败"),
+        NOT_VALID_HEADER(40006, "不合法的请求头");
 
         private int code;
         private String standardMessage;

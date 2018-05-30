@@ -1,5 +1,4 @@
 #开发环境
-
 server:
   port: 8080
 spring:
@@ -18,3 +17,25 @@ security:
   basic:
   #关闭security
     enabled: false
+
+cook.security.token: false
+cook.social: false
+cook.social.qq: false
+cook.social.weiXin: false
+cook.social.weiBo: false
+cook.social.filterProcessesUrl: /qqLogin
+
+cook:
+  social:
+    qq:
+      app-id: 100550231
+      app-secret: 69b6ab57b22f3c2fe6a6149274e3295e
+      provider-id: callback.do
+    weiXin:
+      app-id: wxd99431bbff8305a0
+      app-secret: 60f78681d063590a469f1b297feff3c4
+      provider-id: weiXin
+    weiBo:
+      app-id: wxd99431bbff8305a0
+      app-secret: 60f78681d063590a469f1b297feff3c4
+      provider-id: weiBo

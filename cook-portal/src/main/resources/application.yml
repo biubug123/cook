@@ -15,5 +15,6 @@ mybatis:
     - cai/*.xml
     - ziheng/*.xml
     - lin/*.xml
+
 ##  entity包扫描
 #  type-aliases-package: com.cook.web.entity

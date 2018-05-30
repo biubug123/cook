@@ -35,9 +35,6 @@ public class UserServiceImpl implements UserGetService,UserPostService {
 
     private UserBrowseMapper userBrowseMapper;
 
-    private SysUserMapper sysUserMapper;
-
-    private SysUserInfoMapper sysUserInfoMapper;
 
     private UserPostDao userPostDao;
 
@@ -45,16 +42,13 @@ public class UserServiceImpl implements UserGetService,UserPostService {
 
     private HuntMapper huntMapper;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
 
-    public UserServiceImpl(UserGetDao userGetDao, UserCollectMapper userCollectMapper, UserBrowseMapper userBrowseMapper, SysUserMapper sysUserMapper, SysUserInfoMapper sysUserInfoMapper, UserPostDao userPostDao, ResumeMapper resumeMapper, HuntMapper huntMapper) {
+
+    public UserServiceImpl(UserGetDao userGetDao, UserCollectMapper userCollectMapper, UserBrowseMapper userBrowseMapper,UserPostDao userPostDao, ResumeMapper resumeMapper, HuntMapper huntMapper) {
         this.userGetDao = userGetDao;
         this.userCollectMapper = userCollectMapper;
         this.userBrowseMapper = userBrowseMapper;
-        this.sysUserMapper = sysUserMapper;
-        this.sysUserInfoMapper = sysUserInfoMapper;
         this.userPostDao = userPostDao;
         this.resumeMapper = resumeMapper;
         this.huntMapper = huntMapper;
@@ -65,7 +59,7 @@ public class UserServiceImpl implements UserGetService,UserPostService {
       * @Author: ziHeng
       * @Date: 2018/5/16 下午5:39
       * @Param: [userId]
-      * @return: java.util.List<com.ziheng.dto.userGet.Resume>
+      * @return: java.util.List<com.ziheng.common.userGet.Resume>
       */
     @Override
     public List<Resume> resumeList(String userId) {
@@ -88,7 +82,7 @@ public class UserServiceImpl implements UserGetService,UserPostService {
       * @Author: ziHeng
       * @Date: 2018/5/17 上午10:54
       * @Param: [userId:用户id]
-      * @return: java.util.List<com.ziheng.dto.userGet.Consult>
+      * @return: java.util.List<com.ziheng.common.userGet.Consult>
       */
     @Override
     public TreeSet<Consult> consultList(String userId) {
@@ -231,35 +225,7 @@ public class UserServiceImpl implements UserGetService,UserPostService {
         return consultList;
     }
 
-    /**
-      * @Description: 新用户
-      * @Author: ziHeng
-      * @Date: 2018/5/17 下午10:00
-      * @Param: [phone, password, sex, accountNum:账号]
-      * @return: java.lang.Integer
-      */
-    @Override
-    @Transactional
-    public Integer insertUser(String phone, String password,String sex, String accountNum) {
-        String userId = UUID.randomUUID().toString();
-        SysUser sysUser = new SysUser(userId,
-                accountNum,
-                //加密
-                passwordEncoder.encode(password),
-                phone,
-                new Date().getTime()/1000,
-                new Date().getTime()/1000);
-        //用户表插入
-        int userResult = sysUserMapper.insert(sysUser);
-        //信息表插入
-        if(userResult > 0){
-            SysUserInfo sysUserInfo =new SysUserInfo(UUID.randomUUID().toString(),
-                    sex,userId);
-            return sysUserInfoMapper.insertSelective(sysUserInfo);
-        }
 
-        throw new RuntimeException("新用户注册失败");
-    }
 
     @Override
     public Integer updateUserBySelective(String userId, String userName, String sex, String headImgName, String signature, String address, Long birthDate) {

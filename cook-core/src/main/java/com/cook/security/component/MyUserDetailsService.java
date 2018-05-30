@@ -1,17 +1,18 @@
-package com.cook.security;
+package com.cook.security.component;
 
 import com.cook.dao.SysUserMapper;
 import com.cook.entity.SysUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.social.security.SocialUser;
 import org.springframework.social.security.SocialUserDetails;
+import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,7 +21,8 @@ import org.springframework.stereotype.Component;
  * @create: 2018-05-24 10:29
  **/
 @Component
-public class MyUserDetailsService implements UserDetailsService{
+@ConditionalOnProperty(prefix = "cook.security",name = "token",havingValue = "true")
+public class MyUserDetailsService implements UserDetailsService,SocialUserDetailsService{
 
     @Autowired
     private SysUserMapper sysUserMapper;
@@ -29,16 +31,34 @@ public class MyUserDetailsService implements UserDetailsService{
 
     public static String userId = "";
 
+    //普通登录时用户身份验证
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String phoneOrNum) throws UsernameNotFoundException {
 
-        return buildUser(username);
+        return buildUser(phoneOrNum,0);
+
+    }
+
+    //第三方登录时用户身份验证
+    @Override
+    public SocialUserDetails loadUserByUserId(String userId) throws UsernameNotFoundException {
+
+        return buildUser(userId,1);
+
     }
 
 
-    private SocialUserDetails buildUser(String phone) {
-        SysUser sysUser = sysUserMapper.userByPhone(phone);
+    private synchronized SocialUserDetails buildUser(String tag,int type) {
+        SysUser sysUser;
+        logger.info(tag);
+        //手机号或系统账号查找
+        if(type == 0){
+            sysUser = sysUserMapper.userByPhone(tag);
+        }else {
+            sysUser = sysUserMapper.selectByPrimaryKey(tag);
+        }
         if (sysUser == null){
+            logger.error("用户不存在");
             throw new UsernameNotFoundException("用户不存在");
         }
         userId = sysUser.getId();

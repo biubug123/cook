@@ -48,7 +48,7 @@ public class RecruitServiceImpl implements RecruitService {
       * @Author: ziHeng
       * @Date: 2018/5/23 下午1:29
       * @Param: [jobName]
-      * @return: java.util.List<com.cai.dto.JobRecommend>
+      * @return: java.util.List<com.cai.common.JobRecommend>
       */
     @Override
     public TreeSet<JobRecommend> listJobRecommend(String jobName) {
@@ -186,7 +186,7 @@ public class RecruitServiceImpl implements RecruitService {
       * @Author: ziHeng
       * @Date: 2018/5/22 下午9:42
       * @Param: [conditionType, conditionDetail]
-      * @return: java.util.List<com.cai.dto.RecruitDto>
+      * @return: java.util.List<com.cai.common.RecruitDto>
       */
     @Override
     public TreeSet<RecruitDto> recruitList(Short conditionType, String conditionDetail) {

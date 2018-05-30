@@ -1,7 +1,8 @@
-package com.cook.security.jwt;
+package com.cook.security;
 
-import com.cook.security.MyUserDetailsService;
+import com.cook.security.component.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -21,8 +22,10 @@ import java.util.List;
  * @author: ziHeng
  * @create: 2018-05-24 15:13
  **/
-//@Configuration
-//@EnableAuthorizationServer
+
+@Configuration
+@EnableAuthorizationServer
+@ConditionalOnProperty(prefix = "cook.security",name = "token",havingValue = "true")
 public class TokenAuthorizationServer extends AuthorizationServerConfigurerAdapter{
 
     //用户信息
@@ -77,9 +80,9 @@ public class TokenAuthorizationServer extends AuthorizationServerConfigurerAdapt
                 .secret("cookSecret")
                 //token有效时间
                 //一天
-                .accessTokenValiditySeconds(86400)
+                .accessTokenValiditySeconds(3600*24)
                 //一个月
-                .refreshTokenValiditySeconds(2592000)
+                .refreshTokenValiditySeconds(3600*24*30)
                 .authorizedGrantTypes("refresh_token","password")
                 .scopes("all","read","write");
     }

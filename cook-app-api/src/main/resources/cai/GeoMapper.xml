@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cai.dao.GeoDao">
+    <select id="listProvince" resultType="com.cook.entity.Province">
+        SELECT code, name
+        FROM province
+    </select>
+
+    <select id="listCity" resultType="com.cook.entity.City">
+        SELECT c.code, c."name"
+        FROM city c
+        INNER JOIN province p ON c.province_code = p.code
+        WHERE c.province_code = #{provinceCode}
+    </select>
+
+    <select id="listRegion" resultType="com.cook.entity.Region">
+        SELECT r."code", r."name"
+        FROM region r
+        INNER JOIN city c ON r.city_code = c.code
+        WHERE c.code = #{cityCode}
+    </select>
+
+    <select id="listStreet" resultType="com.cook.entity.Street">
+        SELECT s."code", s."name"
+        FROM street s
+        INNER JOIN region r ON s.area_code = r.code
+        WHERE s.area_code = #{regionCode}
+    </select>
+</mapper>

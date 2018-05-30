@@ -21,11 +21,7 @@ public interface UserPostService {
                             String contentId);
 
 
-    //新用户
-    Integer insertUser(String phone,
-                       String password,
-                       String sex,
-                       String accountNum);
+
 
     //用户更新信息
     Integer updateUserBySelective(String userId,
