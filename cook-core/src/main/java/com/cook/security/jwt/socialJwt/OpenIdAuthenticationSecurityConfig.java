@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
  * @create: 2018-05-29 17:59
  **/
 @Component
-@ConditionalOnProperty(prefix = "cook.security",name = "token",havingValue = "true")
+@ConditionalOnProperty(prefix = "cook.security",name = "social",havingValue = "true")
 public class OpenIdAuthenticationSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
     @Autowired
     private LoginSuccessHandler loginSuccessHandler;

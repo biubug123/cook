@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  * @create: 2018-05-29 21:34
  **/
 @Component
-@ConditionalOnProperty(prefix = "cook.security",name = "token",havingValue = "true")
+@ConditionalOnProperty(prefix = "cook.security",name = "social",havingValue = "true")
 public class SignUpUtils {
 
     @Autowired
