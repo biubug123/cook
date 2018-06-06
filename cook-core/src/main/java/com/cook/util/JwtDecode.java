@@ -16,6 +16,7 @@ import java.io.UnsupportedEncodingException;
 public class JwtDecode {
 
 
+    //从请求头里解密
     public static Claims getClaims(HttpServletRequest request) throws UnsupportedEncodingException {
 
         String header = request.getHeader("Authorization");
@@ -25,6 +26,21 @@ public class JwtDecode {
                 .parseClaimsJws(token).getBody();
 
         return claims;
+
+    }
+
+    //获取用户id
+    public static String getUserIdByJWT(HttpServletRequest request) {
+        try {
+            Claims claims = JwtDecode.getClaims(request);
+            String userId = (String) claims.get("userId");
+            System.out.println(userId);
+            return userId;
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            throw new RuntimeException("获取用户id失败");
+        }
 
     }
 

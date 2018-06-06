@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cook.dao.SysUserconnectionMapper" >
+  <resultMap id="BaseResultMap" type="com.cook.entity.SysUserconnection" >
+    <id column="userid" property="userid" jdbcType="VARCHAR" />
+    <id column="providerid" property="providerid" jdbcType="VARCHAR" />
+    <id column="provideruserid" property="provideruserid" jdbcType="VARCHAR" />
+    <result column="rank" property="rank" jdbcType="INTEGER" />
+    <result column="displayname" property="displayname" jdbcType="VARCHAR" />
+    <result column="profileurl" property="profileurl" jdbcType="VARCHAR" />
+    <result column="imageurl" property="imageurl" jdbcType="VARCHAR" />
+    <result column="accesstoken" property="accesstoken" jdbcType="VARCHAR" />
+    <result column="secret" property="secret" jdbcType="VARCHAR" />
+    <result column="refreshtoken" property="refreshtoken" jdbcType="VARCHAR" />
+    <result column="expiretime" property="expiretime" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    userid, providerid, provideruserid, rank, displayname, profileurl, imageurl, accesstoken, 
+    secret, refreshtoken, expiretime
+  </sql>
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_userconnection
+        WHERE userid=#{userId}
+    </select>
+    <delete id="deleteByUserId">
+        DELETE
+        from sys_userconnection
+        WHERE userid=#{userId} AND providerid=#{providerId}
+    </delete>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.cook.entity.SysUserconnection" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_userconnection
+    where userid = #{userid,jdbcType=VARCHAR}
+      and providerid = #{providerid,jdbcType=VARCHAR}
+      and provideruserid = #{provideruserid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.cook.entity.SysUserconnection" >
+    delete from sys_userconnection
+    where userid = #{userid,jdbcType=VARCHAR}
+      and providerid = #{providerid,jdbcType=VARCHAR}
+      and provideruserid = #{provideruserid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cook.entity.SysUserconnection" >
+    insert into sys_userconnection (userid, providerid, provideruserid, 
+      rank, displayname, profileurl, 
+      imageurl, accesstoken, secret, 
+      refreshtoken, expiretime)
+    values (#{userid,jdbcType=VARCHAR}, #{providerid,jdbcType=VARCHAR}, #{provideruserid,jdbcType=VARCHAR}, 
+      #{rank,jdbcType=INTEGER}, #{displayname,jdbcType=VARCHAR}, #{profileurl,jdbcType=VARCHAR}, 
+      #{imageurl,jdbcType=VARCHAR}, #{accesstoken,jdbcType=VARCHAR}, #{secret,jdbcType=VARCHAR}, 
+      #{refreshtoken,jdbcType=VARCHAR}, #{expiretime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cook.entity.SysUserconnection" >
+    insert into sys_userconnection
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="providerid != null" >
+        providerid,
+      </if>
+      <if test="provideruserid != null" >
+        provideruserid,
+      </if>
+      <if test="rank != null" >
+        rank,
+      </if>
+      <if test="displayname != null" >
+        displayname,
+      </if>
+      <if test="profileurl != null" >
+        profileurl,
+      </if>
+      <if test="imageurl != null" >
+        imageurl,
+      </if>
+      <if test="accesstoken != null" >
+        accesstoken,
+      </if>
+      <if test="secret != null" >
+        secret,
+      </if>
+      <if test="refreshtoken != null" >
+        refreshtoken,
+      </if>
+      <if test="expiretime != null" >
+        expiretime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="providerid != null" >
+        #{providerid,jdbcType=VARCHAR},
+      </if>
+      <if test="provideruserid != null" >
+        #{provideruserid,jdbcType=VARCHAR},
+      </if>
+      <if test="rank != null" >
+        #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="displayname != null" >
+        #{displayname,jdbcType=VARCHAR},
+      </if>
+      <if test="profileurl != null" >
+        #{profileurl,jdbcType=VARCHAR},
+      </if>
+      <if test="imageurl != null" >
+        #{imageurl,jdbcType=VARCHAR},
+      </if>
+      <if test="accesstoken != null" >
+        #{accesstoken,jdbcType=VARCHAR},
+      </if>
+      <if test="secret != null" >
+        #{secret,jdbcType=VARCHAR},
+      </if>
+      <if test="refreshtoken != null" >
+        #{refreshtoken,jdbcType=VARCHAR},
+      </if>
+      <if test="expiretime != null" >
+        #{expiretime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cook.entity.SysUserconnection" >
+    update sys_userconnection
+    <set >
+      <if test="rank != null" >
+        rank = #{rank,jdbcType=INTEGER},
+      </if>
+      <if test="displayname != null" >
+        displayname = #{displayname,jdbcType=VARCHAR},
+      </if>
+      <if test="profileurl != null" >
+        profileurl = #{profileurl,jdbcType=VARCHAR},
+      </if>
+      <if test="imageurl != null" >
+        imageurl = #{imageurl,jdbcType=VARCHAR},
+      </if>
+      <if test="accesstoken != null" >
+        accesstoken = #{accesstoken,jdbcType=VARCHAR},
+      </if>
+      <if test="secret != null" >
+        secret = #{secret,jdbcType=VARCHAR},
+      </if>
+      <if test="refreshtoken != null" >
+        refreshtoken = #{refreshtoken,jdbcType=VARCHAR},
+      </if>
+      <if test="expiretime != null" >
+        expiretime = #{expiretime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where userid = #{userid,jdbcType=VARCHAR}
+      and providerid = #{providerid,jdbcType=VARCHAR}
+      and provideruserid = #{provideruserid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cook.entity.SysUserconnection" >
+    update sys_userconnection
+    set rank = #{rank,jdbcType=INTEGER},
+      displayname = #{displayname,jdbcType=VARCHAR},
+      profileurl = #{profileurl,jdbcType=VARCHAR},
+      imageurl = #{imageurl,jdbcType=VARCHAR},
+      accesstoken = #{accesstoken,jdbcType=VARCHAR},
+      secret = #{secret,jdbcType=VARCHAR},
+      refreshtoken = #{refreshtoken,jdbcType=VARCHAR},
+      expiretime = #{expiretime,jdbcType=BIGINT}
+    where userid = #{userid,jdbcType=VARCHAR}
+      and providerid = #{providerid,jdbcType=VARCHAR}
+      and provideruserid = #{provideruserid,jdbcType=VARCHAR}
+  </update>
+</mapper>

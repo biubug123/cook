@@ -2,6 +2,7 @@ package com.cook.security.social.weibo.config.component;
 
 import com.cook.security.social.qq.config.component.QQOAuth2Template;
 import com.cook.security.social.weibo.api.WeiBo;
+import com.cook.security.social.weibo.api.WeiBoApi;
 import org.springframework.social.oauth2.AbstractOAuth2ServiceProvider;
 import org.springframework.social.oauth2.OAuth2Operations;
 
@@ -25,7 +26,8 @@ public class WeiBoServiceProvider extends AbstractOAuth2ServiceProvider<WeiBo> {
     }
 
     @Override
-    public WeiBo getApi(String s) {
-        return null;
+    public WeiBo getApi(String accessToken) {
+
+        return new WeiBoApi(accessToken);
     }
 }

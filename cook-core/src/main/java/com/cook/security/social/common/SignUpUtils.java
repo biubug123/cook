@@ -65,7 +65,7 @@ public class SignUpUtils {
                 .createConnection(connectionData);
         //存到sysUserConnection表
         usersConnectionRepository.createConnectionRepository(userId).addConnection(connection);
-        return ApiResponse.ofSuccess("注册成功");
+        return ApiResponse.ofSuccess("绑定成功");
     }
 
 

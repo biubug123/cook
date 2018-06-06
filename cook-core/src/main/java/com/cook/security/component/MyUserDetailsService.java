@@ -34,7 +34,8 @@ public class MyUserDetailsService implements UserDetailsService,SocialUserDetail
     //普通登录时用户身份验证
     @Override
     public UserDetails loadUserByUsername(String phoneOrNum) throws UsernameNotFoundException {
-
+        System.out.println("APP或系统");
+        System.out.println(phoneOrNum);
         return buildUser(phoneOrNum,0);
 
     }
@@ -42,7 +43,7 @@ public class MyUserDetailsService implements UserDetailsService,SocialUserDetail
     //第三方登录时用户身份验证
     @Override
     public SocialUserDetails loadUserByUserId(String userId) throws UsernameNotFoundException {
-
+        System.out.println("第三方");
         return buildUser(userId,1);
 
     }
@@ -64,9 +65,9 @@ public class MyUserDetailsService implements UserDetailsService,SocialUserDetail
         userId = sysUser.getId();
         //根据用户名查找用户信息
         //根据查找到的用户信息判断用户是否被冻结
-        String accountNum = sysUser.getAccountNum();
+        //String accountNum = sysUser.getAccountNum();
         String password = sysUser.getPassword();
-        return new SocialUser(accountNum, password,
+        return new SocialUser(tag, password,
                 true, true, true, true,
                 AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN"));
     }

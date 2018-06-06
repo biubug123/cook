@@ -32,9 +32,9 @@ public class insertDataBase {
     public void insertRecruit(){
         FoodType foodType = new FoodType();
         String uuid = UUID.randomUUID().toString();
-        String iconName = RandomUtil.getImgName();
+        //String iconName = RandomUtil.getImgName();
         foodType.setId(uuid);
-        foodType.setIconName(iconName);
+        //foodType.setIconName(iconName);
         foodType.setName("川菜");
         foodTypeMapper.insertSelective(foodType);
 

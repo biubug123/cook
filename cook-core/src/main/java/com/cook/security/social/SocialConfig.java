@@ -1,5 +1,6 @@
 package com.cook.security.social;
 
+import com.cook.security.component.ConnectionBindView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.web.ProviderSignInUtils;
+import org.springframework.web.servlet.View;
 
 import javax.sql.DataSource;
 
@@ -73,5 +75,11 @@ public class SocialConfig extends SocialConfigurerAdapter {
     @Bean
     public ProviderSignInUtils providerSignInUtils(ConnectionFactoryLocator connectionFactoryLocator){
         return new ProviderSignInUtils(connectionFactoryLocator,getUsersConnectionRepository(connectionFactoryLocator));
+    }
+
+    //这里只配了微信
+    @Bean({"connect/weiXinConnect","connect/weiXinConnected"})
+    public View ConnectionBind(){
+        return new ConnectionBindView();
     }
 }

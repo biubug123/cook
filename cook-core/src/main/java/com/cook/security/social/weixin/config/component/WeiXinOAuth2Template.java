@@ -125,6 +125,7 @@ public class WeiXinOAuth2Template extends OAuth2Template {
 	/**
 	 * 微信返回的contentType是html/text，添加相应的HttpMessageConverter来处理。
 	 */
+	@Override
 	protected RestTemplate createRestTemplate() {
 		RestTemplate restTemplate = super.createRestTemplate();
 		restTemplate.getMessageConverters().add(new StringHttpMessageConverter(Charset.forName("UTF-8")));

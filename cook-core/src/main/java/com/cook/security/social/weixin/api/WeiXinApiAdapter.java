@@ -8,12 +8,10 @@ import org.springframework.social.connect.ConnectionValues;
 import org.springframework.social.connect.UserProfile;
 
 /**
- * 微信 api适配器，将微信 api的数据模型转为spring social的标准模型。
- * 
- * 
- * @author zhailiang
- *
- */
+  * @Description: 将返回的信息组装插入sys_userConnection表
+  * @Author: ziHeng
+  * @Date: 2018/5/30 下午9:42
+  */
 public class WeiXinApiAdapter implements ApiAdapter<WeiXin> {
 
 	private String openId;

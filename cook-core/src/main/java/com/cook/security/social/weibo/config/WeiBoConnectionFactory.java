@@ -2,6 +2,7 @@ package com.cook.security.social.weibo.config;
 
 import com.cook.security.social.weibo.api.WeiBo;
 import com.cook.security.social.weibo.api.WeiBoApiAdapter;
+import com.cook.security.social.weibo.config.component.WeiBoAccessGrant;
 import com.cook.security.social.weibo.config.component.WeiBoServiceProvider;
 import com.cook.security.social.weixin.api.WeiXin;
 import com.cook.security.social.weixin.api.WeiXinApiAdapter;
@@ -31,8 +32,8 @@ public class WeiBoConnectionFactory extends OAuth2ConnectionFactory<WeiBo>{
      */
     @Override
     protected String extractProviderUserId(AccessGrant accessGrant) {
-        if(accessGrant instanceof WeiXinAccessGrant) {
-            return ((WeiXinAccessGrant)accessGrant).getOpenId();
+        if(accessGrant instanceof WeiBoAccessGrant) {
+            return ((WeiBoAccessGrant)accessGrant).getOpenId();
         }
         return null;
     }

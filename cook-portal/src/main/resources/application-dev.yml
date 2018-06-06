@@ -19,11 +19,18 @@ security:
     enabled: false
 
 cook.security.token: false
+
+#开启第三方
 cook.social: false
+#qq
 cook.social.qq: false
+#微信
 cook.social.weiXin: false
+#微博
 cook.social.weiBo: false
 cook.social.filterProcessesUrl: /qqLogin
+
+cook.Access-Control-Allow-Origin: '*'
 
 cook:
   social:
@@ -39,3 +46,5 @@ cook:
       app-id: wxd99431bbff8305a0
       app-secret: 60f78681d063590a469f1b297feff3c4
       provider-id: weiBo
+  image:
+    upload-path: /home/www

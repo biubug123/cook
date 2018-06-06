@@ -1,18 +1,23 @@
 package com.cook.security.component;
 
 import com.cook.dao.SysUserMapper;
+import com.cook.dao.SysUserconnectionMapper;
+import com.cook.entity.SysUserconnection;
 import com.cook.response.ApiResponse;
 import com.cook.security.social.common.SignUpUtils;
 import com.cook.security.social.common.SocialUserInfo;
 import com.cook.service.SecurityService;
+import com.cook.util.JwtDecode;
 import com.cook.util.PhoneAndEmailUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +26,9 @@ import org.springframework.web.context.request.ServletWebRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.ValidationException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -37,17 +45,27 @@ public class SecurityController {
 
     private static Logger logger= LoggerFactory.getLogger(SecurityController.class);
 
-    @Autowired
+    @Autowired(required = false)
     private ProviderSignInUtils providerSignInUtils;
 
     @Autowired
     private SysUserMapper sysUserMapper;
 
-    @Autowired
+    @Autowired(required = false)
     private SignUpUtils signUpUtils;
 
-    public SecurityController(SecurityService securityService) {
+    @Value("${cook.social.weiXin.provider-id}")
+    private String weiXinProviderId;
+    @Value("${cook.social.weiBo.provider-id}")
+    private String weiBoProviderId;
+    @Value("${cook.social.qq.provider-id}")
+    private String qqProviderId;
+
+    private SysUserconnectionMapper sysUserconnectionMapper;
+
+    public SecurityController(SecurityService securityService, SysUserconnectionMapper sysUserconnectionMapper) {
         this.securityService = securityService;
+        this.sysUserconnectionMapper = sysUserconnectionMapper;
     }
 
     /**
@@ -63,7 +81,7 @@ public class SecurityController {
     }
 
     /**
-      * @Description: 用户第三方登录后,"引导"去注册页面或绑定手机号页面(用户第一次用未绑定的第三方时)
+      * @Description: 用户第三方登录后,引导绑定手机号或。
       * @Author: ziHeng
       * @Date: 2018/5/29 下午10:04
       * @Param: [request]
@@ -86,7 +104,7 @@ public class SecurityController {
         userInfo.setHeadimg(connection.getImageUrl());
         //昵称
         userInfo.setNickname(connection.getDisplayName());
-        //用工具存入redis
+        //存入redis
         signUpUtils.saveConnectionData(new ServletWebRequest(request),connection.createData());
         return ApiResponse.ofData(userInfo, ApiResponse.Status.NOT_SIGNUP);
     }
@@ -136,19 +154,50 @@ public class SecurityController {
                 logger.info("新用户");
                 securityService.insertUser(userId,phone,null,null,null);
             }
-            return ApiResponse.ofSuccess(signUpUtils.doPostSignUp(new ServletWebRequest(request),userId));
+            //从redis取出存入表user_connection
+            return signUpUtils.doPostSignUp(new ServletWebRequest(request),userId);
         }else {
             throw new ValidationException("不合法的手机号");
         }
     }
 
 
-    //某用户第三方登录信息列表
+    //用户第三方信息列表
+    @GetMapping("/userSocialList")
+    @ApiOperation(value = "用户第三方信息列表")
+    public ApiResponse userSocialList(HttpServletRequest request) {
+        String userId = JwtDecode.getUserIdByJWT(request);
+        Map<String,Boolean> result = new HashMap<String,Boolean>();
+        result.put(weiBoProviderId,false);
+        result.put(weiXinProviderId,false);
+        result.put(qqProviderId,false);
+        List<SysUserconnection> sysUserconnectionList = sysUserconnectionMapper.selectByUserId(userId);
+        for(SysUserconnection sysUserconnection:sysUserconnectionList){
+            String providerId = sysUserconnection.getProviderid();
+            if(result.containsKey(providerId)){
+                result.put(providerId,true);
+            }
+        }
+        return ApiResponse.ofSuccess(result);
+    }
 
 
     //用户绑定第三方登录
+    @PostMapping("/bindSocial")
+    @ApiOperation(value = "用户绑定第三方（已有token）")
+    public ApiResponse bindSocial(HttpServletRequest request) {
+        String userId = JwtDecode.getUserIdByJWT(request);
 
-    //删除某第三方登录
+        return signUpUtils.doPostSignUp(new ServletWebRequest(request),userId);
+    }
+    //解绑用户第三方登录
+    @PostMapping("/relieveBind/{providerId}")
+    @ApiOperation(value = "解除绑定（已有token）")
+    public ApiResponse relieveBind(HttpServletRequest request,
+                                   @RequestParam("providerId") String providerId) {
+        String userId = JwtDecode.getUserIdByJWT(request);
 
+        return ApiResponse.ofSuccess(sysUserconnectionMapper.deleteByUserIdAndProviderId(userId,providerId));
+    }
 
 }
