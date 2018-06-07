@@ -29,24 +29,27 @@ import java.util.List;
 public class TokenAuthorizationServer extends AuthorizationServerConfigurerAdapter{
 
     //用户信息
-    @Autowired
     private MyUserDetailsService myUserDetailsService;
 
     //认证管理
-    @Autowired
     private AuthenticationManager authenticationManager;
 
     //token存储
-    @Autowired
     private TokenStore jwtTokenStore;
 
     //swt->jwt转换器
-    @Autowired
     private JwtAccessTokenConverter jwtAccessTokenConverter;
 
     //增强器,给jwt写入额外信息
-    @Autowired
     private TokenEnhancer jwtTokenEnhancer;
+
+    public TokenAuthorizationServer(MyUserDetailsService myUserDetailsService, AuthenticationManager authenticationManager, TokenStore jwtTokenStore, JwtAccessTokenConverter jwtAccessTokenConverter, TokenEnhancer jwtTokenEnhancer) {
+        this.myUserDetailsService = myUserDetailsService;
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenStore = jwtTokenStore;
+        this.jwtAccessTokenConverter = jwtAccessTokenConverter;
+        this.jwtTokenEnhancer = jwtTokenEnhancer;
+    }
 
     //Token配置
     @Override

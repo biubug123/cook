@@ -19,19 +19,23 @@ import org.springframework.stereotype.Component;
  * @create: 2018-05-29 17:59
  **/
 @Component
-@ConditionalOnProperty(prefix = "cook.security",name = "social",havingValue = "true")
+@ConditionalOnProperty(prefix = "cook.security",name = "token",havingValue = "true")
 public class OpenIdAuthenticationSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
-    @Autowired
+
     private LoginSuccessHandler loginSuccessHandler;
 
-    @Autowired
     private LoginFailureHandler loginFailureHandler;
 
-    @Autowired
     private SocialUserDetailsService userDetailsService;
 
-    @Autowired
     private UsersConnectionRepository usersConnectionRepository;
+
+    public OpenIdAuthenticationSecurityConfig(LoginSuccessHandler loginSuccessHandler, LoginFailureHandler loginFailureHandler, SocialUserDetailsService userDetailsService, UsersConnectionRepository usersConnectionRepository) {
+        this.loginSuccessHandler = loginSuccessHandler;
+        this.loginFailureHandler = loginFailureHandler;
+        this.userDetailsService = userDetailsService;
+        this.usersConnectionRepository = usersConnectionRepository;
+    }
 
     @Override
     public void configure(HttpSecurity http) throws Exception {

@@ -1,10 +1,19 @@
 package com.cai.controller;
 
 import com.cai.dao.GeoDao;
+import com.cook.entity.City;
 import com.cook.response.ApiResponse;
+import com.ziheng.util.ZiHengUtil;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.ziheng.util.ZiHengUtil.getPYIndexStr;
 
 /**
  * @description: 地理位置相关api
@@ -36,7 +45,7 @@ public class GeoController {
      */
     @GetMapping("/listCity")
     public ApiResponse listCity(@RequestParam("provinceCode")String provinceCode) {
-        return ApiResponse.ofSuccess(geoDao.listCity(provinceCode));
+        return ApiResponse.ofSuccess(geoDao.listCityByCode(provinceCode));
     }
 
     /**
@@ -46,7 +55,7 @@ public class GeoController {
      */
     @GetMapping("/listRegion")
     public ApiResponse listRegion(@RequestParam("cityCode")String cityCode) {
-        return ApiResponse.ofSuccess(geoDao.listRegion(cityCode));
+        return ApiResponse.ofSuccess(geoDao.listRegionByCode(cityCode));
     }
 
     /**
@@ -56,7 +65,43 @@ public class GeoController {
      */
     @GetMapping("/listStreet")
     public ApiResponse listStreet(@RequestParam("regionCode")String regionCode) {
-        return ApiResponse.ofSuccess(geoDao.listStreet(regionCode));
+        return ApiResponse.ofSuccess(geoDao.listStreetByCode(regionCode));
+    }
+
+    //根据城市名获取
+    @GetMapping("/listCityByname")
+    public ApiResponse listCityByname(@RequestParam("cityName")String cityName) {
+        return ApiResponse.ofSuccess(geoDao.listCityByName(cityName));
+    }
+
+    //城市首字母
+    @GetMapping("/listCityByAlphabet")
+    public ApiResponse listCityByAlphabet() {
+
+        List<City> cityList = geoDao.listCity();
+        Map<String,List<City>> result = new HashMap<>();
+
+        for(City city:cityList){
+            //大写
+            String cityName = city.getName();
+            String alphaBet;
+            if(cityName.equals("泸州市")){
+                alphaBet = "L";
+            }else if(cityName.equals("衢州市")){
+                alphaBet = "Q";
+            }else {
+                alphaBet =  ZiHengUtil.getPYIndexStr(city.getName(),true);
+            }
+            if(result.containsKey(alphaBet)){
+                result.get(alphaBet).add(city);
+            }else {
+                List<City> newList = new ArrayList<>();
+                newList.add(city);
+                result.put(alphaBet,newList);
+            }
+        }
+
+        return ApiResponse.ofSuccess(result);
     }
 
 }

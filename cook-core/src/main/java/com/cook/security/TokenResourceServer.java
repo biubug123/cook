@@ -1,6 +1,7 @@
 package com.cook.security;
 
 import com.cook.filter.CorsFilter;
+import com.cook.filter.ValidateFilter;
 import com.cook.security.social.SocialSecurityConfig;
 import com.cook.security.jwt.socialJwt.OpenIdAuthenticationSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
-import org.springframework.web.cors.CorsUtils;
 
 /**
  * @description: token资源服务
@@ -34,15 +34,23 @@ public class TokenResourceServer extends ResourceServerConfigurerAdapter{
     @Autowired
     private AuthenticationFailureHandler failureHandler;
 
+    //用户身份配置
     @Autowired
     private UserDetailsService myUserDetailsService;
 
+    //第三方登录回调域配置
     @Autowired(required = false)
     private SocialSecurityConfig socialSecurityConfig;
 
+    //第三方登录过滤器
     @Autowired(required = false)
     private OpenIdAuthenticationSecurityConfig openIdAuthenticationSecurityConfig;
 
+    //验证码过滤器
+    @Autowired
+    private ValidateFilter validateFilter;
+
+    //跨域过滤器
     @Autowired
     private CorsFilter corsFilter;
 
@@ -56,6 +64,7 @@ public class TokenResourceServer extends ResourceServerConfigurerAdapter{
         }
         //跨域过滤器
         http.addFilterBefore(corsFilter,SecurityContextPersistenceFilter.class);
+        http.addFilterAfter(validateFilter,CorsFilter.class);
         http.authorizeRequests()
                 .antMatchers("/security/*","/user/login").permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
@@ -64,7 +73,7 @@ public class TokenResourceServer extends ResourceServerConfigurerAdapter{
                 .and().formLogin()
                 .loginPage("/security/toLoginPage")
                 .loginProcessingUrl("/user/login")
-                .usernameParameter("phone")
+                .usernameParameter("username")
                 .successHandler(loginSuccessHandler)
                 .failureHandler(failureHandler)
                 .permitAll()

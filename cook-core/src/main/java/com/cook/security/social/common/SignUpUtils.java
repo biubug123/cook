@@ -21,19 +21,22 @@ import java.util.concurrent.TimeUnit;
  * @create: 2018-05-29 21:34
  **/
 @Component
-@ConditionalOnProperty(prefix = "cook.security",name = "social",havingValue = "true")
+@ConditionalOnProperty(name = "cook.social",havingValue = "true")
 public class SignUpUtils {
 
-    @Autowired
     private RedisTemplate<Object,Object> redisTemplate;
 
     //sysUserConnection表增删改查类
-    @Autowired
     private UsersConnectionRepository usersConnectionRepository;
 
     //connection工具类
-    @Autowired
     private ConnectionFactoryLocator connectionFactoryLocator;
+
+    public SignUpUtils(RedisTemplate<Object, Object> redisTemplate, UsersConnectionRepository usersConnectionRepository, ConnectionFactoryLocator connectionFactoryLocator) {
+        this.redisTemplate = redisTemplate;
+        this.usersConnectionRepository = usersConnectionRepository;
+        this.connectionFactoryLocator = connectionFactoryLocator;
+    }
 
     /**
       * @Description: 存入数据到redis(6分钟)
@@ -73,7 +76,7 @@ public class SignUpUtils {
         //从请求头里获得该App的设备id
         String deviceId = request.getHeader("deviceId");
         if(StringUtils.isBlank(deviceId)){
-            throw new AppSecretException("deviceId不能为空");
+            throw new AppSecretException("请求头deviceId不能为空");
         }
 
         return "cook.userSocialInfoByDeviceId:"+deviceId;

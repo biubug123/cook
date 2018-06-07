@@ -2,6 +2,7 @@ package com.cook.security.component;
 
 import com.cook.dao.SysUserMapper;
 import com.cook.entity.SysUser;
+import com.cook.util.PhoneAndEmailUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,14 @@ public class MyUserDetailsService implements UserDetailsService,SocialUserDetail
         logger.info(tag);
         //手机号或系统账号查找
         if(type == 0){
-            sysUser = sysUserMapper.userByPhone(tag);
+            //如果是手机号
+            if(PhoneAndEmailUtil.checkTelephone(tag)){
+                sysUser = sysUserMapper.userByPhone(tag);
+            }else {
+                //账号查找
+                sysUser = sysUserMapper.userByAccountNum(tag);
+            }
+
         }else {
             sysUser = sysUserMapper.selectByPrimaryKey(tag);
         }

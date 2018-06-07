@@ -6,7 +6,10 @@ import com.cook.entity.SysUserconnection;
 import com.cook.response.ApiResponse;
 import com.cook.security.social.common.SignUpUtils;
 import com.cook.security.social.common.SocialUserInfo;
+import com.cook.service.Impl.ImageCodeValidate;
+import com.cook.service.Impl.SmsCodeValidate;
 import com.cook.service.SecurityService;
+import com.cook.service.ValidateCodeProcessor;
 import com.cook.util.JwtDecode;
 import com.cook.util.PhoneAndEmailUtil;
 import io.swagger.annotations.ApiOperation;
@@ -16,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.social.connect.Connection;
@@ -23,8 +27,12 @@ import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.ServletWebRequest;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.ValidationException;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +46,6 @@ import java.util.UUID;
  **/
 @RestController
 @RequestMapping("/security")
-@ConditionalOnProperty(prefix = "cook.security",name = "token",havingValue = "true")
 public class SecurityController {
 
     private SecurityService securityService;
@@ -53,6 +60,10 @@ public class SecurityController {
 
     @Autowired(required = false)
     private SignUpUtils signUpUtils;
+
+    @Autowired
+    RedisTemplate<Object,Object> redisTemplate;
+
 
     @Value("${cook.social.weiXin.provider-id}")
     private String weiXinProviderId;
@@ -89,7 +100,7 @@ public class SecurityController {
       */
     @GetMapping("/toSignUpPage")
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ApiResponse toSignUpPage(HttpServletRequest request) throws UnsupportedEncodingException {
+    public ApiResponse toSignUpPage(HttpServletRequest request){
         SocialUserInfo userInfo = new SocialUserInfo();
         //从session里获取连接
         Connection<?> connection = providerSignInUtils.getConnectionFromSession(new ServletWebRequest(request));
@@ -199,5 +210,43 @@ public class SecurityController {
 
         return ApiResponse.ofSuccess(sysUserconnectionMapper.deleteByUserIdAndProviderId(userId,providerId));
     }
+
+    /**
+     * 创建图片验证码
+     *
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @GetMapping("code/image/{deviceId}")
+    public void createImage(HttpServletRequest request, HttpServletResponse response, @PathVariable String deviceId)
+            throws Exception {
+        ServletWebRequest webRequest = new ServletWebRequest(request,response);
+        ImageCodeValidate validateCodeProcessor = new ImageCodeValidate(redisTemplate,deviceId);
+        BufferedImage image = validateCodeProcessor.generateCode(webRequest);
+        try {
+            ImageIO.write(image, "JPEG", webRequest.getResponse().getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 创建图片验证码
+     *
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @GetMapping("code/sms")
+    public void createSms(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        ServletWebRequest webRequest = new ServletWebRequest(request,response);
+        SmsCodeValidate validateCodeProcessor = new SmsCodeValidate(redisTemplate);
+        validateCodeProcessor.generateCode(webRequest);
+    }
+
+
+
 
 }

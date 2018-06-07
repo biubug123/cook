@@ -1,9 +1,10 @@
-package com.cook.service;
+package com.cook.service.Impl;
 
 import com.cook.dao.SysUserInfoMapper;
 import com.cook.dao.SysUserMapper;
 import com.cook.entity.SysUser;
 import com.cook.entity.SysUserInfo;
+import com.cook.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
