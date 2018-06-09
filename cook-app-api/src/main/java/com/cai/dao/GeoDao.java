@@ -19,8 +19,8 @@ public interface GeoDao {
 
     List<Street> listStreetByCode(@Param("regionCode") String regionCode);
 
-    //根据城市名获取其Code
-    List<City> listCityByName(@Param("cityName") String cityName);
+    //根据城市名获取其Code等相关信息
+    City cityByName(@Param("cityName") String cityName);
 
     List<City> listCity();
 

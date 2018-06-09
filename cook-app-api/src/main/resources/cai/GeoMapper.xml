@@ -28,7 +28,7 @@
         WHERE s.area_code = #{regionCode}
     </select>
 
-    <select id="listCityByname" resultType="com.cook.entity.City">
+    <select id="cityCodeByName" resultType="com.cook.entity.City">
         SELECT c.code, c."name",c.province_code AS provinceCode
         FROM city c
         INNER JOIN province p ON c.province_code = p.code

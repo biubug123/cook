@@ -16,6 +16,7 @@
         <module>cook-system</module>
     </modules>
 
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -223,6 +224,14 @@
                 <configuration><!-- 指定该Main Class为全局的唯一入口 -->
                     <mainClass>com.cook.cookApplication</mainClass>
                     <fork>true</fork> <!-- 如果没有该配置，热部署devtools不会生效 -->
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>

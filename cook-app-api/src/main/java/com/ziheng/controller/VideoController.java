@@ -1,5 +1,7 @@
 package com.ziheng.controller;
 import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.auth.BasicCredentials;
+import com.aliyuncs.auth.STSAssumeRoleSessionCredentialsProvider;
 import com.aliyuncs.auth.sts.AssumeRoleRequest;
 import com.aliyuncs.auth.sts.AssumeRoleResponse;
 import com.aliyuncs.exceptions.ServerException;
@@ -9,10 +11,15 @@ import com.aliyuncs.profile.IClientProfile;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.vod.model.v20170321.GetPlayInfoRequest;
 import com.aliyuncs.vod.model.v20170321.GetPlayInfoResponse;
+import com.cai.dto.Hunt;
 import com.cook.constant.Security;
 import com.cook.dao.VideoMapper;
 import com.cook.response.ApiResponse;
 import com.ziheng.dto.VideoCallBackDto;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -22,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
  * @create: 2018-06-02 12:02
  **/
 @RestController
+@Api(value = "video",tags = "视频Api")
 @RequestMapping("/video")
 public class VideoController {
 
@@ -43,6 +51,7 @@ public class VideoController {
       * @return: com.cook.response.ApiResponse
       */ 
     @GetMapping("/getStsToken")
+    @ApiOperation(value = "获取视频临时StStoken",notes = "该token只适用于视频相关权限")
     public ApiResponse getSts(){
         return ApiResponse.ofSuccess(stsGen());
     }
@@ -55,9 +64,10 @@ public class VideoController {
       * @return: com.cook.response.ApiResponse
       */
     @PostMapping("/storeVideo")
+    @ApiOperation(value = "APP上传完第三方视频后，后台存储videoId")
     public ApiResponse storeVideo(@RequestParam("videoId") String videoId,
-                                  @RequestParam String title,
-                                  @RequestParam String content){
+                                  @ApiParam("视频标题")@RequestParam String title,
+                                  @ApiParam("视频描述内容")@RequestParam String content){
         //存储到数据库并返回该数据库记录id值
         return null;
     }
@@ -70,6 +80,7 @@ public class VideoController {
       * @return: com.cook.response.ApiResponse
       */ 
     @GetMapping("/video/upLoadCallBack")
+    @ApiOperation(value = "视频转码完成后回调Url")
     public ApiResponse getUrl(@RequestBody VideoCallBackDto videoCallBackDto){
         //视频地址
         String mp4Url =videoCallBackDto.getFileUrl();
@@ -91,8 +102,7 @@ public class VideoController {
       */
     private AssumeRoleResponse stsGen(){
         String endpoint = "sts.aliyuncs.com";
-        String roleArn = "acs:ram::1409506853807566:role/aliyunosstokengeneratorrole";
-        String roleSessionName = "oss";
+        String roleArn = "acs:ram::1409506853807566:role/videomanager";
         String policy = "{\n" +
                 "    \"Version\": \"1\", \n" +
                 "    \"Statement\": [\n" +
@@ -109,8 +119,9 @@ public class VideoController {
                 "}";
         try {
             // Init ACS Client
-            DefaultProfile.addEndpoint("", "", "Sts", endpoint);
-            IClientProfile profile = DefaultProfile.getProfile("", Security.aliAccessKeyId, Security.aliAccessKeySecret);
+            DefaultProfile.addEndpoint("cn-shanghai", "cn-shanghai", "Sts", endpoint);
+            IClientProfile profile = DefaultProfile.getProfile("cn-shanghai", Security.aliAccessKeyId, Security.aliAccessKeySecret);
+            String roleSessionName = RandomStringUtils.randomAlphabetic(11);
             DefaultAcsClient client = new DefaultAcsClient(profile);
             final AssumeRoleRequest request = new AssumeRoleRequest();
             request.setMethod(MethodType.POST);

@@ -96,10 +96,11 @@ public class ApiResponse {
         NOT_SIGNUP(40002, "用户未注册,请绑定手机号或App携带token直接绑定该第三方"),
         NOT_SUPPORTED_OPERATION(40003, "违法的操作"),
         NOT_VALID_PARAM(40003, "不合法的参数"),
-        FAILURE_LOGIN(40004, "失败的登录"),
+        FAILURE_LOGIN(40004, "登录失败,该用户不存在"),
         FAILURE_UESRINFO(40005, "获取用户信息失败"),
         NOT_VALID_HEADER(40006, "不合法的请求头"),
-        EMPTY_FILE(40007, "空的文件");
+        EMPTY_FILE(40007, "空的文件"),
+        FAILURE_SOCIALLOGIN(40008, "该用户无此第三方登录信息,请导向用户去第三方平台获取授权码");
 
         private int code;
         private String standardMessage;

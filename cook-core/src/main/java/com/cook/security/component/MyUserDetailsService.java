@@ -28,16 +28,17 @@ public class MyUserDetailsService implements UserDetailsService,SocialUserDetail
     @Autowired
     private SysUserMapper sysUserMapper;
 
+    public static final ThreadLocal<String> userIdThreadLocal = new ThreadLocal<>();
+
     private static Logger logger= LoggerFactory.getLogger(MyUserDetailsService.class);
 
-    public static String userId = "";
 
     //普通登录时用户身份验证
     @Override
-    public UserDetails loadUserByUsername(String phoneOrNum) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("APP或系统");
-        System.out.println(phoneOrNum);
-        return buildUser(phoneOrNum,0);
+        System.out.println(username);
+        return buildUser(username,0);
 
     }
 
@@ -67,10 +68,11 @@ public class MyUserDetailsService implements UserDetailsService,SocialUserDetail
             sysUser = sysUserMapper.selectByPrimaryKey(tag);
         }
         if (sysUser == null){
-            logger.error("用户不存在");
-            throw new UsernameNotFoundException("用户不存在");
+            logger.error("userDetailsService:该用户不存在数据库");
+            throw new UsernameNotFoundException("userDetailsService:该用户不存在数据库");
         }
-        userId = sysUser.getId();
+        userIdThreadLocal.set(sysUser.getId());
+        //userId = sysUser.getId();
         //根据用户名查找用户信息
         //根据查找到的用户信息判断用户是否被冻结
         //String accountNum = sysUser.getAccountNum();

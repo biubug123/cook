@@ -18,14 +18,15 @@ security:
   #关闭默认安全
     enabled: false
 
-cook.security.token: true
 
+#Security-token安全
+cook.security.token: true
 #开启第三方
-cook.social: true
+cook.social: false
 #qq
-cook.social.qq: true
+cook.social.qq: false
 #微信
-cook.social.weiXin: true
+cook.social.weiXin: false
 #微博
 cook.social.weiBo: false
 cook.social.filterProcessesUrl: /qqLogin
