@@ -215,9 +215,10 @@ public class SecurityController {
      * @param response
      * @throws Exception
      */
-    @GetMapping("code/image/{deviceId}")
+    @GetMapping("/code/image/{deviceId}")
     public void createImage(HttpServletRequest request, HttpServletResponse response, @PathVariable String deviceId)
             throws Exception {
+        logger.info("发送");
         ServletWebRequest webRequest = new ServletWebRequest(request,response);
         ImageCodeValidate validateCodeProcessor = new ImageCodeValidate(redisTemplate,deviceId);
         BufferedImage image = validateCodeProcessor.generateCode(webRequest);
@@ -235,10 +236,12 @@ public class SecurityController {
      * @param response
      * @throws Exception
      */
-    @GetMapping("code/sms")
-    public String createSms(HttpServletRequest request, HttpServletResponse response)
+    @GetMapping("/code/sms")
+    public String createSms(@RequestParam String phone,
+                            HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         ServletWebRequest webRequest = new ServletWebRequest(request,response);
+        logger.info("手机号:{}",phone);
         SmsCodeValidate validateCodeProcessor = new SmsCodeValidate(redisTemplate);
         return validateCodeProcessor.generateCode(webRequest);
     }

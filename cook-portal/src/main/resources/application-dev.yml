@@ -20,7 +20,7 @@ security:
 
 
 #Security-token安全
-cook.security.token: true
+cook.security.token: false
 #开启第三方
 cook.social: false
 #qq

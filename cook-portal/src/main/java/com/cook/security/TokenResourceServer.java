@@ -77,12 +77,13 @@ public class TokenResourceServer extends ResourceServerConfigurerAdapter{
         //短信验证
         http.apply(smsAuthenticationConfig);
         http.authorizeRequests()
-                .antMatchers("/security/*","/user/login").permitAll()
-                .antMatchers(HttpMethod.OPTIONS).permitAll()
+                .antMatchers("/security/**","/user/login").permitAll()
+                //.antMatchers(HttpMethod.OPTIONS).permitAll()
                 //.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin()
                 .loginPage("/security/toLoginPage")
+                //.loginPage("/toLoginPage.html")
                 .loginProcessingUrl("/user/login")
                 .usernameParameter("username")
                 .successHandler(loginSuccessHandler)

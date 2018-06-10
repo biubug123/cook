@@ -28,7 +28,11 @@ public class MyUserDetailsService implements UserDetailsService,SocialUserDetail
     @Autowired
     private SysUserMapper sysUserMapper;
 
-    public static final ThreadLocal<String> userIdThreadLocal = new ThreadLocal<>();
+    public static final ThreadLocal<String> userIdThreadLocal = new ThreadLocal<String>(){
+        protected String initialValue() {
+            return "";
+        };
+    };
 
     private static Logger logger= LoggerFactory.getLogger(MyUserDetailsService.class);
 
