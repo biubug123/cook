@@ -108,4 +108,9 @@
         SELECT id, account_num, password, phone, enroll_date, last_login_date FROM sys_user
         WHERE phone = #{phone}
     </select>
+
+    <select id="userByAccountNum" resultMap="BaseResultMap">
+        SELECT id, account_num, password, phone, enroll_date, last_login_date FROM sys_user
+        WHERE account_num = #{accountNum}
+    </select>
 </mapper>

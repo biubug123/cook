@@ -30,7 +30,6 @@ import java.io.IOException;
  * @create: 2018-05-24 09:54
  **/
 @Component
-@ConditionalOnProperty(prefix = "cook.security",name = "token",havingValue = "true")
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private static Logger logger= LoggerFactory.getLogger(LoginSuccessHandler.class);
@@ -77,11 +76,13 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
             //返回界面token信息
             response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write(JSON.toJSONString(token));
+            response.getWriter().write(JSON.toJSONString(ApiResponse.ofSuccess(token)));
+        }else {
+            ////返回界面token信息
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write(JSON.toJSONString(ApiResponse.ofError(ApiResponse.Status.NOT_VALID_HEADER)));
         }
-        //返回界面token信息
-        response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(JSON.toJSONString(ApiResponse.ofError(ApiResponse.Status.NOT_VALID_HEADER)));
+
      }
 
     //Basic64解码工具

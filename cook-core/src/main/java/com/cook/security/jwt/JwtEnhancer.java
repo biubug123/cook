@@ -1,10 +1,12 @@
 package com.cook.security.jwt;
 
+import com.cook.security.component.MyUserDetailsService;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import static com.cook.security.component.MyUserDetailsService.userId;
+import static com.cook.security.component.MyUserDetailsService.userIdThreadLocal;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,8 +23,8 @@ public class JwtEnhancer implements TokenEnhancer {
 
         Map<String,Object> info = new HashMap<String, Object>();
         //存入userId
-        info.put("userId",userId);
-
+        info.put("userId", MyUserDetailsService.userIdThreadLocal.get());
+        userIdThreadLocal.remove();
         ((DefaultOAuth2AccessToken)oAuth2AccessToken).setAdditionalInformation(info);
 
         return oAuth2AccessToken;

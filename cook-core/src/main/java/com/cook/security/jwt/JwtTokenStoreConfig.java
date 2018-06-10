@@ -19,7 +19,7 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
  * @create: 2018-05-24 23:20
  **/
 @Configuration
-@ConditionalOnProperty(prefix = "cook.security",name = "token",havingValue = "true")
+@ConditionalOnProperty(prefix = "cook.security" ,name = "token",havingValue = "true")
 public class JwtTokenStoreConfig {
 
 

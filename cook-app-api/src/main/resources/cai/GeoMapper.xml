@@ -7,24 +7,36 @@
         FROM province
     </select>
 
-    <select id="listCity" resultType="com.cook.entity.City">
-        SELECT c.code, c."name"
+    <select id="listCityByCode" resultType="com.cook.entity.City">
+        SELECT c.code, c."name",c.province_code AS provinceCode
         FROM city c
         INNER JOIN province p ON c.province_code = p.code
         WHERE c.province_code = #{provinceCode}
     </select>
 
-    <select id="listRegion" resultType="com.cook.entity.Region">
-        SELECT r."code", r."name"
+    <select id="listRegionByCode" resultType="com.cook.entity.Region">
+        SELECT r."code", r."name",r.city_code AS cityCode,r.province_code AS provinceCode
         FROM region r
         INNER JOIN city c ON r.city_code = c.code
         WHERE c.code = #{cityCode}
     </select>
 
-    <select id="listStreet" resultType="com.cook.entity.Street">
-        SELECT s."code", s."name"
+    <select id="listStreetByCode" resultType="com.cook.entity.Street">
+        SELECT s."code", s."name",s.city_code AS cityCode,s.area_code AS areaCode,s.province_code AS provinceCode
         FROM street s
         INNER JOIN region r ON s.area_code = r.code
         WHERE s.area_code = #{regionCode}
+    </select>
+
+    <select id="cityCodeByName" resultType="com.cook.entity.City">
+        SELECT c.code, c."name",c.province_code AS provinceCode
+        FROM city c
+        INNER JOIN province p ON c.province_code = p.code
+        WHERE c.name = #{cityName}
+    </select>
+
+    <select id="listCity" resultType="com.cook.entity.City">
+        SELECT c.code, c."name",c.province_code AS provinceCode
+        FROM city c
     </select>
 </mapper>

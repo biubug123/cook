@@ -5,15 +5,24 @@ import com.cook.entity.Province;
 import com.cook.entity.Region;
 import com.cook.entity.Street;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface GeoDao {
     List<Province> listProvince();
 
-    List<City> listCity(@Param("provinceCode") String provinceCode);
+    List<City> listCityByCode(@Param("provinceCode") String provinceCode);
 
-    List<Region> listRegion(@Param("cityCode") String cityCode);
+    List<Region> listRegionByCode(@Param("cityCode") String cityCode);
 
-    List<Street> listStreet(@Param("regionCode") String regionCode);
+    List<Street> listStreetByCode(@Param("regionCode") String regionCode);
+
+    //根据城市名获取其Code等相关信息
+    City cityByName(@Param("cityName") String cityName);
+
+    List<City> listCity();
+
+
 }

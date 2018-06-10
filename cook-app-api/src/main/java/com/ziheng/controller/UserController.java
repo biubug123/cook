@@ -335,14 +335,7 @@ public class UserController {
     @ApiOperation(value = "测试")
     public Object getCurrentUser(Authentication user, HttpServletRequest request) {
 
-        try {
-            Claims claims = JwtDecode.getClaims(request);
-            String userId = (String) claims.get("userId");
-            System.out.println(userId);
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        JwtDecode.getUserIdByJWT(request);
 
         return user;
     }

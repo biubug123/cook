@@ -10,6 +10,9 @@ public interface SysUserMapper {
     //手机号查询用户名和密码
     SysUser userByPhone(@Param("phone") String phone);
 
+    //账号查询用户名和密码
+    SysUser userByAccountNum(@Param("accountNum") String AccountNum);
+
     int deleteByPrimaryKey(String id);
 
     int insert(SysUser record);
