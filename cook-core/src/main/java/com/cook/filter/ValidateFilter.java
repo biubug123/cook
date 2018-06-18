@@ -33,10 +33,10 @@ public class ValidateFilter extends OncePerRequestFilter implements Initializing
 
     private static Logger logger= LoggerFactory.getLogger(ValidateFilter.class);
 
-    @Value("${cook.image.authenticateUrl}")
+    @Value("${cook.authenticate.imageUrl}")
     private String imageAuthenticateUrl;
 
-    @Value("${cook.sms.authenticateUrl}")
+    @Value("${cook.authenticate.smsUrl}")
     private String smsAuthenticateUrl;
 
     private Map<String,String> authenticationUrl = new HashMap<>();

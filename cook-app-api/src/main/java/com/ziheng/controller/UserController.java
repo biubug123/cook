@@ -7,31 +7,19 @@ import com.cook.entity.Proxy;
 import com.cook.response.ApiResponse;
 import com.cook.security.jwt.JwtDto;
 import com.cook.util.JwtDecode;
-import com.cook.util.PhoneAndEmailUtil;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.ziheng.dao.UserGetDao;
 import com.ziheng.dto.userGet.*;
 import com.ziheng.service.UserGetService;
 import com.ziheng.service.UserPostService;
 import com.ziheng.util.ZiHengUtil;
-import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponses;
-import org.hibernate.validator.valuehandling.UnwrapValidatedValue;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.ValidationException;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @description: 用户getApi

@@ -6,7 +6,6 @@ import com.cai.service.HuntService;
 import com.cook.response.ApiResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.ziheng.dto.userGet.Resume;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

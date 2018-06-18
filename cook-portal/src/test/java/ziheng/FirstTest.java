@@ -6,6 +6,7 @@ import com.cai.service.RecruitService;
 import com.cook.CookApplication;
 import com.cook.dao.*;
 import com.cook.entity.*;
+import com.cook.service.SecurityService;
 import com.ziheng.service.ConsultPostService;
 import com.ziheng.service.UserPostService;
 import org.apache.commons.io.FileUtils;
@@ -48,6 +49,9 @@ public class FirstTest {
     private EnterpriseMapper enterpriseMapper;
 
     @Autowired
+    private SecurityService securityService;
+
+    @Autowired
     private RecruitService recruitPostService;
 
     @Autowired
@@ -64,11 +68,14 @@ public class FirstTest {
     //新用户
     @Test
     public void userTest(){
-            String phone = "18926269831";
-            String password =  "admin123";
-            String accountNum = "admin123";
-            //userPostService.insertUser(phone,password,"女",accountNum);
-        System.out.println("执行");
+            //String phone = "18926269831";
+        for (int i = 0; i < 30; i++) {
+            String password = RandomStringUtils.randomAlphanumeric(5);
+            String accountNum = password;
+            securityService.insertUser(UUID.randomUUID().toString(),null,password,"男",accountNum);
+            System.out.println("执行");
+        }
+
     }
 
     //福利
