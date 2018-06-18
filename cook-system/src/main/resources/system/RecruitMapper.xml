@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.system.dao.RecruitSysDao">
+    <select id="listRecruit" resultType="com.system.entity.Recruit">
+        SELECT r.id, salary, recruit_people_num
+        , recruit_type, description, publish_date
+        , apply_people_num, browse_count, CONCAT(p.name, e.name) AS publisherName
+        , f.name AS foodTypeName, j.name AS jobName, education
+        , experience_require, age_require
+        FROM recruit r
+        LEFT JOIN proxy p ON r.publisher_id = p.id
+        LEFT JOIN enterprise e ON e.id = r.publisher_id
+        INNER JOIN food_type f ON f.id = r.food_type_id
+        INNER JOIN job j ON j.id = r.job_id
+    </select>
+</mapper>

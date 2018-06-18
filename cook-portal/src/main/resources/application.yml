@@ -10,11 +10,14 @@ spring:
         max-request-size: 100Mb
 
 mybatis:
+  configuration:
+    map-undersource-to-cannel-case: true
   mapper-locations:
     - mapper/*.xml
     - cai/*.xml
     - ziheng/*.xml
     - lin/*.xml
+    - system/*.xml
 
 ##  entity包扫描
 #  type-aliases-package: com.cook.web.entity
