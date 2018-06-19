@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.system.dao.SystemMapper" >
+
+    <!--菜系列表-->
+    <select id="foodTypeList" resultType="com.system.dto.FoodTypeDto">
+        select
+        id AS key,name AS foodTypeName,icon_name AS iconName
+        from food_type
+    </select>
+
+    <!--职位列表-->
+    <select id="jobTypeList" resultType="com.system.dto.JobTypeDto">
+        select
+        id AS key,name AS jobName
+        from job
+    </select>
+
+    <select id="sysUserList" resultType="com.system.dto.UserDto">
+        <choose>
+            <when test="type==0">
+                SELECT id AS key,account_num AS accountNum,password,enroll_date AS enrollDate,
+                last_login_date AS lastLoginDate FROM sys_user
+                WHERE phone IS NULL
+            </when>
+            <when test="type==1">
+                SELECT su.id AS key,su.phone,su.enroll_date AS enrollDate,
+                su.last_login_date AS lastLoginDate,sui.username,sui.address FROM sys_user su
+                INNER JOIN sys_user_info sui
+                ON su.id = sui.sys_user_id
+                WHERE su.phone is NOT NULL
+            </when>
+        </choose>
+    </select>
+
+</mapper>

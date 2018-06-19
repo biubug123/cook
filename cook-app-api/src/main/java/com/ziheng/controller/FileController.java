@@ -4,15 +4,12 @@ import com.cook.response.ApiResponse;
 import com.cook.util.RandomUtil;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.tomcat.jni.FileInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,7 +27,7 @@ public class FileController {
 
     private Logger logger= LoggerFactory.getLogger(getClass());
 
-    @Value("${cook.image.upload-path}")
+    @Value("${cook.consultImage.upload-path}")
     private String path;
 
     /**

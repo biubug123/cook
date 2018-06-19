@@ -3,8 +3,6 @@ package com.ziheng.dto.userGet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
-import java.util.List;
-
 /**
  * @description: 发布的资讯实体类
  * @author: ziHeng

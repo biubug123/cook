@@ -1,7 +1,5 @@
 package com.ziheng.controller;
 import com.aliyuncs.DefaultAcsClient;
-import com.aliyuncs.auth.BasicCredentials;
-import com.aliyuncs.auth.STSAssumeRoleSessionCredentialsProvider;
 import com.aliyuncs.auth.sts.AssumeRoleRequest;
 import com.aliyuncs.auth.sts.AssumeRoleResponse;
 import com.aliyuncs.exceptions.ServerException;
@@ -11,7 +9,6 @@ import com.aliyuncs.profile.IClientProfile;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.vod.model.v20170321.GetPlayInfoRequest;
 import com.aliyuncs.vod.model.v20170321.GetPlayInfoResponse;
-import com.cai.dto.Hunt;
 import com.cook.constant.Security;
 import com.cook.dao.VideoMapper;
 import com.cook.response.ApiResponse;

@@ -1,7 +1,6 @@
 package com.ziheng.service.serviceImpl;
 
 import com.cook.dao.*;
-import com.cook.entity.SysUser;
 import com.cook.entity.SysUserInfo;
 import com.cook.entity.UserBrowse;
 import com.cook.entity.UserCollect;
@@ -14,10 +13,7 @@ import com.ziheng.dto.userGet.Resume;
 import com.ziheng.service.UserGetService;
 import com.ziheng.service.UserPostService;
 import com.ziheng.util.ZiHengUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 

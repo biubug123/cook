@@ -1,4 +1,4 @@
-package com.ziheng.dto.userGet;
+package com.system.dto;
 
 import lombok.Data;
 
@@ -9,8 +9,8 @@ import lombok.Data;
  **/
 
 @Data
-public class User {
-
+public class UserDetailDto {
+    
     private String headImgUrl;
 
     private String username;
@@ -22,11 +22,5 @@ public class User {
     private String address;
 
     private String birthDate;
-
-    //注册日期
-    private Long enrollDate;
-
-    //最后登录日期
-    private Long lastLoginDate;
     
 }

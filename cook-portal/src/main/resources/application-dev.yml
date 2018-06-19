@@ -9,6 +9,8 @@ spring:
     # 使用druid数据源
 #    type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: org.postgresql.Driver
+  resources:
+    static-locations: file:/Users/zhangziheng/Downloads/cookTest
 security:
   oauth2:
     client:
@@ -33,7 +35,7 @@ cook.social.filterProcessesUrl: /qqLogin
 
 #允许域跨站请求
 cook.Access-Control-Allow-Origin: '*'
-
+cook.system.pageSize: '10'
 cook:
   social:
     qq:
@@ -48,11 +50,13 @@ cook:
       app-id: 100550231
       app-secret: 60f78681d063590a469f1b297feff3c4
       provider-id: weiBo
-  image:
-    #服务器里图片所在路径
-    upload-path: /home/www
+  authenticate:
     #需要验证图片验证码的请求路径
-    authenticateUrl: /authentication/image
-  sms:
+    imageUrl: /authentication/image
     #需要验证短信验证码的请求路径
-    authenticateUrl: /authentication/sms
+    smsUrl: /authentication/sms
+  consultImage:
+    #服务器里资讯图片所在路径
+    upload-path: /home/www
+  logo:
+    upload-path: /Users/zhangziheng/Downloads/cookTest/logo

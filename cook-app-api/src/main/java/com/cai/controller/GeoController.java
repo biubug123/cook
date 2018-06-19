@@ -16,8 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.ziheng.util.ZiHengUtil.getPYIndexStr;
-
 /**
  * @description: 地理位置相关api
  * @create: 2018-05-21 15:28

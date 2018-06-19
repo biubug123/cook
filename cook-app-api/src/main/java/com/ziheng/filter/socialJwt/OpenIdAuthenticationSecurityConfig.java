@@ -1,6 +1,5 @@
 package com.ziheng.filter.socialJwt;
 
-import com.cook.security.component.LoginFailureHandler;
 import com.cook.security.component.LoginSuccessHandler;
 import com.cook.security.component.SocialLoginFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
