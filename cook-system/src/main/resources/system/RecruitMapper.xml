@@ -13,5 +13,14 @@
         LEFT JOIN enterprise e ON e.id = r.publisher_id
         INNER JOIN food_type f ON f.id = r.food_type_id
         INNER JOIN job j ON j.id = r.job_id
+        <if test="jobName != null and publisherName != null">
+            WHERE j.name like '%${jobName}%' and CONCAT(p.name, e.name) like '%${publisherName}%'
+        </if>
+        <if test="jobName != null and publisherName == null">
+            WHERE j.name like '%${jobName}%'
+        </if>
+        <if test="jobName == null and publisherName != null">
+            WHERE CONCAT(p.name, e.name) like '%${publisherName}%'
+        </if>
     </select>
 </mapper>

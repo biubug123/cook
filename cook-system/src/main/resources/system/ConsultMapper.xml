@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.system.dao.ConsultSysDao">
+    <select id="listConsult" resultType="com.system.entity.Consult">
+      SELECT id, publisher_name, consult_type, publish_date
+      FROM consult
+      <if test="articleType == 0">
+          WHERE article_type = 0 AND article_id = #{articleId}
+      </if>
+      <if test="articleType == 1">
+          WHERE article_type = 1 AND article_id = #{articleId}
+      </if>
+    </select>
+</mapper>

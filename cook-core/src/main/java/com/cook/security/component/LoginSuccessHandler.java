@@ -29,7 +29,8 @@ import java.io.IOException;
  * @author: ziHeng
  * @create: 2018-05-24 09:54
  **/
-@Component
+
+//@Component
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private static Logger logger= LoggerFactory.getLogger(LoginSuccessHandler.class);

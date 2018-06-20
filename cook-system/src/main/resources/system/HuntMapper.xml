@@ -9,5 +9,14 @@
         INNER JOIN job j ON h.job_id = j.id
         INNER JOIN food_type f ON h.food_type_id = f.id
         INNER JOIN sys_user_info userInfo on r.user_id = userInfo.sys_user_id
+        <if test="userName != null and workArea != null">
+          WHERE userInfo.userName LIKE '%${userName}%' AND h.work_area LIKE '%${workArea}%'
+        </if>
+        <if test="userName != null and workArea == null">
+            WHERE userInfo.userName LIKE '%${userName}%'
+        </if>
+        <if test="userName == null and workArea != null">
+            WHERE h.work_area LIKE '%${workArea}%'
+        </if>
     </select>
 </mapper>
