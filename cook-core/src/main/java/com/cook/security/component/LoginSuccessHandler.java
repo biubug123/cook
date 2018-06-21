@@ -30,7 +30,11 @@ import java.io.IOException;
  * @create: 2018-05-24 09:54
  **/
 
-//@Component
+
+
+
+@Component
+@ConditionalOnProperty(prefix = "cook.security",name = "token",havingValue = "true")
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private static Logger logger= LoggerFactory.getLogger(LoginSuccessHandler.class);

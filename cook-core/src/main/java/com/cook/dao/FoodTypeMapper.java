@@ -3,8 +3,11 @@ package com.cook.dao;
 import com.cook.entity.FoodType;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface FoodTypeMapper {
+
     int deleteByPrimaryKey(String id);
 
     int insert(FoodType record);

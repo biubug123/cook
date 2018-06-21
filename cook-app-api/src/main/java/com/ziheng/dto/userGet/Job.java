@@ -1,6 +1,5 @@
 package com.ziheng.dto.userGet;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 
 /**

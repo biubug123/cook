@@ -8,8 +8,6 @@ import com.cook.dao.RecruitMapper;
 import com.cook.dao.UserRecruitApplyMapper;
 import com.cook.entity.Proxy;
 import com.cook.entity.UserRecruitApply;
-import com.ziheng.dto.userGet.Consult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

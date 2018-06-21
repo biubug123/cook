@@ -1,8 +1,5 @@
 package com.ziheng.service;
 
-import com.cook.entity.UserBrowse;
-import com.cook.entity.UserCollect;
-
 /**
  * @description: post用户业务层
  * @author: ziHeng

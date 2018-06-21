@@ -2,21 +2,16 @@ package com.cai.controller;
 
 import com.cai.dto.*;
 import com.cai.service.RecruitService;
-import com.cook.dao.EnterpriseMapper;
-import com.cook.entity.Enterprise;
 import com.cook.response.ApiResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.ziheng.dto.userGet.Resume;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @Api(value = "/recruit",description = "已测",tags = "招聘Api")

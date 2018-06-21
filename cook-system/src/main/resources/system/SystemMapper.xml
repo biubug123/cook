@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.system.dao.SystemMapper" >
+
+    <!--菜系列表-->
+    <select id="foodTypeList" resultType="com.system.dto.FoodTypeDto">
+        select
+        id AS key,name AS foodTypeName,icon_name AS iconName
+        from food_type
+    </select>
+
+    <!--职位列表-->
+    <select id="jobTypeList" resultType="com.system.dto.JobTypeDto">
+        select
+        id AS key,name AS jobName
+        from job
+    </select>
+
+    <!--0:管理员 1:用户-->
+    <select id="sysUserList" resultType="com.system.dto.UserDto">
+        <choose>
+            <when test="type==0">
+                SELECT id AS key,account_num AS accountNum,password,enroll_date AS enrollDate,
+                last_login_date AS lastLoginDate FROM sys_user
+                WHERE phone IS NULL
+            </when>
+            <when test="type==1">
+                SELECT su.id AS key,su.phone,su.enroll_date AS enrollDate,
+                su.last_login_date AS lastLoginDate,sui.username,sui.address FROM sys_user su
+                INNER JOIN sys_user_info sui
+                ON su.id = sui.sys_user_id
+                WHERE su.phone is NOT NULL
+            </when>
+        </choose>
+    </select>
+
+    <!--根据用户id查询其资源-->
+    <select id="getResourceByRoleId" resultType="com.system.dto.ResourceDto">
+        SELECT sp.id AS key,url,method,description,alias From sys_permission sp
+        INNER JOIN con_permission_role cpr ON cpr.sys_permission_id = sp.id
+        WHERE cpr.sys_role_id = #{roleId}
+    </select>
+
+    <select id="sysRoleList" resultType="com.system.dto.SysRoleDto">
+        select id AS key, name, create_date AS createDate
+        from sys_role
+    </select>
+
+    <!--根据permissionId引用次数-->
+    <select id="countPermissionId" resultType="java.lang.Integer">
+        SELECT count(*) FROM con_permission_role WHERE sys_permission_id = #{permissionId}
+    </select>
+
+    <!--资源列表-->
+    <select id="listPermission" resultType="com.system.dto.ResourceDto">
+        SELECT id AS key,url,method,description,alias From sys_permission
+    </select>
+
+    <insert id="insertConRolePermission">
+        INSERT INTO con_permission_role (id, sys_role_id, sys_permission_id) VALUES
+        <foreach collection="rolePermissionList" separator="," item="rolePermission">
+            (#{rolePermission.id},#{rolePermission.sysRoleId},#{rolePermission.sysPermissionId})
+        </foreach>
+    </insert>
+
+</mapper>
